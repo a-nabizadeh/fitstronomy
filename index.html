@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Armin Nabizadeh · Personal Trainer</title>
+<title>YOUR NAME · Personal Trainer</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -96,236 +96,10 @@
   .about-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
   .badge { font-size: 11px; letter-spacing: 1px; padding: 6px 12px; border: 1px solid var(--border2); border-radius: 20px; color: var(--text2); font-family: 'Oswald', sans-serif; }
 
-  #nutrition { background: #0e0e0e; }
-  .nutrition-shell {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
-    gap: 24px;
-    align-items: start;
-  }
-  .nutrition-panel,
-  .nutrition-results {
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 28px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.18);
-  }
-  .nutrition-panel {
-    position: relative;
-    overflow: hidden;
-  }
-  .nutrition-panel::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(circle at top right, rgba(226,75,74,0.14), transparent 32%),
-      linear-gradient(135deg, rgba(255,255,255,0.02), transparent 44%);
-    pointer-events: none;
-  }
-  .nutrition-panel > * { position: relative; z-index: 1; }
-  .nutrition-intro {
-    font-size: 14px;
-    color: var(--text2);
-    line-height: 1.8;
-    margin-bottom: 24px;
-    max-width: 58ch;
-  }
-  .nutrition-form {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-  }
-  .field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .field-group.full { grid-column: 1 / -1; }
-  .field-group label {
-    font-size: 11px;
-    letter-spacing: 1.4px;
-    text-transform: uppercase;
-    color: var(--text3);
-  }
-  .field-group input,
-  .field-group select {
-    width: 100%;
-    background: rgba(0,0,0,0.22);
-    border: 1px solid var(--border2);
-    color: var(--text);
-    border-radius: 10px;
-    padding: 13px 14px;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .field-group input:focus,
-  .field-group select:focus {
-    outline: none;
-    border-color: var(--red);
-    background: rgba(0,0,0,0.36);
-  }
-  .field-hint {
-    font-size: 12px;
-    color: var(--text3);
-    line-height: 1.5;
-  }
-  .nutrition-actions {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 6px;
-    align-items: center;
-  }
-  .nutrition-actions button {
-    border: none;
-    cursor: pointer;
-  }
-  .btn-ghost {
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--border2) !important;
-    padding: 14px 22px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .btn-ghost:hover {
-    border-color: var(--text2) !important;
-    color: var(--text);
-  }
-  .nutrition-status {
-    grid-column: 1 / -1;
-    min-height: 22px;
-    font-size: 13px;
-    color: var(--text2);
-  }
-  .nutrition-status.error { color: #ff8d8d; }
-  .nutrition-status.success { color: #89d08d; }
-  .nutrition-results {
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .results-heading {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    align-items: start;
-  }
-  .results-heading h3 {
-    font-family: 'Oswald', sans-serif;
-    letter-spacing: 1px;
-    font-size: 28px;
-  }
-  .results-heading p {
-    color: var(--text2);
-    font-size: 13px;
-    line-height: 1.7;
-    max-width: 26ch;
-    text-align: right;
-  }
-  .result-summary {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-  .summary-card {
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
-    background: rgba(255,255,255,0.02);
-  }
-  .summary-label {
-    display: block;
-    font-size: 11px;
-    letter-spacing: 1.4px;
-    color: var(--text3);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .summary-value {
-    font-family: 'Oswald', sans-serif;
-    font-size: 28px;
-    color: var(--text);
-    line-height: 1;
-  }
-  .summary-value.accent { color: var(--red); }
-  .macro-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-  }
-  .macro-card {
-    border-radius: 14px;
-    padding: 18px 16px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid var(--border);
-  }
-  .macro-card strong {
-    display: block;
-    font-family: 'Oswald', sans-serif;
-    letter-spacing: 1px;
-    font-size: 20px;
-    margin-bottom: 6px;
-  }
-  .macro-card span {
-    display: block;
-    color: var(--text2);
-    font-size: 13px;
-  }
-  .macro-card small {
-    color: var(--text3);
-    font-size: 12px;
-  }
-  .meal-plan {
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-  .meal-plan-header,
-  .meal-row {
-    display: grid;
-    grid-template-columns: 1.2fr repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    padding: 12px 16px;
-    align-items: center;
-  }
-  .meal-plan-header {
-    background: rgba(226,75,74,0.08);
-    font-size: 11px;
-    letter-spacing: 1.3px;
-    text-transform: uppercase;
-    color: var(--text3);
-  }
-  .meal-row {
-    border-top: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--text2);
-  }
-  .meal-row strong {
-    color: var(--text);
-    font-weight: 500;
-  }
-  .nutrition-note {
-    font-size: 12px;
-    color: var(--text3);
-    line-height: 1.7;
-  }
-  .results-empty {
-    color: var(--text2);
-    font-size: 14px;
-    line-height: 1.8;
-    border: 1px dashed var(--border2);
-    border-radius: 14px;
-    padding: 20px;
-    background: rgba(255,255,255,0.02);
-  }
+  #generator { background: #0e0e0e; }
+  .generator-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 48px; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+  .generator-box h3 { font-family: 'Oswald', sans-serif; font-size: 26px; letter-spacing: 1px; margin-bottom: 8px; }
+  .generator-box p { font-size: 14px; color: var(--text2); line-height: 1.7; max-width: 480px; }
 
   #contact { background: var(--bg); }
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
@@ -359,12 +133,9 @@
     .stats { grid-template-columns: 1fr; }
     .stat { border-right: none; border-bottom: 1px solid var(--border2); padding: 24px 20px; }
     .stat:last-child { border-bottom: none; }
-    .services-grid, .about-grid, .contact-grid, .nutrition-shell, .nutrition-form, .result-summary, .macro-grid { grid-template-columns: 1fr; }
+    .services-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; }
     .about-image { aspect-ratio: 4/3; }
-    .meal-plan-header,
-    .meal-row { grid-template-columns: 1.1fr repeat(3, minmax(0, 1fr)); padding: 12px; }
-    .results-heading { flex-direction: column; }
-    .results-heading p { text-align: left; max-width: none; }
+    .generator-box { grid-template-columns: 1fr; }
     footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
   }
 </style>
@@ -372,11 +143,11 @@
 <body>
 
 <nav>
-  <a href="#" class="nav-logo">Armin Nabizadeh <span>·</span> PT</a>
+  <a href="#" class="nav-logo">YOUR NAME <span>·</span> PT</a>
   <div class="nav-links" id="navLinks">
     <a href="#about">About</a>
     <a href="#services">Services</a>
-    <a href="#nutrition">Nutrition</a>
+    <a href="#generator">Programs</a>
     <a href="#contact" class="nav-cta">Book a Session</a>
   </div>
   <div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
@@ -448,7 +219,7 @@
       <div class="about-text">
         <div class="section-tag">ABOUT ME</div>
         <h2 class="section-title">Your Coach,<br>Your <span style="color:var(--red);">Partner</span></h2>
-        <p>Hi, I'm <strong>Armin Nabizadeh</strong> — a certified personal trainer with over 5 years of experience helping people transform their bodies and their relationship with fitness.</p>
+        <p>Hi, I'm <strong>YOUR NAME</strong> — a certified personal trainer with over 5 years of experience helping people transform their bodies and their relationship with fitness.</p>
         <p>I believe training should be <strong>smart, sustainable, and science-backed</strong>. Every plan I create is grounded in the latest research in exercise physiology and nutrition — continuously updated as new findings emerge.</p>
         <p>Whether you're a complete beginner or a seasoned athlete, I'll build a program that challenges you, respects your limits, and delivers real results.</p>
         <div class="about-badges">
@@ -462,145 +233,15 @@
   </div>
 </section>
 
-<section id="nutrition">
+<section id="generator">
   <div class="section-inner">
-    <div class="section-tag">NUTRITION TOOL</div>
-    <h2 class="section-title">Estimate Your Daily Nutrition Needs</h2>
-    <p class="section-subtitle">Use the calculator below to get a practical estimate for calories, macros, and a simple meal split based on your body data, activity, and goal.</p>
-    <div class="nutrition-shell">
-      <div class="nutrition-panel">
-        <p class="nutrition-intro">This tool is based on the same core logic I use to build nutrition targets from real client data. Fill in your details, choose your target split, and I’ll generate a daily calorie and macro estimate instantly.</p>
-        <form class="nutrition-form" id="nutritionForm">
-          <div class="field-group">
-            <label for="calcName">Name</label>
-            <input id="calcName" name="name" type="text" placeholder="Your name" required>
-          </div>
-          <div class="field-group">
-            <label for="calcEmail">Email for results</label>
-            <input id="calcEmail" name="email" type="email" placeholder="you@example.com">
-          </div>
-          <div class="field-group">
-            <label for="calcAge">Age</label>
-            <input id="calcAge" name="age" type="number" min="14" max="100" step="1" placeholder="28" required>
-          </div>
-          <div class="field-group">
-            <label for="calcSex">Sex</label>
-            <select id="calcSex" name="sex" required>
-              <option value="">Select</option>
-              <option value="M">Male</option>
-              <option value="F">Female</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label for="calcWeight">Weight (kg)</label>
-            <input id="calcWeight" name="weight" type="number" min="30" max="300" step="0.1" placeholder="82.5" required>
-          </div>
-          <div class="field-group">
-            <label for="calcHeight">Height (cm)</label>
-            <input id="calcHeight" name="height" type="number" min="120" max="240" step="0.1" placeholder="180" required>
-          </div>
-          <div class="field-group">
-            <label for="calcWaist">Waist (cm)</label>
-            <input id="calcWaist" name="waist" type="number" min="30" max="250" step="0.1" placeholder="86" required>
-          </div>
-          <div class="field-group">
-            <label for="calcHip">Hip (cm)</label>
-            <input id="calcHip" name="hip" type="number" min="30" max="250" step="0.1" placeholder="98" required>
-          </div>
-          <div class="field-group">
-            <label for="calcActivity">Activity Index</label>
-            <select id="calcActivity" name="activityIndex" required>
-              <option value="">Choose activity level</option>
-              <option value="1.2">1.2 · Sedentary</option>
-              <option value="1.375">1.375 · Lightly active</option>
-              <option value="1.55">1.55 · Moderately active</option>
-              <option value="1.725">1.725 · Very active</option>
-              <option value="1.9">1.9 · Extremely active</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label for="calcGoal">Goal</label>
-            <select id="calcGoal" name="goal" required>
-              <option value="">Choose goal</option>
-              <option value="lose">Lose weight</option>
-              <option value="gain">Gain weight</option>
-              <option value="none">Maintain</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label for="calcProtein">Protein (%)</label>
-            <input id="calcProtein" name="proteinPercentage" type="number" min="0" max="100" step="1" value="30" required>
-          </div>
-          <div class="field-group">
-            <label for="calcCarbs">Carbohydrates (%)</label>
-            <input id="calcCarbs" name="carbohydratesPercentage" type="number" min="0" max="100" step="1" value="40" required>
-          </div>
-          <div class="field-group full">
-            <label for="calcAdjustment">Calorie deficit / surplus</label>
-            <input id="calcAdjustment" name="calorieAdjustment" type="number" min="0" max="2000" step="10" value="300" required>
-            <span class="field-hint">This value is subtracted for fat loss, added for gain, and ignored for maintenance.</span>
-          </div>
-          <div class="nutrition-actions">
-            <button type="submit" class="btn-primary">Calculate Nutrition</button>
-            <button type="button" class="btn-ghost" id="emailPlanButton">Prepare Email Draft</button>
-          </div>
-          <div class="nutrition-status" id="nutritionStatus" aria-live="polite"></div>
-        </form>
+    <div class="generator-box">
+      <div>
+        <div class="section-tag">TOOL</div>
+        <h3>Gym Program Generator</h3>
+        <p>Build a fully customized, printable training program for your clients — with exercise selection by muscle group, sets, reps, tempo, rest, and training system. Export to PDF in one click.</p>
       </div>
-      <aside class="nutrition-results" id="nutritionResults">
-        <div class="results-heading">
-          <h3>Your Nutrition Snapshot</h3>
-          <p>Fill in the form and calculate to see calories, macros, and a simple six-meal split.</p>
-        </div>
-        <div class="results-empty" id="resultsEmpty">No calculation yet. Once you submit your details, your calorie target and macro breakdown will appear here.</div>
-        <div id="resultsContent" hidden>
-          <div class="result-summary">
-            <div class="summary-card">
-              <span class="summary-label">Daily Calories</span>
-              <div class="summary-value accent" id="dailyCaloriesValue">0 kcal</div>
-            </div>
-            <div class="summary-card">
-              <span class="summary-label">Estimated TDEE</span>
-              <div class="summary-value" id="tdeeValue">0 kcal</div>
-            </div>
-            <div class="summary-card">
-              <span class="summary-label">BMI</span>
-              <div class="summary-value" id="bmiValue">0</div>
-            </div>
-            <div class="summary-card">
-              <span class="summary-label">Body Fat Estimate</span>
-              <div class="summary-value" id="bodyFatValue">0%</div>
-            </div>
-          </div>
-          <div class="macro-grid">
-            <div class="macro-card">
-              <strong id="proteinValue">0 g</strong>
-              <span>Protein</span>
-              <small id="proteinPercentValue">0% of calories</small>
-            </div>
-            <div class="macro-card">
-              <strong id="carbsValue">0 g</strong>
-              <span>Carbohydrates</span>
-              <small id="carbsPercentValue">0% of calories</small>
-            </div>
-            <div class="macro-card">
-              <strong id="fatValue">0 g</strong>
-              <span>Fat</span>
-              <small id="fatPercentValue">0% of calories</small>
-            </div>
-          </div>
-          <div class="meal-plan">
-            <div class="meal-plan-header">
-              <span>Meal</span>
-              <span>Protein</span>
-              <span>Carbs</span>
-              <span>Fat</span>
-            </div>
-            <div id="mealRows"></div>
-          </div>
-          <p class="nutrition-note" id="resultsNote">These results are estimates and should be refined based on training response, hunger, recovery, and adherence.</p>
-        </div>
-      </aside>
+      <a href="gym_program_generator.html" class="btn-primary" style="white-space:nowrap;">Open Generator →</a>
     </div>
   </div>
 </section>
@@ -614,13 +255,13 @@
       <div class="contact-info">
         <p>Whether you want to train in person or online, I'd love to hear from you. Fill out the form or reach out directly through any of the channels below.</p>
         <div class="contact-links">
-          <a href="mailto:armin.nabizade@gmail.com" class="contact-link">
+          <a href="mailto:you@email.com" class="contact-link">
             <div class="contact-link-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></div>
-            armin.nabizade@gmail.com
+            you@email.com
           </a>
-          <a href="tel:+358451603940" class="contact-link">
+          <a href="tel:+358400000000" class="contact-link">
             <div class="contact-link-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.59 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
-            +358 45 160 3940
+            +358 40 000 0000
           </a>
           <a href="https://instagram.com/yourhandle" class="contact-link" target="_blank">
             <div class="contact-link-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
@@ -640,11 +281,10 @@
 </section>
 
 <footer>
-  <div class="footer-logo">Armin Nabizadeh <span>·</span> PT</div>
+  <div class="footer-logo">YOUR NAME <span>·</span> PT</div>
   <p>© 2026 · All rights reserved</p>
 </footer>
 
-<script src="nutrition-calculator.js"></script>
 <script>
 function handleSubmit(e) {
   e.preventDefault();
