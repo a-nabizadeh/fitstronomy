@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apply For Coaching · Armin Nabizadeh</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E24B4A;
+    --red-dark: #b83736;
+    --bg: #111111;
+    --bg2: #1a1a1a;
+    --border: #2a2a2a;
+    --border2: #333333;
+    --text: #ffffff;
+    --text2: #aaaaaa;
+    --text3: #666666;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background:
+      radial-gradient(circle at top right, rgba(226,75,74,0.12), transparent 26%),
+      linear-gradient(180deg, #121212 0%, #0b0b0b 100%);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  a { color: inherit; }
+  .page-shell {
+    width: min(1240px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 26px 0 42px;
+  }
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 26px;
+  }
+  .brand {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-decoration: none;
+  }
+  .brand span { color: var(--red); }
+  .back-link {
+    text-decoration: none;
+    color: var(--text2);
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .back-link:hover { color: var(--text); }
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 0.86fr) minmax(300px, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+  .intro,
+  .form-shell {
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    background: rgba(255,255,255,0.03);
+    padding: 28px;
+    box-shadow: 0 20px 48px rgba(0,0,0,0.28);
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--red);
+    letter-spacing: 2px;
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--red);
+  }
+  h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(42px, 5vw, 70px);
+    line-height: 1.02;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+  .intro p {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.85;
+    max-width: 54ch;
+  }
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+  }
+  .quick-card {
+    border-radius: 18px;
+    padding: 16px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--border);
+  }
+  .quick-card strong {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .quick-card span {
+    display: block;
+    color: var(--text2);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .form-shell-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: start;
+    margin-bottom: 18px;
+  }
+  .form-shell-header h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+  }
+  .form-shell-header p {
+    color: var(--text2);
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 28ch;
+    text-align: right;
+  }
+  .form-frame {
+    border: 1px solid var(--border2);
+    border-radius: 22px;
+    overflow: hidden;
+    background: #fff;
+  }
+  iframe {
+    width: 100%;
+    min-height: 1120px;
+    border: 0;
+    display: block;
+  }
+  .fallback {
+    margin-top: 16px;
+    color: var(--text3);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .fallback a {
+    color: var(--red);
+    text-decoration: none;
+  }
+  .fallback a:hover { color: #ff7675; }
+  @media (max-width: 900px) {
+    .hero,
+    .quick-grid { grid-template-columns: 1fr; }
+    .form-shell-header { flex-direction: column; }
+    .form-shell-header p { text-align: left; max-width: none; }
+    iframe { min-height: 1280px; }
+  }
+</style>
+</head>
+<body>
+  <div class="page-shell">
+    <div class="topbar">
+      <a href="index.html" class="brand">Armin Nabizadeh <span>·</span> PT</a>
+      <a href="index.html" class="back-link">Back to main site</a>
+    </div>
+    <div class="hero">
+      <section class="intro">
+        <div class="eyebrow">Coaching Application</div>
+        <h1>Tell Me Where You Are Now And Where You Want To Go</h1>
+        <p>This page is for higher-intent leads. Instead of squeezing your intake into a tiny popup, the form gets a full screen with proper breathing room, stronger trust, and a cleaner coaching experience from the start.</p>
+        <div class="quick-grid">
+          <div class="quick-card">
+            <strong>Best for serious leads</strong>
+            <span>People who complete a full application are usually much more qualified than someone sending a one-line contact message.</span>
+          </div>
+          <div class="quick-card">
+            <strong>Better mobile experience</strong>
+            <span>Long forms perform much better on their own page than inside a modal or popup, especially on smaller screens.</span>
+          </div>
+          <div class="quick-card">
+            <strong>Clearer onboarding</strong>
+            <span>You can review goals, obstacles, expectations, and training history before the first consultation call.</span>
+          </div>
+          <div class="quick-card">
+            <strong>Professional feel</strong>
+            <span>This creates a smoother path: pricing on the main page, application on a dedicated screen, then contact for questions.</span>
+          </div>
+        </div>
+      </section>
+      <section class="form-shell">
+        <div class="form-shell-header">
+          <div>
+            <div class="eyebrow">Application Form</div>
+            <h2>Complete The Jotform Intake</h2>
+          </div>
+          <p>Take two to four minutes to fill this out thoroughly. The more precise the answers, the better I can guide the next step.</p>
+        </div>
+        <div class="form-frame">
+          <iframe
+            src="https://form.jotform.com/243523098915361"
+            title="Coaching application form"
+            loading="lazy"
+          ></iframe>
+        </div>
+        <p class="fallback">If the embed doesn’t load on your device, open the form directly here:
+          <a href="https://form.jotform.com/243523098915361" target="_blank" rel="noopener noreferrer">https://form.jotform.com/243523098915361</a>
+        </p>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

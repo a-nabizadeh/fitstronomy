@@ -7,6 +7,34 @@ const mealDistribution = [
   { label: 'Snack 3', ratio: 0.05 },
 ];
 
+const guideContent = {
+  start: {
+    kicker: 'Start here',
+    title: 'Use the form like a guided consultation',
+    body: 'Tap the helper pills below or focus a field to reveal specific guidance on calorie deficits, activity levels, and macro choices. It keeps the calculator clean while still teaching people how to use it well.',
+  },
+  activity: {
+    kicker: 'Activity index',
+    title: 'Choose the multiplier that matches real life',
+    body: '1.2 suits mostly desk-based days with little training. 1.375 fits light movement and a few sessions weekly. 1.55 is moderate training 3 to 5 times per week. 1.725 and 1.9 are better for high-volume training, sport, or physically demanding routines.',
+  },
+  deficit: {
+    kicker: 'Calorie pace',
+    title: 'Think in weekly pace, not just daily numbers',
+    body: 'A 250 kcal daily deficit is usually gentler and easier to recover from. A 500 kcal daily deficit is the classic moderate cut and often trends toward about 0.5 kg per week. Bigger deficits can work short term, but they raise the risk of hunger, low performance, and poor adherence.',
+  },
+  macros: {
+    kicker: 'Macro split',
+    title: 'Macros should support the goal and the person',
+    body: 'Higher protein helps preserve lean mass during a cut and improves satiety. Carbohydrates tend to support training quality and recovery. Fat fills the remaining calories and helps with hormone support and meal satisfaction. The best split is the one the client can sustain consistently.',
+  },
+  goal: {
+    kicker: 'Goal setting',
+    title: 'Cut, gain, or maintain with intention',
+    body: 'Use lose when the priority is steady fat loss, gain when performance and size are the goal, and maintain when the aim is to stabilize body weight while improving habits, strength, or body composition. The calculator gives a starting estimate, not a fixed rule.',
+  },
+};
+
 function roundTo(value, decimals = 1) {
   const factor = 10 ** decimals;
   return Math.round(value * factor) / factor;
@@ -193,6 +221,34 @@ function setStatus(message, type = '') {
   }
 }
 
+function setActiveGuidePill(key) {
+  document.querySelectorAll('.guide-pill').forEach((pill) => {
+    pill.classList.toggle('is-active', pill.dataset.guide === key);
+  });
+}
+
+function updateGuide(key) {
+  const nextGuide = guideContent[key] || guideContent.start;
+  const highlight = document.getElementById('guideHighlight');
+  const kicker = document.getElementById('guideKicker');
+  const title = document.getElementById('guideTitle');
+  const body = document.getElementById('guideBody');
+
+  if (!highlight || !kicker || !title || !body) {
+    return;
+  }
+
+  highlight.classList.add('is-swapping');
+  window.setTimeout(() => {
+    kicker.textContent = nextGuide.kicker;
+    title.textContent = nextGuide.title;
+    body.textContent = nextGuide.body;
+    highlight.classList.remove('is-swapping');
+  }, 140);
+
+  setActiveGuidePill(key);
+}
+
 let latestResult = null;
 
 function handleNutritionSubmit(event) {
@@ -232,4 +288,24 @@ const emailPlanButton = document.getElementById('emailPlanButton');
 if (nutritionForm && emailPlanButton) {
   nutritionForm.addEventListener('submit', handleNutritionSubmit);
   emailPlanButton.addEventListener('click', handleEmailDraft);
+
+  const guideFieldMap = {
+    calcActivity: 'activity',
+    calcGoal: 'goal',
+    calcAdjustment: 'deficit',
+    calcProtein: 'macros',
+    calcCarbs: 'macros',
+  };
+
+  Object.entries(guideFieldMap).forEach(([fieldId, guideKey]) => {
+    const field = document.getElementById(fieldId);
+    if (field) {
+      field.addEventListener('focus', () => updateGuide(guideKey));
+      field.addEventListener('change', () => updateGuide(guideKey));
+    }
+  });
+
+  document.querySelectorAll('.guide-pill').forEach((pill) => {
+    pill.addEventListener('click', () => updateGuide(pill.dataset.guide));
+  });
 }

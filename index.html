@@ -32,8 +32,10 @@
   .nav-logo { font-family: 'Oswald', sans-serif; font-size: 20px; letter-spacing: 2px; color: var(--text); text-decoration: none; }
   .nav-logo span { color: var(--red); }
   .nav-links { display: flex; gap: 32px; align-items: center; }
-  .nav-links a { font-size: 13px; color: var(--text2); text-decoration: none; letter-spacing: 1px; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--text); }
+  .nav-links a,
+  .nav-links button { font-size: 13px; color: var(--text2); text-decoration: none; letter-spacing: 1px; transition: color 0.2s, background 0.2s, border-color 0.2s; background: transparent; border: none; font-family: inherit; cursor: pointer; }
+  .nav-links a:hover,
+  .nav-links button:hover { color: var(--text); }
   .nav-cta { background: var(--red) !important; color: #fff !important; padding: 9px 20px; border-radius: 6px; }
   .nav-cta:hover { background: var(--red-dark) !important; }
   .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
@@ -85,6 +87,19 @@
   .service-card h3 { font-family: 'Oswald', sans-serif; font-size: 17px; letter-spacing: 1px; margin-bottom: 8px; }
   .service-card p { font-size: 13px; color: var(--text2); line-height: 1.7; }
 
+  .service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--red);
+    text-decoration: none;
+  }
+  .service-link:hover { color: #ff7675; }
+
   #about { background: var(--bg); }
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
   .about-image { aspect-ratio: 3/4; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
@@ -131,6 +146,121 @@
     line-height: 1.8;
     margin-bottom: 24px;
     max-width: 58ch;
+  }
+  .coach-guide {
+    margin-bottom: 28px;
+    border: 1px solid rgba(226,75,74,0.22);
+    border-radius: 18px;
+    padding: 20px;
+    background:
+      radial-gradient(circle at top right, rgba(226,75,74,0.16), transparent 34%),
+      linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .guide-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .guide-header h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 24px;
+    letter-spacing: 1px;
+  }
+  .guide-orbit {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--red);
+    box-shadow: 0 0 0 0 rgba(226,75,74,0.5);
+    animation: pulse-orbit 2.4s infinite;
+  }
+  .guide-highlight {
+    min-height: 152px;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 18px;
+    background: rgba(0,0,0,0.16);
+    transition: transform 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+  }
+  .guide-highlight.is-swapping {
+    opacity: 0.55;
+    transform: translateY(4px);
+  }
+  .guide-kicker {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 11px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .guide-highlight h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 24px;
+    letter-spacing: 0.6px;
+    margin-bottom: 8px;
+  }
+  .guide-highlight p {
+    color: var(--text2);
+    font-size: 14px;
+    line-height: 1.8;
+    max-width: 54ch;
+  }
+  .guide-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .guide-pill {
+    border: 1px solid var(--border2);
+    background: rgba(255,255,255,0.02);
+    color: var(--text2);
+    border-radius: 999px;
+    padding: 10px 14px;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  }
+  .guide-pill:hover,
+  .guide-pill.is-active {
+    border-color: rgba(226,75,74,0.5);
+    color: var(--text);
+    background: rgba(226,75,74,0.08);
+    transform: translateY(-1px);
+  }
+  .guide-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .guide-mini-card {
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 14px;
+    background: rgba(255,255,255,0.02);
+    animation: drift-card 5s ease-in-out infinite;
+  }
+  .guide-mini-card:nth-child(2) { animation-delay: 0.45s; }
+  .guide-mini-card:nth-child(3) { animation-delay: 0.9s; }
+  .guide-mini-card strong {
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .guide-mini-card span {
+    display: block;
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.6;
   }
   .nutrition-form {
     display: grid;
@@ -326,6 +456,170 @@
     padding: 20px;
     background: rgba(255,255,255,0.02);
   }
+  @keyframes pulse-orbit {
+    0% { box-shadow: 0 0 0 0 rgba(226,75,74,0.45); transform: scale(1); }
+    60% { box-shadow: 0 0 0 12px rgba(226,75,74,0); transform: scale(1.08); }
+    100% { box-shadow: 0 0 0 0 rgba(226,75,74,0); transform: scale(1); }
+  }
+  @keyframes drift-card {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  .pricing-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 300;
+  }
+  .pricing-modal.is-open { display: flex; }
+  .pricing-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 5, 5, 0.74);
+    backdrop-filter: blur(10px);
+  }
+  .pricing-dialog {
+    position: relative;
+    width: min(1080px, 100%);
+    max-height: min(88vh, 920px);
+    overflow: auto;
+    padding: 32px;
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background:
+      radial-gradient(circle at top right, rgba(226,75,74,0.16), transparent 28%),
+      linear-gradient(180deg, #171717, #0e0e0e);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.42);
+  }
+  .pricing-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid var(--border2);
+    background: rgba(255,255,255,0.04);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 20px;
+  }
+  .pricing-close:hover { border-color: rgba(226,75,74,0.5); color: var(--red); }
+  .pricing-header {
+    max-width: 720px;
+    margin-bottom: 28px;
+  }
+  .pricing-header p {
+    color: var(--text2);
+    font-size: 15px;
+    line-height: 1.8;
+    margin-top: 12px;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .pricing-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border-radius: 22px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.025);
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing-card::before {
+    content: '';
+    position: absolute;
+    inset: auto -20% -45% auto;
+    width: 180px;
+    height: 180px;
+    border-radius: 999px;
+    background: rgba(226,75,74,0.08);
+    filter: blur(16px);
+    pointer-events: none;
+  }
+  .pricing-card.featured {
+    border-color: rgba(226,75,74,0.5);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 34px rgba(226,75,74,0.1);
+  }
+  .pricing-badge {
+    align-self: start;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(226,75,74,0.16);
+    color: var(--red);
+    font-size: 11px;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+  }
+  .pricing-card h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px;
+    letter-spacing: 1px;
+  }
+  .pricing-price {
+    font-family: 'Oswald', sans-serif;
+    font-size: 44px;
+    color: var(--text);
+    line-height: 1;
+  }
+  .pricing-price small {
+    font-size: 15px;
+    color: var(--text3);
+    font-family: 'Inter', sans-serif;
+    margin-left: 6px;
+  }
+  .pricing-card p {
+    color: var(--text2);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .pricing-list {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pricing-list li {
+    color: var(--text2);
+    font-size: 13px;
+    line-height: 1.6;
+    padding-left: 18px;
+    position: relative;
+  }
+  .pricing-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--red);
+  }
+  .pricing-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: auto;
+  }
+  .pricing-footnote {
+    margin-top: 20px;
+    color: var(--text3);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  body.modal-open { overflow: hidden; }
 
   #contact { background: var(--bg); }
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
@@ -343,6 +637,14 @@
   .contact-form textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
   .contact-form button { background: var(--red); color: #fff; border: none; padding: 14px; border-radius: 6px; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer; transition: background 0.2s; }
   .contact-form button:hover { background: var(--red-dark); }
+  .contact-status {
+    min-height: 22px;
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .contact-status.error { color: #ff8d8d; }
+  .contact-status.success { color: #89d08d; }
+  .contact-status.pending { color: var(--text2); }
 
   footer { background: #0a0a0a; border-top: 1px solid var(--border); padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; }
   .footer-logo { font-family: 'Oswald', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--text3); }
@@ -359,12 +661,14 @@
     .stats { grid-template-columns: 1fr; }
     .stat { border-right: none; border-bottom: 1px solid var(--border2); padding: 24px 20px; }
     .stat:last-child { border-bottom: none; }
-    .services-grid, .about-grid, .contact-grid, .nutrition-shell, .nutrition-form, .result-summary, .macro-grid { grid-template-columns: 1fr; }
+    .services-grid, .about-grid, .contact-grid, .nutrition-shell, .nutrition-form, .result-summary, .macro-grid, .guide-mini-grid, .pricing-grid { grid-template-columns: 1fr; }
     .about-image { aspect-ratio: 4/3; }
     .meal-plan-header,
     .meal-row { grid-template-columns: 1.1fr repeat(3, minmax(0, 1fr)); padding: 12px; }
     .results-heading { flex-direction: column; }
     .results-heading p { text-align: left; max-width: none; }
+    .guide-header { align-items: start; }
+    .pricing-dialog { padding: 24px 18px; }
     footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
   }
 </style>
@@ -377,7 +681,8 @@
     <a href="#about">About</a>
     <a href="#services">Services</a>
     <a href="#nutrition">Nutrition</a>
-    <a href="#contact" class="nav-cta">Book a Session</a>
+    <button type="button" data-open-pricing>Pricing</button>
+    <a href="apply.html" class="nav-cta">Apply Now</a>
   </div>
   <div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
     <span></span><span></span><span></span>
@@ -394,14 +699,14 @@
       <p><strong>Evidence-based training.</strong> Every program is built on the latest research in exercise science and sports nutrition — no guesswork, just methods that actually work.</p>
     </div>
     <div class="hero-cta">
-      <a href="#contact" class="btn-primary">Book a Free Consultation</a>
-      <a href="#services" class="btn-secondary">Explore Services</a>
+      <a href="apply.html" class="btn-primary">Start Your Coaching Application</a>
+      <button type="button" class="btn-secondary" data-open-pricing>View Pricing</button>
     </div>
   </div>
 </section>
 
 <div class="stats">
-  <div class="stat"><div class="stat-num">200+</div><div class="stat-label">CLIENTS TRAINED</div></div>
+  <div class="stat"><div class="stat-num">50+</div><div class="stat-label">CLIENTS TRAINED</div></div>
   <div class="stat"><div class="stat-num">5+</div><div class="stat-label">YEARS EXPERIENCE</div></div>
   <div class="stat"><div class="stat-num">100%</div><div class="stat-label">COMMITMENT</div></div>
 </div>
@@ -416,21 +721,25 @@
         <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M2 8h4M18 8h4M2 16h4M18 16h4"/></svg></div>
         <h3>Strength Training</h3>
         <p>Build muscle and improve power with structured, periodized programs designed around your body and goals.</p>
+        <a href="apply.html" class="service-link">Apply for coaching</a>
       </div>
       <div class="service-card">
         <div class="service-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
         <h3>Weight Loss</h3>
         <p>Sustainable fat loss through smart nutrition strategies and progressive cardio — no crash diets, no shortcuts.</p>
+        <button type="button" class="service-link" data-open-pricing>See pricing</button>
       </div>
       <div class="service-card">
         <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
         <h3>Online Coaching</h3>
         <p>Remote programs and regular check-ins that fit your schedule, wherever you are in the world.</p>
+        <a href="apply.html" class="service-link">See application form</a>
       </div>
       <div class="service-card">
         <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2"/></svg></div>
         <h3>In-Person Sessions</h3>
         <p>One-on-one training with hands-on coaching, real-time form correction, and immediate feedback.</p>
+        <button type="button" class="service-link" data-open-pricing>Compare packages</button>
       </div>
     </div>
   </div>
@@ -470,6 +779,38 @@
     <div class="nutrition-shell">
       <div class="nutrition-panel">
         <p class="nutrition-intro">This tool is based on the same core logic I use to build nutrition targets from real client data. Fill in your details, choose your target split, and I’ll generate a daily calorie and macro estimate instantly.</p>
+        <div class="coach-guide" id="coachGuide">
+          <div class="guide-header">
+            <h3>Coach Notes</h3>
+            <span class="guide-orbit" aria-hidden="true"></span>
+          </div>
+          <div class="guide-highlight" id="guideHighlight">
+            <span class="guide-kicker" id="guideKicker">Start here</span>
+            <h4 id="guideTitle">Use the form like a guided consultation</h4>
+            <p id="guideBody">Tap the helper pills below or focus a field to reveal specific guidance on calorie deficits, activity levels, and macro choices. It keeps the calculator clean while still teaching people how to use it well.</p>
+          </div>
+          <div class="guide-pills">
+            <button class="guide-pill is-active" type="button" data-guide="start">Overview</button>
+            <button class="guide-pill" type="button" data-guide="activity">Activity index</button>
+            <button class="guide-pill" type="button" data-guide="deficit">Calorie pace</button>
+            <button class="guide-pill" type="button" data-guide="macros">Macro split</button>
+            <button class="guide-pill" type="button" data-guide="goal">Goal setting</button>
+          </div>
+          <div class="guide-mini-grid">
+            <div class="guide-mini-card">
+              <strong>250 kcal/day</strong>
+              <span>Gentle pace. Often close to 0.25 kg loss per week when adherence is strong.</span>
+            </div>
+            <div class="guide-mini-card">
+              <strong>500 kcal/day</strong>
+              <span>Classic moderate cut. Roughly 0.5 kg loss per week in many cases.</span>
+            </div>
+            <div class="guide-mini-card">
+              <strong>1.55 activity</strong>
+              <span>Moderately active usually means lifting or sports 3 to 5 days weekly plus normal daily movement.</span>
+            </div>
+          </div>
+        </div>
         <form class="nutrition-form" id="nutritionForm">
           <div class="field-group">
             <label for="calcName">Name</label>
@@ -538,7 +879,7 @@
           <div class="field-group full">
             <label for="calcAdjustment">Calorie deficit / surplus</label>
             <input id="calcAdjustment" name="calorieAdjustment" type="number" min="0" max="2000" step="10" value="300" required>
-            <span class="field-hint">This value is subtracted for fat loss, added for gain, and ignored for maintenance.</span>
+            <span class="field-hint">This value is subtracted for fat loss, added for gain, and ignored for maintenance. As a rule of thumb, a 500 kcal daily deficit often lands near 0.5 kg loss per week.</span>
           </div>
           <div class="nutrition-actions">
             <button type="submit" class="btn-primary">Calculate Nutrition</button>
@@ -605,6 +946,82 @@
   </div>
 </section>
 
+<div class="pricing-modal" id="pricingModal" aria-hidden="true">
+  <div class="pricing-backdrop" data-close-pricing></div>
+  <div class="pricing-dialog" role="dialog" aria-modal="true" aria-labelledby="pricingTitle">
+    <button class="pricing-close" type="button" data-close-pricing aria-label="Close pricing">×</button>
+    <div class="pricing-header">
+      <div class="section-tag">PRICING</div>
+      <h2 class="section-title" id="pricingTitle">Choose The Support Level That Matches Your Goal</h2>
+      <p>Keep the main site clean, let pricing live in a focused modal, and send serious leads into the full application flow. This combination feels premium, fast, and much easier to navigate than embedding everything into one long page.</p>
+    </div>
+    <div class="pricing-grid">
+      <article class="pricing-card">
+        <span class="pricing-badge">Starter</span>
+        <h3>Workout Plan</h3>
+        <div class="pricing-price">€30<small>/ program</small></div>
+        <p>Best for clients who want a clear training structure they can follow independently.</p>
+        <ul class="pricing-list">
+          <li>Custom workout program built around your goal</li>
+          <li>Clear exercise structure and session flow</li>
+          <li>Ideal for self-directed training</li>
+          <li>Simple, focused, and affordable starting point</li>
+        </ul>
+        <div class="pricing-actions">
+          <a href="apply.html" class="btn-primary">Apply For This Plan</a>
+        </div>
+      </article>
+      <article class="pricing-card featured">
+        <span class="pricing-badge">Most Popular</span>
+        <h3>Plan + Intro Session</h3>
+        <div class="pricing-price">€80<small>/ package</small></div>
+        <p>Great for people who want a training plan plus a guided first session to learn the structure properly.</p>
+        <ul class="pricing-list">
+          <li>Custom workout plan included</li>
+          <li>One introduction session to walk through the program</li>
+          <li>Technique and structure explained in person</li>
+          <li>Best fit for beginners or restart clients</li>
+        </ul>
+        <div class="pricing-actions">
+          <a href="apply.html" class="btn-primary">Start Application</a>
+          <a href="#contact" class="btn-secondary">Ask A Question</a>
+        </div>
+      </article>
+      <article class="pricing-card">
+        <span class="pricing-badge">Premium</span>
+        <h3>In-Person Coaching</h3>
+        <div class="pricing-price">€70<small>/ session</small></div>
+        <p>Hands-on personal training with live coaching, form correction, and structured accountability.</p>
+        <ul class="pricing-list">
+          <li>2 sessions per week: €500 per month</li>
+          <li>3 sessions per week: €700 per month</li>
+          <li>Live form correction and progression guidance</li>
+          <li>Best for clients who want maximum structure and support</li>
+        </ul>
+        <div class="pricing-actions">
+          <a href="apply.html" class="btn-primary">Apply Now</a>
+        </div>
+      </article>
+      <article class="pricing-card">
+        <span class="pricing-badge">Remote</span>
+        <h3>Online Coaching</h3>
+        <div class="pricing-price">€20<small>/ session</small></div>
+        <p>A lighter-touch remote option for clients who want ongoing programming support without in-person sessions.</p>
+        <ul class="pricing-list">
+          <li>2 sessions per week: €200 per month</li>
+          <li>Remote coaching structure and accountability</li>
+          <li>Flexible option for clients training on their own schedule</li>
+          <li>Good fit for consistent independent trainees</li>
+        </ul>
+        <div class="pricing-actions">
+          <a href="apply.html" class="btn-primary">Apply Online</a>
+        </div>
+      </article>
+    </div>
+    <p class="pricing-footnote">These prices are easy to update later if you want to refine the offer stack. The important thing is the structure: people can compare quickly, then move into a higher-intent application page.</p>
+  </div>
+</div>
+
 <section id="contact">
   <div class="section-inner">
     <div class="section-tag">GET IN TOUCH</div>
@@ -628,12 +1045,20 @@
           </a>
         </div>
       </div>
-      <form class="contact-form" onsubmit="handleSubmit(event)">
-        <input type="text" placeholder="Your name" required>
-        <input type="email" placeholder="Your email" required>
-        <input type="text" placeholder="Your goal (e.g. lose weight, build muscle)">
-        <textarea placeholder="Tell me a bit about yourself and what you're looking for..."></textarea>
+      <form
+        class="contact-form"
+        id="contactForm"
+        action="https://formspree.io/f/mnjlbjko"
+        method="POST"
+      >
+        <input type="hidden" name="_subject" value="New Fitstronomy contact form enquiry">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="text" name="name" placeholder="Your name" required>
+        <input type="email" name="email" placeholder="Your email" required>
+        <input type="text" name="goal" placeholder="Your goal (e.g. lose weight, build muscle)">
+        <textarea name="message" placeholder="Tell me a bit about yourself and what you're looking for..." required></textarea>
         <button type="submit">Send Message</button>
+        <div class="contact-status" id="contactStatus" aria-live="polite"></div>
       </form>
     </div>
   </div>
@@ -645,14 +1070,7 @@
 </footer>
 
 <script src="nutrition-calculator.js"></script>
-<script>
-function handleSubmit(e) {
-  e.preventDefault();
-  const btn = e.target.querySelector('button');
-  btn.textContent = 'Message sent!';
-  btn.style.background = '#2a7a2a';
-  setTimeout(() => { btn.textContent = 'Send Message'; btn.style.background = ''; e.target.reset(); }, 3000);
-}
-</script>
+<script src="contact-form.js"></script>
+<script src="pricing-modal.js"></script>
 </body>
 </html>
