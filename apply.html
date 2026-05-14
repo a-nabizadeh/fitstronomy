@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Apply For Coaching · Armin Nabizadeh</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet">
 <style>
   :root {
     --red: #E24B4A;
@@ -18,6 +18,7 @@
     --text3: #666666;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { overflow-x: hidden; }
   body {
     font-family: 'Inter', sans-serif;
     background:
@@ -25,7 +26,12 @@
       linear-gradient(180deg, #121212 0%, #0b0b0b 100%);
     color: var(--text);
     min-height: 100vh;
+    overflow-x: hidden;
   }
+  button,
+  input,
+  select,
+  textarea { font: inherit; }
   a { color: inherit; }
   .page-shell {
     width: min(1240px, calc(100% - 40px));
@@ -56,17 +62,21 @@
   .back-link:hover { color: var(--text); }
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 0.86fr) minmax(300px, 1fr);
+    grid-template-columns: minmax(280px, 0.48fr) minmax(0, 1fr);
     gap: 24px;
     align-items: start;
   }
   .intro,
   .form-shell {
     border: 1px solid var(--border);
-    border-radius: 28px;
+    border-radius: 18px;
     background: rgba(255,255,255,0.03);
     padding: 28px;
     box-shadow: 0 20px 48px rgba(0,0,0,0.28);
+  }
+  .intro {
+    position: sticky;
+    top: 24px;
   }
   .eyebrow {
     display: inline-flex;
@@ -104,7 +114,7 @@
     margin-top: 24px;
   }
   .quick-card {
-    border-radius: 18px;
+    border-radius: 8px;
     padding: 16px;
     background: rgba(255,255,255,0.025);
     border: 1px solid var(--border);
@@ -127,7 +137,7 @@
     justify-content: space-between;
     gap: 16px;
     align-items: start;
-    margin-bottom: 18px;
+    margin-bottom: 24px;
   }
   .form-shell-header h2 {
     font-family: 'Oswald', sans-serif;
@@ -141,35 +151,356 @@
     max-width: 28ch;
     text-align: right;
   }
-  .form-frame {
-    border: 1px solid var(--border2);
-    border-radius: 22px;
-    overflow: hidden;
-    background: #fff;
+  .application-form {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
   }
-  iframe {
+  .form-section {
+    border-top: 1px solid var(--border);
+    padding-top: 26px;
+  }
+  .form-section:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .form-section-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: start;
+    margin-bottom: 18px;
+  }
+  .form-section-header h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 24px;
+    letter-spacing: 1px;
+  }
+  .form-section-header p {
+    color: var(--text2);
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 34ch;
+    text-align: right;
+  }
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .field-grid + .field-grid {
+    margin-top: 16px;
+  }
+  .field-grid.compact {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .form-field,
+  .question-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .full {
+    grid-column: 1 / -1;
+  }
+  label,
+  .field-label {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+  input,
+  select,
+  textarea {
     width: 100%;
-    min-height: 1120px;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    background: rgba(17,17,17,0.94);
+    color: var(--text);
+    font: inherit;
+    font-size: 14px;
+    padding: 12px 14px;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  textarea {
+    min-height: 104px;
+    line-height: 1.6;
+    resize: vertical;
+  }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(226,75,74,0.14);
+    background: rgba(20,20,20,1);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text3);
+  }
+  .choice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 10px;
+  }
+  .choice-grid.tight {
+    grid-template-columns: repeat(auto-fit, minmax(74px, 1fr));
+  }
+  .choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-height: 46px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.025);
+    color: var(--text2);
+    font-size: 13px;
+    line-height: 1.45;
+    padding: 12px;
+  }
+  .choice input {
+    flex: 0 0 auto;
+    width: auto;
+    margin-top: 2px;
+    padding: 0;
     border: 0;
+    background: transparent;
+    box-shadow: none;
+    accent-color: var(--red);
+  }
+  .choice input:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 2px;
+  }
+  .choice span {
     display: block;
   }
-  .fallback {
-    margin-top: 16px;
-    color: var(--text3);
-    font-size: 12px;
+  .notice {
+    border-left: 3px solid var(--red);
+    background: rgba(226,75,74,0.08);
+    color: var(--text2);
+    font-size: 13px;
     line-height: 1.7;
+    margin: 16px 0;
+    padding: 14px 16px;
   }
-  .fallback a {
-    color: var(--red);
-    text-decoration: none;
+  .notice strong {
+    color: var(--text);
   }
-  .fallback a:hover { color: #ff7675; }
+  .terms {
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .form-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+  .submit-button {
+    width: auto;
+    border: 0;
+    background: var(--red);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 14px 22px;
+  }
+  .submit-button:hover {
+    background: var(--red-dark);
+  }
+  .submit-button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+  }
+  .submit-button:disabled {
+    cursor: wait;
+    opacity: 0.68;
+  }
+  .application-status {
+    color: var(--text3);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .application-status.success { color: #7edda0; }
+  .application-status.error { color: #ff8989; }
+  .application-status.pending { color: var(--text2); }
+  .hidden-field {
+    display: none;
+  }
+  .wizard-progress,
+  .wizard-controls {
+    display: none;
+  }
   @media (max-width: 900px) {
+    .page-shell {
+      width: min(100% - 24px, 680px);
+      padding: 18px 0 32px;
+    }
     .hero,
-    .quick-grid { grid-template-columns: 1fr; }
-    .form-shell-header { flex-direction: column; }
-    .form-shell-header p { text-align: left; max-width: none; }
-    iframe { min-height: 1280px; }
+    .quick-grid,
+    .field-grid,
+    .field-grid.compact { grid-template-columns: 1fr; }
+    .field-grid.compact {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .intro,
+    .form-shell {
+      padding: 22px;
+    }
+    .intro { position: static; }
+    h1 {
+      font-size: clamp(38px, 12vw, 54px);
+    }
+    .form-shell-header,
+    .form-section-header { flex-direction: column; }
+    .form-shell-header p,
+    .form-section-header p { text-align: left; max-width: none; }
+    .quick-grid {
+      display: none;
+    }
+    .wizard-progress {
+      display: none;
+      margin-bottom: 22px;
+    }
+    .application-form.wizard-active .wizard-progress {
+      display: block;
+    }
+    .wizard-progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      color: var(--text2);
+      font-size: 12px;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+    .wizard-progress-meta strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .wizard-progress-track {
+      height: 6px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+    }
+    .wizard-progress-bar {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--red);
+      transition: width 0.25s ease;
+    }
+    .application-form.wizard-active {
+      gap: 20px;
+    }
+    .application-form.wizard-active .form-section {
+      display: none;
+      border-top: 0;
+      padding-top: 0;
+    }
+    .application-form.wizard-active .form-section.is-active {
+      display: block;
+    }
+    .application-form.wizard-active .form-actions {
+      display: none;
+    }
+    .application-form.wizard-active.wizard-last-step .form-actions {
+      display: flex;
+    }
+    .application-form.wizard-active .wizard-controls {
+      display: flex;
+    }
+    .application-form.wizard-active.wizard-last-step .wizard-next {
+      display: none;
+    }
+    .wizard-controls {
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+    }
+    .wizard-button {
+      width: auto;
+      min-width: 112px;
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 13px 16px;
+    }
+    .wizard-button.primary {
+      border-color: var(--red);
+      background: var(--red);
+    }
+    .wizard-button.secondary {
+      background: transparent;
+      color: var(--text2);
+    }
+    .wizard-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+    .wizard-button:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 3px;
+    }
+  }
+  @media (max-width: 520px) {
+    .page-shell {
+      width: min(100% - 20px, 680px);
+      padding-top: 14px;
+    }
+    .topbar {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .brand {
+      font-size: 18px;
+      letter-spacing: 1.4px;
+    }
+    .back-link {
+      font-size: 12px;
+    }
+    .intro,
+    .form-shell {
+      padding: 18px;
+    }
+    h1 {
+      font-size: clamp(34px, 13vw, 46px);
+    }
+    .form-shell-header h2 {
+      font-size: 25px;
+    }
+    .choice-grid {
+      grid-template-columns: 1fr;
+    }
+    .wizard-controls,
+    .form-actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+    .wizard-button,
+    .submit-button {
+      width: 100%;
+    }
+    .application-status {
+      min-height: 22px;
+    }
   }
 </style>
 </head>
@@ -183,23 +514,23 @@
       <section class="intro">
         <div class="eyebrow">Coaching Application</div>
         <h1>Tell Me Where You Are Now And Where You Want To Go</h1>
-        <p>This page is for higher-intent leads. Instead of squeezing your intake into a tiny popup, the form gets a full screen with proper breathing room, stronger trust, and a cleaner coaching experience from the start.</p>
+        <p>Use this application to share your current training, goals, lifestyle, and what has or has not worked before. Your answers help me understand where you are starting from and how to guide your next step.</p>
         <div class="quick-grid">
           <div class="quick-card">
-            <strong>Best for serious leads</strong>
-            <span>People who complete a full application are usually much more qualified than someone sending a one-line contact message.</span>
+            <strong>Your starting point</strong>
+            <span>Tell me about your training history, schedule, injuries, confidence level, and the habits you are working with right now.</span>
           </div>
           <div class="quick-card">
-            <strong>Better mobile experience</strong>
-            <span>Long forms perform much better on their own page than inside a modal or popup, especially on smaller screens.</span>
+            <strong>Your main goal</strong>
+            <span>Whether you want to lose fat, build muscle, gain strength, improve fitness, or feel better, this helps set the direction.</span>
           </div>
           <div class="quick-card">
-            <strong>Clearer onboarding</strong>
-            <span>You can review goals, obstacles, expectations, and training history before the first consultation call.</span>
+            <strong>What gets in the way</strong>
+            <span>Share the obstacles, routines, and past struggles that matter so the plan can be realistic and sustainable.</span>
           </div>
           <div class="quick-card">
-            <strong>Professional feel</strong>
-            <span>This creates a smoother path: pricing on the main page, application on a dedicated screen, then contact for questions.</span>
+            <strong>Better first call</strong>
+            <span>Your answers give us a clear starting point for the consultation, so we can focus on the best plan for you.</span>
           </div>
         </div>
       </section>
@@ -207,22 +538,451 @@
         <div class="form-shell-header">
           <div>
             <div class="eyebrow">Application Form</div>
-            <h2>Complete The Jotform Intake</h2>
+            <h2>Complete The Coaching Intake</h2>
           </div>
-          <p>Take two to four minutes to fill this out thoroughly. The more precise the answers, the better I can guide the next step.</p>
+          <p>Take a few minutes to fill this out thoroughly. The more precise the answers, the better I can guide the next step.</p>
         </div>
-        <div class="form-frame">
-          <iframe
-            src="https://form.jotform.com/243523098915361"
-            title="Coaching application form"
-            loading="lazy"
-          ></iframe>
-        </div>
-        <p class="fallback">If the embed doesn’t load on your device, open the form directly here:
-          <a href="https://form.jotform.com/243523098915361" target="_blank" rel="noopener noreferrer">https://form.jotform.com/243523098915361</a>
-        </p>
+        <form
+          class="application-form"
+          id="applicationForm"
+          action="https://formspree.io/f/mnjlbjko"
+          method="POST"
+          novalidate
+        >
+          <input type="hidden" name="_subject" value="New Fitstronomy coaching application">
+          <input type="hidden" name="_captcha" value="false">
+          <div class="hidden-field" aria-hidden="true">
+            <label>Leave this field empty
+              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+            </label>
+          </div>
+          <div class="wizard-progress" id="applicationWizardProgress">
+            <div class="wizard-progress-meta">
+              <span id="wizardStepCount">Step 1 of 5</span>
+              <strong id="wizardStepTitle">Contact Details</strong>
+            </div>
+            <div class="wizard-progress-track" aria-hidden="true">
+              <span class="wizard-progress-bar" id="wizardProgressBar"></span>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header">
+              <h3>Contact Details</h3>
+              <p>The essentials I need to contact you and understand your starting point.</p>
+            </div>
+            <div class="field-grid">
+              <div class="form-field">
+                <label for="firstName">First name</label>
+                <input id="firstName" name="first_name" type="text" autocomplete="given-name" required>
+              </div>
+              <div class="form-field">
+                <label for="lastName">Last name</label>
+                <input id="lastName" name="last_name" type="text" autocomplete="family-name" required>
+              </div>
+              <div class="form-field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="form-field">
+                <label for="mobile">Mobile</label>
+                <input id="mobile" name="mobile" type="tel" autocomplete="tel" required>
+              </div>
+            </div>
+            <div class="field-grid compact">
+              <div class="form-field">
+                <label for="age">Age</label>
+                <input id="age" name="age" type="number" min="15" max="100" placeholder="Years" required>
+              </div>
+              <div class="form-field">
+                <label for="height">Height</label>
+                <input id="height" name="height_cm" type="number" min="80" max="240" step="0.1" placeholder="cm" required>
+              </div>
+              <div class="form-field">
+                <label for="weight">Weight</label>
+                <input id="weight" name="weight_kg" type="number" min="25" max="300" step="0.1" placeholder="kg" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header">
+              <h3>Goals</h3>
+              <p>What you want to achieve and what kind of change matters most right now.</p>
+            </div>
+            <div class="field-grid">
+              <div class="form-field full">
+                <span class="field-label">Which goals fit best?</span>
+                <div class="choice-grid">
+                  <label class="choice"><input type="checkbox" name="goal_areas[]" value="Improved health"><span>Improved health</span></label>
+                  <label class="choice"><input type="checkbox" name="goal_areas[]" value="Improved endurance"><span>Improved endurance</span></label>
+                  <label class="choice"><input type="checkbox" name="goal_areas[]" value="Increased strength"><span>Increased strength</span></label>
+                  <label class="choice"><input type="checkbox" name="goal_areas[]" value="Increased muscle mass"><span>Increased muscle mass</span></label>
+                  <label class="choice"><input type="checkbox" name="goal_areas[]" value="Fat loss"><span>Fat loss</span></label>
+                </div>
+              </div>
+              <div class="form-field full">
+                <label for="mainGoal">What is your goal with your training?</label>
+                <textarea id="mainGoal" name="main_training_goal" required></textarea>
+              </div>
+              <div class="form-field full">
+                <span class="field-label">Timeline for achieving your goal</span>
+                <div class="choice-grid">
+                  <label class="choice"><input type="radio" name="goal_timeline" value="8 weeks" required><span>8 weeks</span></label>
+                  <label class="choice"><input type="radio" name="goal_timeline" value="16 weeks"><span>16 weeks</span></label>
+                  <label class="choice"><input type="radio" name="goal_timeline" value="24 weeks"><span>24 weeks</span></label>
+                  <label class="choice"><input type="radio" name="goal_timeline" value="32 weeks"><span>32 weeks</span></label>
+                  <label class="choice"><input type="radio" name="goal_timeline" value="40 weeks"><span>40 weeks</span></label>
+                  <label class="choice"><input type="radio" name="goal_timeline" value="1 year"><span>1 year</span></label>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="weeklyTraining">How many days per week can you realistically train?</label>
+                <select id="weeklyTraining" name="weekly_training_commitment" required>
+                  <option value="">Please select</option>
+                  <option value="1 day per week">1 day per week</option>
+                  <option value="2 days per week">2 days per week</option>
+                  <option value="3 days per week">3 days per week</option>
+                  <option value="4 days per week">4 days per week</option>
+                  <option value="5 days per week">5 days per week</option>
+                  <option value="6+ days per week">6+ days per week</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header">
+              <h3>Training Background</h3>
+              <p>Your current routine and past experience, without getting too deep yet.</p>
+            </div>
+            <div class="field-grid">
+              <div class="form-field full">
+                <label for="trainingHistory">Tell me about your training history.</label>
+                <textarea id="trainingHistory" name="training_history" required></textarea>
+              </div>
+              <div class="form-field">
+                <span class="field-label">Are you currently exercising regularly, at least 3x per week?</span>
+                <div class="choice-grid">
+                  <label class="choice"><input type="radio" name="currently_exercising" value="Yes" required><span>Yes</span></label>
+                  <label class="choice"><input type="radio" name="currently_exercising" value="No"><span>No</span></label>
+                </div>
+              </div>
+              <div class="form-field">
+                <span class="field-label">Have you trained with a personal trainer before?</span>
+                <div class="choice-grid">
+                  <label class="choice"><input type="radio" name="trained_with_pt_before" value="Yes" required><span>Yes</span></label>
+                  <label class="choice"><input type="radio" name="trained_with_pt_before" value="No"><span>No</span></label>
+                </div>
+              </div>
+              <div class="form-field full">
+                <label for="previousTrainingType">If yes, what kind of training did you do?</label>
+                <textarea id="previousTrainingType" name="previous_training_type"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header">
+              <h3>Health And PAR-Q</h3>
+              <p>Health conditions, injuries, and the full PAR-Q screening before training starts.</p>
+            </div>
+            <div class="field-grid">
+              <div class="form-field full">
+                <label for="healthConditions">If you have any diagnosed health problems, list the condition(s).</label>
+                <textarea id="healthConditions" name="diagnosed_health_conditions"></textarea>
+              </div>
+              <div class="form-field full">
+                <label for="injuries">If you have any injuries, please list them.</label>
+                <textarea id="injuries" name="injuries"></textarea>
+              </div>
+            </div>
+            <div class="notice">
+              <strong>If you answer yes to one or more PAR-Q questions,</strong> talk to your doctor before becoming much more physically active or before doing a fitness appraisal.
+            </div>
+            <div class="field-grid">
+              <div class="question-block full">
+                <span class="field-label">Has your doctor ever said that you have a heart condition and that you should only do physical activity recommended by a doctor?</span>
+                <div class="choice-grid tight">
+                  <label class="choice"><input type="radio" name="parq_heart_condition" value="No" required><span>No</span></label>
+                  <label class="choice"><input type="radio" name="parq_heart_condition" value="Yes"><span>Yes</span></label>
+                </div>
+              </div>
+              <div class="question-block full">
+                <span class="field-label">Do you feel pain in your chest when you do physical activity?</span>
+                <div class="choice-grid tight">
+                  <label class="choice"><input type="radio" name="parq_chest_pain_activity" value="No" required><span>No</span></label>
+                  <label class="choice"><input type="radio" name="parq_chest_pain_activity" value="Yes"><span>Yes</span></label>
+                </div>
+              </div>
+              <div class="question-block full">
+                <span class="field-label">In the past month, have you had chest pain when you were not doing physical activity?</span>
+                <div class="choice-grid tight">
+                  <label class="choice"><input type="radio" name="parq_chest_pain_rest" value="No" required><span>No</span></label>
+                  <label class="choice"><input type="radio" name="parq_chest_pain_rest" value="Yes"><span>Yes</span></label>
+                </div>
+              </div>
+              <div class="question-block full">
+                <span class="field-label">Do you lose your balance because of dizziness, or do you ever lose consciousness?</span>
+                <div class="choice-grid tight">
+                  <label class="choice"><input type="radio" name="parq_dizziness_balance" value="No" required><span>No</span></label>
+                  <label class="choice"><input type="radio" name="parq_dizziness_balance" value="Yes"><span>Yes</span></label>
+                </div>
+              </div>
+              <div class="question-block full">
+                <span class="field-label">Do you have a bone or joint problem that could be made worse by a change in your physical activity?</span>
+                <div class="choice-grid tight">
+                  <label class="choice"><input type="radio" name="parq_bone_joint_problem" value="No" required><span>No</span></label>
+                  <label class="choice"><input type="radio" name="parq_bone_joint_problem" value="Yes"><span>Yes</span></label>
+                </div>
+              </div>
+              <div class="question-block full">
+                <span class="field-label">Is your doctor currently prescribing drugs for your blood pressure or heart condition?</span>
+                <div class="choice-grid tight">
+                  <label class="choice"><input type="radio" name="parq_prescribed_drugs" value="No" required><span>No</span></label>
+                  <label class="choice"><input type="radio" name="parq_prescribed_drugs" value="Yes"><span>Yes</span></label>
+                </div>
+              </div>
+              <div class="question-block full">
+                <span class="field-label">Do you know of any other reason why you should not do physical activity?</span>
+                <div class="choice-grid tight">
+                  <label class="choice"><input type="radio" name="parq_other_reason" value="No" required><span>No</span></label>
+                  <label class="choice"><input type="radio" name="parq_other_reason" value="Yes"><span>Yes</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-header">
+              <h3>Coaching Preference</h3>
+              <p>Choose the kind of support you are most interested in. We can refine the details together.</p>
+            </div>
+            <div class="field-grid">
+              <div class="form-field full">
+                <span class="field-label">Which option are you applying for?</span>
+                <div class="choice-grid">
+                  <label class="choice"><input type="radio" name="package_interest" value="Workout Plan, 30 euro per program" required><span>Workout Plan, €30 per program</span></label>
+                  <label class="choice"><input type="radio" name="package_interest" value="Plan + Intro Session, 80 euro package"><span>Plan + Intro Session, €80 package</span></label>
+                  <label class="choice"><input type="radio" name="package_interest" value="In-Person Coaching, 70 euro per session"><span>In-Person Coaching, €70 per session</span></label>
+                  <label class="choice"><input type="radio" name="package_interest" value="Online Coaching, 20 euro per session"><span>Online Coaching, €20 per session</span></label>
+                  <label class="choice"><input type="radio" name="package_interest" value="Not sure yet"><span>Not sure yet</span></label>
+                </div>
+              </div>
+              <div class="form-field full">
+                <span class="field-label">Where do you prefer to train?</span>
+                <div class="choice-grid">
+                  <label class="choice"><input type="radio" name="training_location" value="Home" required><span>Home</span></label>
+                  <label class="choice"><input type="radio" name="training_location" value="Gym"><span>Gym</span></label>
+                  <label class="choice"><input type="radio" name="training_location" value="Both or flexible"><span>Both or flexible</span></label>
+                </div>
+              </div>
+              <label class="choice terms full">
+                <input type="checkbox" name="information_accuracy_confirmation" value="Confirmed" required>
+                <span>All the information on this form is correct to the best of my knowledge. I have sought and followed any necessary medical advice, and I understand that the information given will be kept confidential.</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="wizard-controls" aria-label="Application step controls">
+            <button class="wizard-button secondary" type="button" id="wizardBack">Back</button>
+            <button class="wizard-button primary wizard-next" type="button" id="wizardNext">Next</button>
+          </div>
+
+          <div class="form-actions">
+            <button class="submit-button" type="submit">Send Application</button>
+            <div class="application-status" id="applicationStatus" aria-live="polite"></div>
+          </div>
+        </form>
       </section>
     </div>
   </div>
+  <script>
+    const applicationForm = document.getElementById('applicationForm');
+    const applicationStatus = document.getElementById('applicationStatus');
+    const wizardMedia = window.matchMedia('(max-width: 900px)');
+    const wizardSections = applicationForm ? Array.from(applicationForm.querySelectorAll('.form-section')) : [];
+    const wizardBack = document.getElementById('wizardBack');
+    const wizardNext = document.getElementById('wizardNext');
+    const wizardStepCount = document.getElementById('wizardStepCount');
+    const wizardStepTitle = document.getElementById('wizardStepTitle');
+    const wizardProgressBar = document.getElementById('wizardProgressBar');
+    const enforceApplicationRequiredFields = false;
+    let currentWizardStep = 0;
+
+    function setApplicationStatus(message, state = '') {
+      if (!applicationStatus) return;
+
+      applicationStatus.textContent = message;
+      applicationStatus.className = 'application-status';
+      if (state) {
+        applicationStatus.classList.add(state);
+      }
+    }
+
+    function isWizardActive() {
+      return applicationForm?.classList.contains('wizard-active');
+    }
+
+    function getWizardStepTitle(step) {
+      return step.querySelector('h3')?.textContent.trim() || 'Application';
+    }
+
+    function setWizardStep(index, shouldScroll = false) {
+      if (!applicationForm || !wizardSections.length) return;
+
+      currentWizardStep = Math.max(0, Math.min(index, wizardSections.length - 1));
+      wizardSections.forEach((section, sectionIndex) => {
+        section.classList.toggle('is-active', sectionIndex === currentWizardStep);
+      });
+
+      const isLastStep = currentWizardStep === wizardSections.length - 1;
+      applicationForm.classList.toggle('wizard-last-step', isLastStep);
+
+      if (wizardBack) {
+        wizardBack.disabled = currentWizardStep === 0;
+      }
+
+      if (wizardStepCount) {
+        wizardStepCount.textContent = `Step ${currentWizardStep + 1} of ${wizardSections.length}`;
+      }
+
+      if (wizardStepTitle) {
+        wizardStepTitle.textContent = getWizardStepTitle(wizardSections[currentWizardStep]);
+      }
+
+      if (wizardProgressBar) {
+        wizardProgressBar.style.width = `${((currentWizardStep + 1) / wizardSections.length) * 100}%`;
+      }
+
+      if (shouldScroll) {
+        document.querySelector('.form-shell')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function validateFields(fields) {
+      if (!enforceApplicationRequiredFields) return true;
+
+      const invalidField = Array.from(fields).find((field) => !field.checkValidity());
+
+      if (invalidField) {
+        invalidField.reportValidity();
+        return false;
+      }
+
+      return true;
+    }
+
+    function validateCurrentWizardStep() {
+      const activeStep = wizardSections[currentWizardStep];
+      if (!activeStep) return true;
+
+      return validateFields(activeStep.querySelectorAll('input, select, textarea'));
+    }
+
+    function validateApplicationBeforeSubmit() {
+      if (isWizardActive()) {
+        return validateCurrentWizardStep();
+      }
+
+      return validateFields(applicationForm.querySelectorAll('input, select, textarea'));
+    }
+
+    function updateRequiredFieldsMode() {
+      if (!applicationForm) return;
+
+      applicationForm.querySelectorAll('[required]').forEach((field) => {
+        field.required = enforceApplicationRequiredFields;
+      });
+    }
+
+    function updateWizardMode() {
+      if (!applicationForm || !wizardSections.length) return;
+
+      if (wizardMedia.matches) {
+        applicationForm.classList.add('wizard-active');
+        setWizardStep(currentWizardStep);
+      } else {
+        applicationForm.classList.remove('wizard-active', 'wizard-last-step');
+        wizardSections.forEach((section) => section.classList.remove('is-active'));
+      }
+    }
+
+    async function submitApplicationForm(event) {
+      event.preventDefault();
+
+      if (isWizardActive() && currentWizardStep < wizardSections.length - 1) {
+        if (validateCurrentWizardStep()) {
+          setWizardStep(currentWizardStep + 1, true);
+        }
+        return;
+      }
+
+      const form = event.currentTarget;
+      const submitButton = form.querySelector('button[type="submit"]');
+      const endpoint = form.getAttribute('action') || '';
+
+      if (!validateApplicationBeforeSubmit()) {
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending...';
+      setApplicationStatus('Sending your application...', 'pending');
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            Accept: 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Application submission failed.');
+        }
+
+        form.reset();
+        setWizardStep(0, true);
+        setApplicationStatus('Application sent successfully. I will review it and get back to you soon.', 'success');
+      } catch (error) {
+        setApplicationStatus(
+          'The application could not be sent right now. Please try again or email me directly at armin.nabizade@gmail.com.',
+          'error'
+        );
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Send Application';
+      }
+    }
+
+    if (applicationForm) {
+      applicationForm.addEventListener('submit', submitApplicationForm);
+    }
+
+    if (wizardNext) {
+      wizardNext.addEventListener('click', () => {
+        if (validateCurrentWizardStep()) {
+          setWizardStep(currentWizardStep + 1, true);
+        }
+      });
+    }
+
+    if (wizardBack) {
+      wizardBack.addEventListener('click', () => {
+        setWizardStep(currentWizardStep - 1, true);
+      });
+    }
+
+    if (wizardMedia.addEventListener) {
+      wizardMedia.addEventListener('change', updateWizardMode);
+    } else {
+      wizardMedia.addListener(updateWizardMode);
+    }
+
+    updateRequiredFieldsMode();
+    updateWizardMode();
+  </script>
 </body>
 </html>

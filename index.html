@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Armin Nabizadeh · Personal Trainer</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet">
 <style>
   :root {
     --red: #E24B4A;
@@ -19,8 +19,12 @@
     --text3: #666666;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+  button,
+  input,
+  select,
+  textarea { font: inherit; }
 
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -56,13 +60,47 @@
   .hero h1 { font-family: 'Oswald', sans-serif; font-size: clamp(48px, 7vw, 80px); font-weight: 700; line-height: 1.05; margin-bottom: 24px; letter-spacing: 1px; }
   .hero h1 .accent { color: var(--red); }
   .hero-sub { font-size: 16px; color: var(--text2); line-height: 1.8; max-width: 460px; margin-bottom: 28px; }
-  .hero-science { border-left: 3px solid var(--red); padding: 12px 16px; background: rgba(226,75,74,0.05); border-radius: 0 6px 6px 0; margin-bottom: 40px; max-width: 460px; }
-  .hero-science p { font-size: 13px; color: var(--text2); line-height: 1.6; }
-  .hero-science p strong { color: var(--text); font-weight: 500; }
+  .hero-science {
+    position: absolute;
+    top: 210px;
+    right: 180px;
+    width: min(560px, 44vw);
+    padding: 8px 0;
+  }
+  .hero-science-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    color: var(--red);
+    font-size: 11px;
+    letter-spacing: 1.9px;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+  }
+  .hero-science-label::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--red);
+  }
+  .hero-science-text {
+    min-height: 126px;
+    font-size: 21px;
+    color: var(--text2);
+    line-height: 2.05;
+  }
+  .hero-science-text strong { color: var(--text); font-weight: 500; }
+  .hero-science-cursor {
+    display: inline-block;
+    width: 10px;
+    color: var(--red);
+    animation: blink-cursor 1s steps(1) infinite;
+  }
   .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
-  .btn-primary { background: var(--red); color: #fff; padding: 14px 28px; border-radius: 6px; font-size: 14px; text-decoration: none; display: inline-block; transition: background 0.2s; }
+  .btn-primary { background: var(--red); color: #fff; padding: 14px 28px; border-radius: 6px; font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; text-align: center; transition: background 0.2s; }
   .btn-primary:hover { background: var(--red-dark); }
-  .btn-secondary { background: transparent; color: var(--text); padding: 14px 28px; border-radius: 6px; border: 1px solid var(--border2); font-size: 14px; text-decoration: none; display: inline-block; transition: border-color 0.2s; }
+  .btn-secondary { background: transparent; color: var(--text); padding: 14px 28px; border-radius: 6px; border: 1px solid var(--border2); font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; text-align: center; transition: border-color 0.2s; }
   .btn-secondary:hover { border-color: var(--text2); }
 
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); background: #0d0d0d; }
@@ -97,6 +135,11 @@
     text-transform: uppercase;
     color: var(--red);
     text-decoration: none;
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    cursor: pointer;
   }
   .service-link:hover { color: #ff7675; }
 
@@ -112,6 +155,7 @@
   .badge { font-size: 11px; letter-spacing: 1px; padding: 6px 12px; border: 1px solid var(--border2); border-radius: 20px; color: var(--text2); font-family: 'Oswald', sans-serif; }
 
   #nutrition { background: #0e0e0e; }
+  #nutrition .section-inner { max-width: 1180px; }
   .nutrition-shell {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
@@ -149,7 +193,6 @@
   }
   .coach-guide {
     margin-bottom: 28px;
-    border: 1px solid rgba(226,75,74,0.22);
     border-radius: 18px;
     padding: 20px;
     background:
@@ -179,10 +222,8 @@
   }
   .guide-highlight {
     min-height: 152px;
-    border: 1px solid rgba(255,255,255,0.06);
     border-radius: 16px;
     padding: 18px;
-    background: rgba(0,0,0,0.16);
     transition: transform 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
   }
   .guide-highlight.is-swapping {
@@ -209,28 +250,35 @@
     line-height: 1.8;
     max-width: 54ch;
   }
+  .guide-layout {
+    display: grid;
+    grid-template-columns: 98px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
   .guide-pills {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 10px;
-    margin-top: 16px;
   }
   .guide-pill {
-    border: 1px solid var(--border2);
-    background: rgba(255,255,255,0.02);
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: rgba(255,255,255,0.04);
     color: var(--text2);
     border-radius: 999px;
-    padding: 10px 14px;
-    font-size: 12px;
+    padding: 9px 10px;
+    font-size: 11px;
     letter-spacing: 0.4px;
     cursor: pointer;
     transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
   }
   .guide-pill:hover,
   .guide-pill.is-active {
-    border-color: rgba(226,75,74,0.5);
     color: var(--text);
-    background: rgba(226,75,74,0.08);
+    background: rgba(226,75,74,0.22);
     transform: translateY(-1px);
   }
   .guide-mini-grid {
@@ -240,7 +288,6 @@
     margin-top: 16px;
   }
   .guide-mini-card {
-    border: 1px solid rgba(255,255,255,0.06);
     border-radius: 14px;
     padding: 14px;
     background: rgba(255,255,255,0.02);
@@ -416,7 +463,7 @@
   .meal-plan {
     border: 1px solid var(--border);
     border-radius: 16px;
-    overflow: hidden;
+    overflow-x: auto;
   }
   .meal-plan-header,
   .meal-row {
@@ -425,6 +472,7 @@
     gap: 8px;
     padding: 12px 16px;
     align-items: center;
+    min-width: 430px;
   }
   .meal-plan-header {
     background: rgba(226,75,74,0.08);
@@ -451,10 +499,9 @@
     color: var(--text2);
     font-size: 14px;
     line-height: 1.8;
-    border: 1px dashed var(--border2);
     border-radius: 14px;
     padding: 20px;
-    background: rgba(255,255,255,0.02);
+    background: rgba(255,255,255,0.015);
   }
   @keyframes pulse-orbit {
     0% { box-shadow: 0 0 0 0 rgba(226,75,74,0.45); transform: scale(1); }
@@ -464,6 +511,10 @@
   @keyframes drift-card {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-4px); }
+  }
+  @keyframes blink-cursor {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
   }
 
   .pricing-modal {
@@ -521,7 +572,7 @@
   }
   .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 18px;
   }
   .pricing-card {
@@ -529,7 +580,7 @@
     flex-direction: column;
     gap: 16px;
     padding: 24px;
-    border-radius: 22px;
+    border-radius: 8px;
     border: 1px solid var(--border);
     background: rgba(255,255,255,0.025);
     position: relative;
@@ -651,25 +702,144 @@
   .footer-logo span { color: var(--red); }
   footer p { font-size: 12px; color: var(--text3); }
 
+  @media (max-width: 1180px) {
+    nav { padding: 16px 28px; }
+    .nav-links { gap: 22px; }
+    .hero {
+      min-height: auto;
+      display: block;
+      padding: 112px 32px 72px;
+    }
+    .hero-content {
+      max-width: 720px;
+    }
+    .hero-science {
+      position: relative;
+      top: auto;
+      right: auto;
+      width: min(100%, 720px);
+      margin-bottom: 34px;
+    }
+    .hero-science-text {
+      min-height: 0;
+    }
+    section { padding: 72px 32px; }
+    .about-grid,
+    .contact-grid {
+      gap: 40px;
+    }
+    .nutrition-shell {
+      grid-template-columns: 1fr;
+    }
+    .pricing-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .pricing-card.featured {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .services-grid,
+    .about-grid,
+    .contact-grid { grid-template-columns: 1fr; }
+    .about-image {
+      max-width: 520px;
+      width: 100%;
+      justify-self: center;
+    }
+    .results-heading {
+      flex-direction: column;
+    }
+    .results-heading p {
+      text-align: left;
+      max-width: none;
+    }
+  }
+
   @media (max-width: 768px) {
     nav { padding: 14px 20px; }
-    .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: #0a0a0a; border-bottom: 1px solid var(--border2); padding: 20px; gap: 20px; }
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: #0a0a0a; border-bottom: 1px solid var(--border2); padding: 20px; gap: 20px; align-items: stretch; }
     .nav-links.open { display: flex; }
+    .nav-links a,
+    .nav-links button { width: 100%; text-align: left; }
+    .nav-cta { text-align: center !important; }
     .hamburger { display: flex; }
     .hero { padding: 100px 20px 60px; }
+    .hero-science {
+      position: static;
+      width: auto;
+      margin: 0 0 40px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      text-align: right;
+    }
+    .hero-science-text {
+      min-height: 0;
+      font-size: 14px;
+      line-height: 1.8;
+      text-align: right;
+    }
+    .hero-science-label {
+      display: flex;
+      justify-content: flex-end;
+    }
     section { padding: 60px 20px; }
     .stats { grid-template-columns: 1fr; }
     .stat { border-right: none; border-bottom: 1px solid var(--border2); padding: 24px 20px; }
     .stat:last-child { border-bottom: none; }
-    .services-grid, .about-grid, .contact-grid, .nutrition-shell, .nutrition-form, .result-summary, .macro-grid, .guide-mini-grid, .pricing-grid { grid-template-columns: 1fr; }
+    .services-grid, .about-grid, .contact-grid, .nutrition-shell, .nutrition-form, .result-summary, .macro-grid, .guide-mini-grid, .pricing-grid, .guide-layout { grid-template-columns: 1fr; }
     .about-image { aspect-ratio: 4/3; }
     .meal-plan-header,
     .meal-row { grid-template-columns: 1.1fr repeat(3, minmax(0, 1fr)); padding: 12px; }
-    .results-heading { flex-direction: column; }
-    .results-heading p { text-align: left; max-width: none; }
     .guide-header { align-items: start; }
+    .guide-pill { width: auto; }
+    .pricing-modal { padding: 14px; align-items: stretch; }
+    .pricing-close { position: sticky; top: 0; margin-left: auto; display: block; }
     .pricing-dialog { padding: 24px 18px; }
     footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
+  }
+
+  @media (max-width: 480px) {
+    nav { padding: 12px 16px; }
+    .nav-logo { font-size: 17px; letter-spacing: 1.4px; }
+    .hero { padding: 92px 16px 52px; }
+    .hero h1 { font-size: clamp(42px, 16vw, 56px); }
+    .hero-sub,
+    .section-subtitle,
+    .about-text p,
+    .contact-info p { font-size: 14px; }
+    .hero-cta,
+    .nutrition-actions,
+    .pricing-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .btn-primary,
+    .btn-secondary,
+    .btn-ghost,
+    .nutrition-actions button {
+      width: 100%;
+    }
+    section { padding: 52px 16px; }
+    .service-card,
+    .nutrition-panel,
+    .nutrition-results,
+    .coach-guide,
+    .pricing-card {
+      padding: 20px;
+    }
+    .pricing-dialog {
+      padding: 18px 14px;
+      max-height: calc(100vh - 28px);
+      border-radius: 14px;
+    }
+    .pricing-card h3 {
+      font-size: 26px;
+    }
+    .pricing-price {
+      font-size: 38px;
+    }
   }
 </style>
 </head>
@@ -691,13 +861,14 @@
 
 <section class="hero" id="home">
   <div class="hero-grid-bg"></div>
+  <div class="hero-science">
+    <div class="hero-science-label">Evidence-Based Coaching</div>
+    <p class="hero-science-text" id="heroScienceText" data-full-text="Evidence-based training. Every program is built on the latest research in exercise science and sports nutrition, with no guesswork and methods that actually work."></p>
+  </div>
   <div class="hero-content">
     <div class="hero-tag">CERTIFIED PERSONAL TRAINER</div>
     <h1>Train hard.<br>Live <span class="accent">stronger.</span></h1>
-    <p class="hero-sub">Personalized fitness programs tailored to your goals — whether you want to lose weight, build strength, or level up your overall health.</p>
-    <div class="hero-science">
-      <p><strong>Evidence-based training.</strong> Every program is built on the latest research in exercise science and sports nutrition — no guesswork, just methods that actually work.</p>
-    </div>
+    <p class="hero-sub">Personalized fitness programs tailored to your goals, whether you want to lose weight, build strength, or level up your overall health.</p>
     <div class="hero-cta">
       <a href="apply.html" class="btn-primary">Start Your Coaching Application</a>
       <button type="button" class="btn-secondary" data-open-pricing>View Pricing</button>
@@ -715,7 +886,7 @@
   <div class="section-inner">
     <div class="section-tag">WHAT I OFFER</div>
     <h2 class="section-title">Services</h2>
-    <p class="section-subtitle">All programs are continuously updated to reflect the newest findings in sports science — ensuring you always train smarter, not just harder.</p>
+    <p class="section-subtitle">All programs are continuously updated to reflect the newest findings in sports science, so you always train smarter, not just harder.</p>
     <div class="services-grid">
       <div class="service-card">
         <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M2 8h4M18 8h4M2 16h4M18 16h4"/></svg></div>
@@ -726,7 +897,7 @@
       <div class="service-card">
         <div class="service-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
         <h3>Weight Loss</h3>
-        <p>Sustainable fat loss through smart nutrition strategies and progressive cardio — no crash diets, no shortcuts.</p>
+        <p>Sustainable fat loss through smart nutrition strategies and progressive cardio, with no crash diets and no shortcuts.</p>
         <button type="button" class="service-link" data-open-pricing>See pricing</button>
       </div>
       <div class="service-card">
@@ -751,14 +922,14 @@
       <div class="about-image">
         <div class="about-image-placeholder">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-          <p>Add your photo here</p>
+          <p>Personal coaching</p>
         </div>
       </div>
       <div class="about-text">
         <div class="section-tag">ABOUT ME</div>
         <h2 class="section-title">Your Coach,<br>Your <span style="color:var(--red);">Partner</span></h2>
-        <p>Hi, I'm <strong>Armin Nabizadeh</strong> — a certified personal trainer with over 5 years of experience helping people transform their bodies and their relationship with fitness.</p>
-        <p>I believe training should be <strong>smart, sustainable, and science-backed</strong>. Every plan I create is grounded in the latest research in exercise physiology and nutrition — continuously updated as new findings emerge.</p>
+        <p>Hi, I'm <strong>Armin Nabizadeh</strong>, a certified personal trainer with over 5 years of experience helping people transform their bodies and their relationship with fitness.</p>
+        <p>I believe training should be <strong>smart, sustainable, and science-backed</strong>. Every plan I create is grounded in the latest research in exercise physiology and nutrition, then continuously updated as new findings emerge.</p>
         <p>Whether you're a complete beginner or a seasoned athlete, I'll build a program that challenges you, respects your limits, and delivers real results.</p>
         <div class="about-badges">
           <span class="badge">CERTIFIED PT</span>
@@ -784,17 +955,19 @@
             <h3>Coach Notes</h3>
             <span class="guide-orbit" aria-hidden="true"></span>
           </div>
-          <div class="guide-highlight" id="guideHighlight">
-            <span class="guide-kicker" id="guideKicker">Start here</span>
-            <h4 id="guideTitle">Use the form like a guided consultation</h4>
-            <p id="guideBody">Tap the helper pills below or focus a field to reveal specific guidance on calorie deficits, activity levels, and macro choices. It keeps the calculator clean while still teaching people how to use it well.</p>
-          </div>
-          <div class="guide-pills">
-            <button class="guide-pill is-active" type="button" data-guide="start">Overview</button>
-            <button class="guide-pill" type="button" data-guide="activity">Activity index</button>
-            <button class="guide-pill" type="button" data-guide="deficit">Calorie pace</button>
-            <button class="guide-pill" type="button" data-guide="macros">Macro split</button>
-            <button class="guide-pill" type="button" data-guide="goal">Goal setting</button>
+          <div class="guide-layout">
+            <div class="guide-pills">
+              <button class="guide-pill is-active" type="button" data-guide="start">Overview</button>
+              <button class="guide-pill" type="button" data-guide="activity">Activity index</button>
+              <button class="guide-pill" type="button" data-guide="deficit">Calorie pace</button>
+              <button class="guide-pill" type="button" data-guide="macros">Macro split</button>
+              <button class="guide-pill" type="button" data-guide="goal">Goal setting</button>
+            </div>
+            <div class="guide-highlight" id="guideHighlight">
+              <span class="guide-kicker" id="guideKicker">Start here</span>
+              <h4 id="guideTitle">Use the form like a guided consultation</h4>
+              <p id="guideBody">Tap the helper pills below or focus a field to reveal specific guidance on calorie deficits, activity levels, and macro choices. It keeps the calculator clean while still teaching people how to use it well.</p>
+            </div>
           </div>
           <div class="guide-mini-grid">
             <div class="guide-mini-card">
@@ -953,7 +1126,7 @@
     <div class="pricing-header">
       <div class="section-tag">PRICING</div>
       <h2 class="section-title" id="pricingTitle">Choose The Support Level That Matches Your Goal</h2>
-      <p>Keep the main site clean, let pricing live in a focused modal, and send serious leads into the full application flow. This combination feels premium, fast, and much easier to navigate than embedding everything into one long page.</p>
+      <p>Choose the level of support that fits your goal right now. If you are not sure which option is best, start the application and we can decide together after reviewing your needs.</p>
     </div>
     <div class="pricing-grid">
       <article class="pricing-card">
@@ -1018,7 +1191,7 @@
         </div>
       </article>
     </div>
-    <p class="pricing-footnote">These prices are easy to update later if you want to refine the offer stack. The important thing is the structure: people can compare quickly, then move into a higher-intent application page.</p>
+    <p class="pricing-footnote">Prices are listed clearly so you can compare options before applying. Final recommendations depend on your goal, training background, schedule, and health screening.</p>
   </div>
 </div>
 
@@ -1038,10 +1211,6 @@
           <a href="tel:+358451603940" class="contact-link">
             <div class="contact-link-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.59 1.25h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
             +358 45 160 3940
-          </a>
-          <a href="https://instagram.com/yourhandle" class="contact-link" target="_blank">
-            <div class="contact-link-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
-            @yourhandle
           </a>
         </div>
       </div>
@@ -1072,5 +1241,48 @@
 <script src="nutrition-calculator.js"></script>
 <script src="contact-form.js"></script>
 <script src="pricing-modal.js"></script>
+<script>
+const heroScienceText = document.getElementById('heroScienceText');
+
+function renderScienceText(fullText, typedLength) {
+  const visibleText = fullText.slice(0, typedLength);
+  const boldPrefix = 'Evidence-based training.';
+
+  if (visibleText.startsWith(boldPrefix)) {
+    const rest = visibleText.slice(boldPrefix.length);
+    heroScienceText.innerHTML = `<strong>${boldPrefix}</strong>${rest}<span class="hero-science-cursor">|</span>`;
+    return;
+  }
+
+  heroScienceText.innerHTML = `${visibleText}<span class="hero-science-cursor">|</span>`;
+}
+
+function startHeroScienceTyping() {
+  if (!heroScienceText) return;
+
+  const fullText = heroScienceText.dataset.fullText || '';
+  const mobileView = window.matchMedia('(max-width: 768px)').matches;
+
+  if (mobileView) {
+    heroScienceText.innerHTML = `<strong>Evidence-based training.</strong> Every program is built on the latest research in exercise science and sports nutrition, with no guesswork and methods that actually work.`;
+    return;
+  }
+
+  let index = 0;
+  renderScienceText(fullText, index);
+
+  const typingInterval = window.setInterval(() => {
+    index += 1;
+    renderScienceText(fullText, index);
+
+    if (index >= fullText.length) {
+      window.clearInterval(typingInterval);
+      heroScienceText.innerHTML = `<strong>Evidence-based training.</strong> Every program is built on the latest research in exercise science and sports nutrition, with no guesswork and methods that actually work.<span class="hero-science-cursor">|</span>`;
+    }
+  }, 22);
+}
+
+startHeroScienceTyping();
+</script>
 </body>
 </html>
