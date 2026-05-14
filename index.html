@@ -162,9 +162,9 @@
   .about-image { aspect-ratio: 3/4; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
   .about-image::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, rgba(226,75,74,0.2), var(--red), rgba(226,75,74,0.2)); }
   .about-image::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: var(--red); }
-  .about-image-placeholder { width: min(72%, 260px); aspect-ratio: 1; border: 1px solid var(--border2); border-radius: 8px; background: rgba(255,255,255,0.025); display: grid; place-items: center; position: relative; color: var(--text3); }
-  .about-initials { font-family: 'Oswald', sans-serif; font-size: 80px; color: var(--text3); line-height: 1; letter-spacing: 1px; }
-  .about-photo-note { position: absolute; left: 16px; right: 16px; bottom: 18px; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text3); text-align: center; }
+  .about-image::before,
+  .about-image::after { z-index: 1; }
+  .about-image img { width: 100%; height: 100%; object-fit: cover; object-position: 48% center; filter: contrast(1.05); display: block; }
   .about-text p { font-size: 15px; color: var(--text2); line-height: 1.9; margin-bottom: 20px; }
   .about-text p strong { color: var(--text); font-weight: 500; }
   .about-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
@@ -1004,10 +1004,7 @@
   <div class="section-inner">
     <div class="about-grid">
       <div class="about-image">
-        <div class="about-image-placeholder" aria-label="Photo coming soon for Armin Nabizadeh">
-          <span class="about-initials">AN</span>
-          <span class="about-photo-note">Photo coming soon</span>
-        </div>
+        <img src="assets/armin.jpeg" alt="Armin Nabizadeh training in the gym">
       </div>
       <div class="about-text">
         <div class="section-tag">ABOUT ME</div>
