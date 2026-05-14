@@ -52,7 +52,6 @@ function parseFormValues(form) {
 
   return {
     name: formData.get('name')?.toString().trim() ?? '',
-    email: formData.get('email')?.toString().trim() ?? '',
     age: Number(formData.get('age')),
     sex: formData.get('sex')?.toString().trim().toUpperCase() ?? '',
     weight: Number(formData.get('weight')),
@@ -158,31 +157,264 @@ function calculateNutrition(data) {
   };
 }
 
-function buildEmailBody(result) {
-  const mealLines = result.mealPlan
-    .map((meal) => `${meal.label}: Protein ${meal.protein} g | Carbs ${meal.carbs} g | Fat ${meal.fat} g`)
-    .join('\n');
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[character]);
+}
 
-  return [
-    `Nutrition estimate for ${result.name}`,
-    '',
-    `Goal: ${result.goal}`,
-    `Daily calories: ${formatNumber(result.dailyCalories)} kcal`,
-    `TDEE: ${formatNumber(result.tdee)} kcal`,
-    `BMR: ${formatNumber(result.bmr)} kcal`,
-    `BMI: ${result.bmi}`,
-    `Body fat estimate: ${result.bodyFatPercentage}%`,
-    `Waist-to-hip ratio: ${result.whr}`,
-    '',
-    `Protein: ${result.proteinGrams} g (${result.proteinPercentage}%)`,
-    `Carbohydrates: ${result.carbsGrams} g (${result.carbohydratesPercentage}%)`,
-    `Fat: ${result.fatGrams} g (${result.fatPercentage}%)`,
-    '',
-    'Meal split',
-    mealLines,
-    '',
-    'Generated on fitstronomy nutrition calculator.',
-  ].join('\n');
+function formatGoal(goal) {
+  return {
+    lose: 'Lose weight',
+    gain: 'Gain weight',
+    none: 'Maintain',
+  }[goal] || goal;
+}
+
+function buildPdfDocument(result) {
+  const generatedDate = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date());
+
+  const mealRows = result.mealPlan.map((meal) => `
+    <tr>
+      <th>${escapeHtml(meal.label)}</th>
+      <td>${formatNumber(meal.protein, 1)} g</td>
+      <td>${formatNumber(meal.carbs, 1)} g</td>
+      <td>${formatNumber(meal.fat, 1)} g</td>
+    </tr>
+  `).join('');
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nutrition Estimate - ${escapeHtml(result.name)}</title>
+<style>
+  :root {
+    --red: #E24B4A;
+    --ink: #171717;
+    --muted: #666;
+    --line: #e4e4e4;
+    --soft: #f7f7f7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background: #fff;
+    font-family: Inter, Arial, sans-serif;
+    line-height: 1.5;
+  }
+  .toolbar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 24px;
+    background: #111;
+  }
+  .toolbar button {
+    border: 0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    color: #fff;
+    background: var(--red);
+    font: inherit;
+    cursor: pointer;
+  }
+  .toolbar button.secondary {
+    background: #333;
+  }
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 46px 40px 56px;
+  }
+  header {
+    border-bottom: 3px solid var(--red);
+    padding-bottom: 22px;
+    margin-bottom: 28px;
+  }
+  .eyebrow {
+    color: var(--red);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+  }
+  h1 {
+    margin: 8px 0 6px;
+    font-family: Oswald, Arial, sans-serif;
+    font-size: 38px;
+    line-height: 1.1;
+  }
+  .meta {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+    background: var(--soft);
+  }
+  .label {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .value {
+    font-size: 26px;
+    font-weight: 800;
+  }
+  .value.accent {
+    color: var(--red);
+  }
+  h2 {
+    margin: 30px 0 12px;
+    font-size: 18px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  th,
+  td {
+    border-bottom: 1px solid var(--line);
+    padding: 11px 8px;
+    text-align: left;
+  }
+  thead th {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+  }
+  tbody th {
+    font-weight: 700;
+  }
+  .note {
+    margin-top: 28px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  @media print {
+    .toolbar { display: none; }
+    main { padding: 0; }
+    body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <button type="button" onclick="window.print()">Print / Save PDF</button>
+    <button type="button" class="secondary" onclick="window.close()">Close</button>
+  </div>
+  <main>
+    <header>
+      <div class="eyebrow">Fitstronomy Nutrition Estimate</div>
+      <h1>${escapeHtml(result.name)}</h1>
+      <div class="meta">Generated ${escapeHtml(generatedDate)} by Armin Nabizadeh</div>
+    </header>
+    <section class="summary" aria-label="Nutrition summary">
+      <div class="card">
+        <span class="label">Goal</span>
+        <span class="value">${escapeHtml(formatGoal(result.goal))}</span>
+      </div>
+      <div class="card">
+        <span class="label">Daily Calories</span>
+        <span class="value accent">${formatNumber(result.dailyCalories)} kcal</span>
+      </div>
+      <div class="card">
+        <span class="label">Estimated TDEE</span>
+        <span class="value">${formatNumber(result.tdee)} kcal</span>
+      </div>
+      <div class="card">
+        <span class="label">Estimated BMR</span>
+        <span class="value">${formatNumber(result.bmr)} kcal</span>
+      </div>
+      <div class="card">
+        <span class="label">BMI</span>
+        <span class="value">${formatNumber(result.bmi, 1)}</span>
+      </div>
+      <div class="card">
+        <span class="label">Body Fat Estimate</span>
+        <span class="value">${formatNumber(result.bodyFatPercentage, 1)}%</span>
+      </div>
+    </section>
+    <h2>Macro Targets</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Macro</th>
+          <th>Grams</th>
+          <th>Calories</th>
+          <th>Split</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Protein</th>
+          <td>${formatNumber(result.proteinGrams, 1)} g</td>
+          <td>${formatNumber(result.proteinGrams * 4)} kcal</td>
+          <td>${formatNumber(result.proteinPercentage)}%</td>
+        </tr>
+        <tr>
+          <th>Carbohydrates</th>
+          <td>${formatNumber(result.carbsGrams, 1)} g</td>
+          <td>${formatNumber(result.carbsGrams * 4)} kcal</td>
+          <td>${formatNumber(result.carbohydratesPercentage)}%</td>
+        </tr>
+        <tr>
+          <th>Fat</th>
+          <td>${formatNumber(result.fatGrams, 1)} g</td>
+          <td>${formatNumber(result.fatGrams * 9)} kcal</td>
+          <td>${formatNumber(result.fatPercentage)}%</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Meal Split</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Meal</th>
+          <th>Protein</th>
+          <th>Carbs</th>
+          <th>Fat</th>
+        </tr>
+      </thead>
+      <tbody>${mealRows}</tbody>
+    </table>
+    <p class="note">These numbers are estimates and should be adjusted based on progress, recovery, hunger, training performance, and adherence.</p>
+  </main>
+  <script>
+    window.addEventListener('load', () => {
+      window.setTimeout(() => window.print(), 300);
+    });
+  <\/script>
+</body>
+</html>`;
 }
 
 function renderResults(result) {
@@ -258,36 +490,38 @@ function handleNutritionSubmit(event) {
     const result = calculateNutrition(parseFormValues(event.currentTarget));
     latestResult = result;
     renderResults(result);
-    setStatus('Nutrition estimate updated. You can now review it or prepare an email draft.', 'success');
+    setStatus('Nutrition estimate updated. You can now review it or export a PDF.', 'success');
   } catch (error) {
     latestResult = null;
     setStatus(error.message, 'error');
   }
 }
 
-function handleEmailDraft() {
+function handlePdfExport() {
   if (!latestResult) {
-    setStatus('Calculate the nutrition plan first so there is something to send.', 'error');
+    setStatus('Calculate the nutrition plan first so there is something to export.', 'error');
     return;
   }
 
-  if (!latestResult.email) {
-    setStatus('Enter an email address first if you want to prepare a draft with the results.', 'error');
+  const reportWindow = window.open('', '_blank', 'width=900,height=720');
+  if (!reportWindow) {
+    setStatus('Allow pop-ups for this site, then try exporting the PDF again.', 'error');
     return;
   }
 
-  const subject = encodeURIComponent(`Your nutrition estimate from Armin Nabizadeh`);
-  const body = encodeURIComponent(buildEmailBody(latestResult));
-  window.location.href = `mailto:${encodeURIComponent(latestResult.email)}?subject=${subject}&body=${body}`;
-  setStatus('Your email app should open with the nutrition estimate prefilled.', 'success');
+  reportWindow.opener = null;
+  reportWindow.document.open();
+  reportWindow.document.write(buildPdfDocument(latestResult));
+  reportWindow.document.close();
+  setStatus('PDF report opened. Choose Save as PDF in the print dialog.', 'success');
 }
 
 const nutritionForm = document.getElementById('nutritionForm');
-const emailPlanButton = document.getElementById('emailPlanButton');
+const pdfPlanButton = document.getElementById('pdfPlanButton');
 
-if (nutritionForm && emailPlanButton) {
+if (nutritionForm && pdfPlanButton) {
   nutritionForm.addEventListener('submit', handleNutritionSubmit);
-  emailPlanButton.addEventListener('click', handleEmailDraft);
+  pdfPlanButton.addEventListener('click', handlePdfExport);
 
   const guideFieldMap = {
     calcActivity: 'activity',

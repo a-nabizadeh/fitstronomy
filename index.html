@@ -26,28 +26,37 @@
   select,
   textarea { font: inherit; }
 
-  nav {
+  .site-nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(10,10,10,0.95); backdrop-filter: blur(8px);
+    background: rgba(10,10,10,0.98); backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--border2);
     display: flex; justify-content: space-between; align-items: center;
-    padding: 16px 48px;
+    padding: 18px 48px;
   }
-  .nav-logo { font-family: 'Oswald', sans-serif; font-size: 20px; letter-spacing: 2px; color: var(--text); text-decoration: none; }
+  .nav-logo { font-family: 'Oswald', sans-serif; font-size: 21px; letter-spacing: 2px; color: var(--text); text-decoration: none; }
   .nav-logo span { color: var(--red); }
   .nav-links { display: flex; gap: 32px; align-items: center; }
   .nav-links a,
-  .nav-links button { font-size: 13px; color: var(--text2); text-decoration: none; letter-spacing: 1px; transition: color 0.2s, background 0.2s, border-color 0.2s; background: transparent; border: none; font-family: inherit; cursor: pointer; }
+  .nav-links button { font-size: 14px; color: var(--text2); text-decoration: none; letter-spacing: 1px; transition: color 0.2s, background 0.2s, border-color 0.2s; background: transparent; border: none; font-family: inherit; cursor: pointer; }
   .nav-links a:hover,
   .nav-links button:hover { color: var(--text); }
-  .nav-cta { background: var(--red) !important; color: #fff !important; padding: 9px 20px; border-radius: 6px; }
-  .nav-cta:hover { background: var(--red-dark) !important; }
+  .nav-links .nav-cta { background: var(--red); color: #fff; padding: 10px 22px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; }
+  .nav-links .nav-cta:hover { background: var(--red-dark); color: #fff; }
   .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
-  .hamburger span { width: 22px; height: 1.5px; background: var(--text); display: block; }
+  .hamburger span { width: 22px; height: 1.5px; background: var(--text); display: block; transition: transform 0.25s, opacity 0.25s; transform-origin: center; }
+  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
   .hero {
-    min-height: 100vh; display: flex; align-items: center;
-    padding: 120px 48px 80px; position: relative; overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 48px;
+    padding: 140px 48px 80px;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
   }
   .hero-grid-bg {
     position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -61,10 +70,10 @@
   .hero h1 .accent { color: var(--red); }
   .hero-sub { font-size: 16px; color: var(--text2); line-height: 1.8; max-width: 460px; margin-bottom: 28px; }
   .hero-science {
-    position: absolute;
-    top: 210px;
-    right: 180px;
-    width: min(560px, 44vw);
+    position: relative;
+    z-index: 1;
+    width: min(560px, 100%);
+    justify-self: end;
     padding: 8px 0;
   }
   .hero-science-label {
@@ -98,9 +107,14 @@
     animation: blink-cursor 1s steps(1) infinite;
   }
   .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
-  .btn-primary { background: var(--red); color: #fff; padding: 14px 28px; border-radius: 6px; font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; text-align: center; transition: background 0.2s; }
+  .hero-cta .btn-primary,
+  .hero-cta .btn-secondary {
+    font-size: 16px;
+    font-weight: 800;
+  }
+  .btn-primary { background: var(--red); color: #fff; padding: 14px 28px; border-radius: 6px; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; text-align: center; transition: background 0.2s; }
   .btn-primary:hover { background: var(--red-dark); }
-  .btn-secondary { background: transparent; color: var(--text); padding: 14px 28px; border-radius: 6px; border: 1px solid var(--border2); font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; text-align: center; transition: border-color 0.2s; }
+  .btn-secondary { background: transparent; color: var(--text); padding: 14px 28px; border-radius: 6px; border: 1px solid var(--border2); font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; text-align: center; transition: border-color 0.2s; }
   .btn-secondary:hover { border-color: var(--text2); }
 
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); background: #0d0d0d; }
@@ -146,9 +160,11 @@
   #about { background: var(--bg); }
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
   .about-image { aspect-ratio: 3/4; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .about-image::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, rgba(226,75,74,0.2), var(--red), rgba(226,75,74,0.2)); }
   .about-image::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: var(--red); }
-  .about-image-placeholder { text-align: center; color: var(--text3); }
-  .about-image-placeholder p { font-size: 13px; margin-top: 8px; }
+  .about-image-placeholder { width: min(72%, 260px); aspect-ratio: 1; border: 1px solid var(--border2); border-radius: 8px; background: rgba(255,255,255,0.025); display: grid; place-items: center; position: relative; color: var(--text3); }
+  .about-initials { font-family: 'Oswald', sans-serif; font-size: 80px; color: var(--text3); line-height: 1; letter-spacing: 1px; }
+  .about-photo-note { position: absolute; left: 16px; right: 16px; bottom: 18px; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text3); text-align: center; }
   .about-text p { font-size: 15px; color: var(--text2); line-height: 1.9; margin-bottom: 20px; }
   .about-text p strong { color: var(--text); font-weight: 500; }
   .about-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
@@ -336,13 +352,14 @@
     padding: 13px 14px;
     font-size: 14px;
     font-family: 'Inter', sans-serif;
-    transition: border-color 0.2s, background 0.2s;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
   }
   .field-group input:focus,
   .field-group select:focus {
     outline: none;
     border-color: var(--red);
     background: rgba(0,0,0,0.36);
+    box-shadow: 0 0 0 3px rgba(226, 75, 74, 0.18);
   }
   .field-hint {
     font-size: 12px;
@@ -682,12 +699,13 @@
   .contact-link-icon svg { width: 15px; height: 15px; stroke: var(--text3); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.2s; }
   .contact-link:hover .contact-link-icon svg { stroke: var(--red); }
   .contact-form { display: flex; flex-direction: column; gap: 14px; }
-  .contact-form input, .contact-form textarea { background: var(--bg2); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 12px 16px; font-size: 14px; font-family: 'Inter', sans-serif; transition: border-color 0.2s; width: 100%; }
-  .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--red); }
+  .contact-form input, .contact-form textarea { background: var(--bg2); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 12px 16px; font-size: 14px; font-family: 'Inter', sans-serif; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; width: 100%; }
+  .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--red); background: var(--bg3); box-shadow: 0 0 0 3px rgba(226, 75, 74, 0.18); }
   .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--text3); }
   .contact-form textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
-  .contact-form button { background: var(--red); color: #fff; border: none; padding: 14px; border-radius: 6px; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer; transition: background 0.2s; }
+  .contact-form button { background: var(--red); color: #fff; border: none; padding: 14px; border-radius: 6px; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer; transition: background 0.2s, box-shadow 0.2s; }
   .contact-form button:hover { background: var(--red-dark); }
+  .contact-form button:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(226,75,74,0.24); }
   .contact-status {
     min-height: 22px;
     font-size: 13px;
@@ -697,28 +715,30 @@
   .contact-status.success { color: #89d08d; }
   .contact-status.pending { color: var(--text2); }
 
-  footer { background: #0a0a0a; border-top: 1px solid var(--border); padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; }
+  footer { background: #0a0a0a; border-top: 1px solid var(--border); padding: 24px 48px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 24px; align-items: center; }
   .footer-logo { font-family: 'Oswald', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--text3); }
   .footer-logo span { color: var(--red); }
-  footer p { font-size: 12px; color: var(--text3); }
+  .footer-nav { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--text3); font-size: 12px; }
+  .footer-nav a,
+  .footer-social a { color: var(--text3); text-decoration: none; transition: color 0.2s; }
+  .footer-nav a:hover,
+  .footer-social a:hover { color: var(--text); }
+  .footer-separator { color: var(--text3); }
+  .footer-social { display: flex; justify-content: flex-end; gap: 12px; }
+  .footer-social a { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; }
+  .footer-social svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
   @media (max-width: 1180px) {
-    nav { padding: 16px 28px; }
+    .site-nav { padding: 16px 28px; }
     .nav-links { gap: 22px; }
     .hero {
-      min-height: auto;
-      display: block;
       padding: 112px 32px 72px;
     }
     .hero-content {
       max-width: 720px;
     }
     .hero-science {
-      position: relative;
-      top: auto;
-      right: auto;
-      width: min(100%, 720px);
-      margin-bottom: 34px;
+      width: 100%;
     }
     .hero-science-text {
       min-height: 0;
@@ -740,6 +760,18 @@
   }
 
   @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding-top: 110px;
+    }
+    .hero-science {
+      order: 2;
+      justify-self: start;
+      text-align: left;
+    }
+    .hero-science-label {
+      justify-content: flex-start;
+    }
     .services-grid,
     .about-grid,
     .contact-grid { grid-template-columns: 1fr; }
@@ -758,52 +790,74 @@
   }
 
   @media (max-width: 768px) {
-    nav { padding: 14px 20px; }
+    .site-nav { padding: 14px 20px; }
     .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: #0a0a0a; border-bottom: 1px solid var(--border2); padding: 20px; gap: 20px; align-items: stretch; }
     .nav-links.open { display: flex; }
     .nav-links a,
     .nav-links button { width: 100%; text-align: left; }
-    .nav-cta { text-align: center !important; }
+    .nav-links .nav-cta { text-align: center; }
     .hamburger { display: flex; }
-    .hero { padding: 100px 20px 60px; }
+    .hero { padding: 110px 20px 60px; }
     .hero-science {
-      position: static;
-      width: auto;
-      margin: 0 0 40px;
+      width: 100%;
       padding: 16px 18px;
       border-radius: 16px;
-      text-align: right;
+      text-align: left;
     }
     .hero-science-text {
       min-height: 0;
       font-size: 14px;
       line-height: 1.8;
-      text-align: right;
+      text-align: left;
     }
-    .hero-science-label {
-      display: flex;
-      justify-content: flex-end;
-    }
-    section { padding: 60px 20px; }
+    section { padding: 64px 28px; }
     .stats { grid-template-columns: 1fr; }
     .stat { border-right: none; border-bottom: 1px solid var(--border2); padding: 24px 20px; }
     .stat:last-child { border-bottom: none; }
     .services-grid, .about-grid, .contact-grid, .nutrition-shell, .nutrition-form, .result-summary, .macro-grid, .guide-mini-grid, .pricing-grid, .guide-layout { grid-template-columns: 1fr; }
-    .about-image { aspect-ratio: 4/3; }
+    .nutrition-form {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .nutrition-form .field-group.full {
+      grid-column: 1 / -1;
+    }
+    .about-image { aspect-ratio: 3/4; }
     .meal-plan-header,
     .meal-row { grid-template-columns: 1.1fr repeat(3, minmax(0, 1fr)); padding: 12px; }
     .guide-header { align-items: start; }
-    .guide-pill { width: auto; }
+    .guide-pills {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .guide-pill {
+      flex: 0 0 auto;
+      width: auto;
+    }
     .pricing-modal { padding: 14px; align-items: stretch; }
     .pricing-close { position: sticky; top: 0; margin-left: auto; display: block; }
     .pricing-dialog { padding: 24px 18px; }
-    footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
+    footer { padding: 20px; }
+  }
+
+  @media (max-width: 600px) {
+    footer {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+    .footer-nav {
+      flex-wrap: wrap;
+    }
+    .footer-social {
+      justify-content: center;
+    }
   }
 
   @media (max-width: 480px) {
-    nav { padding: 12px 16px; }
+    .site-nav { padding: 12px 20px; }
     .nav-logo { font-size: 17px; letter-spacing: 1.4px; }
-    .hero { padding: 92px 16px 52px; }
+    .hero { padding: 110px 22px 56px; }
     .hero h1 { font-size: clamp(42px, 16vw, 56px); }
     .hero-sub,
     .section-subtitle,
@@ -821,13 +875,37 @@
     .nutrition-actions button {
       width: 100%;
     }
-    section { padding: 52px 16px; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stat {
+      border-right: 1px solid var(--border2);
+      border-bottom: 1px solid var(--border2);
+      padding: 24px 16px;
+      text-align: center;
+    }
+    .stat:nth-child(2n) { border-right: none; }
+    .stat:last-child {
+      grid-column: 1 / -1;
+      border-right: none;
+      border-bottom: none;
+      text-align: center;
+    }
+    section { padding: 56px 22px; }
     .service-card,
     .nutrition-panel,
     .nutrition-results,
     .coach-guide,
     .pricing-card {
-      padding: 20px;
+      padding: 22px;
+    }
+    .contact-link {
+      gap: 14px;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      padding: 15px 18px;
+    }
+    .contact-form button {
+      padding: 16px;
     }
     .pricing-dialog {
       padding: 18px 14px;
@@ -845,7 +923,7 @@
 </head>
 <body>
 
-<nav>
+<nav class="site-nav">
   <a href="#" class="nav-logo">Armin Nabizadeh <span>·</span> PT</a>
   <div class="nav-links" id="navLinks">
     <a href="#about">About</a>
@@ -854,31 +932,37 @@
     <button type="button" data-open-pricing>Pricing</button>
     <a href="apply.html" class="nav-cta">Apply Now</a>
   </div>
-  <div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+  <div
+    class="hamburger"
+    onclick="
+      document.getElementById('navLinks').classList.toggle('open');
+      this.classList.toggle('open');
+    "
+  >
     <span></span><span></span><span></span>
   </div>
 </nav>
 
 <section class="hero" id="home">
   <div class="hero-grid-bg"></div>
-  <div class="hero-science">
-    <div class="hero-science-label">Evidence-Based Coaching</div>
-    <p class="hero-science-text" id="heroScienceText" data-full-text="Evidence-based training. Every program is built on the latest research in exercise science and sports nutrition, with no guesswork and methods that actually work."></p>
-  </div>
   <div class="hero-content">
     <div class="hero-tag">CERTIFIED PERSONAL TRAINER</div>
-    <h1>Train hard.<br>Live <span class="accent">stronger.</span></h1>
+    <h1>No Guesswork. Just <span class="accent">Progress.</span></h1>
     <p class="hero-sub">Personalized fitness programs tailored to your goals, whether you want to lose weight, build strength, or level up your overall health.</p>
     <div class="hero-cta">
       <a href="apply.html" class="btn-primary">Start Your Coaching Application</a>
       <button type="button" class="btn-secondary" data-open-pricing>View Pricing</button>
     </div>
   </div>
+  <div class="hero-science">
+    <div class="hero-science-label">Evidence-Based Coaching</div>
+    <p class="hero-science-text" id="heroScienceText" data-full-text="Evidence-based training. Every program is built on the latest research in exercise science and sports nutrition, with no guesswork and methods that actually work."></p>
+  </div>
 </section>
 
 <div class="stats">
-  <div class="stat"><div class="stat-num">50+</div><div class="stat-label">CLIENTS TRAINED</div></div>
-  <div class="stat"><div class="stat-num">5+</div><div class="stat-label">YEARS EXPERIENCE</div></div>
+  <div class="stat"><div class="stat-num">25+</div><div class="stat-label">CLIENTS TRAINED</div></div>
+  <div class="stat"><div class="stat-num">4+</div><div class="stat-label">YEARS EXPERIENCE</div></div>
   <div class="stat"><div class="stat-num">100%</div><div class="stat-label">COMMITMENT</div></div>
 </div>
 
@@ -920,9 +1004,9 @@
   <div class="section-inner">
     <div class="about-grid">
       <div class="about-image">
-        <div class="about-image-placeholder">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-          <p>Personal coaching</p>
+        <div class="about-image-placeholder" aria-label="Photo coming soon for Armin Nabizadeh">
+          <span class="about-initials">AN</span>
+          <span class="about-photo-note">Photo coming soon</span>
         </div>
       </div>
       <div class="about-text">
@@ -985,13 +1069,9 @@
           </div>
         </div>
         <form class="nutrition-form" id="nutritionForm">
-          <div class="field-group">
+          <div class="field-group full">
             <label for="calcName">Name</label>
             <input id="calcName" name="name" type="text" placeholder="Your name" required>
-          </div>
-          <div class="field-group">
-            <label for="calcEmail">Email for results</label>
-            <input id="calcEmail" name="email" type="email" placeholder="you@example.com">
           </div>
           <div class="field-group">
             <label for="calcAge">Age</label>
@@ -1021,7 +1101,7 @@
             <label for="calcHip">Hip (cm)</label>
             <input id="calcHip" name="hip" type="number" min="30" max="250" step="0.1" placeholder="98" required>
           </div>
-          <div class="field-group">
+          <div class="field-group full">
             <label for="calcActivity">Activity Index</label>
             <select id="calcActivity" name="activityIndex" required>
               <option value="">Choose activity level</option>
@@ -1032,7 +1112,7 @@
               <option value="1.9">1.9 · Extremely active</option>
             </select>
           </div>
-          <div class="field-group">
+          <div class="field-group full">
             <label for="calcGoal">Goal</label>
             <select id="calcGoal" name="goal" required>
               <option value="">Choose goal</option>
@@ -1056,7 +1136,7 @@
           </div>
           <div class="nutrition-actions">
             <button type="submit" class="btn-primary">Calculate Nutrition</button>
-            <button type="button" class="btn-ghost" id="emailPlanButton">Prepare Email Draft</button>
+            <button type="button" class="btn-ghost" id="pdfPlanButton">Export PDF</button>
           </div>
           <div class="nutrition-status" id="nutritionStatus" aria-live="polite"></div>
         </form>
@@ -1235,7 +1315,30 @@
 
 <footer>
   <div class="footer-logo">Armin Nabizadeh <span>·</span> PT</div>
-  <p>© 2026 · All rights reserved</p>
+  <nav class="footer-nav" aria-label="Footer navigation">
+    <a href="#about">About</a>
+    <span class="footer-separator">·</span>
+    <a href="#services">Services</a>
+    <span class="footer-separator">·</span>
+    <a href="#nutrition">Nutrition</a>
+    <span class="footer-separator">·</span>
+    <a href="apply.html">Apply</a>
+  </nav>
+  <div class="footer-social">
+    <a href="mailto:armin.nabizade@gmail.com" aria-label="Email Armin">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+        <path d="M4 7l8 6 8-6"></path>
+      </svg>
+    </a>
+    <a href="#" aria-label="Instagram">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" rx="5"></rect>
+        <circle cx="12" cy="12" r="3.5"></circle>
+        <circle cx="17" cy="7" r="0.8"></circle>
+      </svg>
+    </a>
+  </div>
 </footer>
 
 <script src="nutrition-calculator.js"></script>

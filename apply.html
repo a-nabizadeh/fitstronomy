@@ -489,12 +489,19 @@
     .choice-grid {
       grid-template-columns: 1fr;
     }
-    .wizard-controls,
+    .wizard-controls {
+      align-items: stretch;
+      flex-direction: row;
+    }
     .form-actions {
       align-items: stretch;
       flex-direction: column;
     }
-    .wizard-button,
+    .wizard-button {
+      flex: 1;
+      min-width: 0;
+      width: auto;
+    }
     .submit-button {
       width: 100%;
     }
@@ -545,7 +552,7 @@
         <form
           class="application-form"
           id="applicationForm"
-          action="https://formspree.io/f/mnjlbjko"
+          action="https://formspree.io/f/mykoqjdp"
           method="POST"
           novalidate
         >
