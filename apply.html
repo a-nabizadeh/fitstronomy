@@ -96,7 +96,7 @@
   }
   h1 {
     font-family: 'Oswald', sans-serif;
-    font-size: clamp(42px, 5vw, 70px);
+    font-size: clamp(34px, 3.8vw, 54px);
     line-height: 1.02;
     letter-spacing: 1px;
     margin-bottom: 18px;
@@ -209,6 +209,14 @@
     font-size: 13px;
     font-weight: 500;
     line-height: 1.45;
+  }
+  .form-field:has(input:required) > label::after,
+  .form-field:has(select:required) > label::after,
+  .form-field:has(textarea:required) > label::after,
+  .question-block:has(input:required) > .field-label::after,
+  .choice.terms:has(input:required) > span::after {
+    content: ' *';
+    color: var(--red);
   }
   input,
   select,
@@ -357,7 +365,7 @@
     }
     .intro { position: static; }
     h1 {
-      font-size: clamp(38px, 12vw, 54px);
+      font-size: clamp(30px, 10vw, 44px);
     }
     .form-shell-header,
     .form-section-header { flex-direction: column; }
@@ -481,7 +489,7 @@
       padding: 18px;
     }
     h1 {
-      font-size: clamp(34px, 13vw, 46px);
+      font-size: clamp(26px, 11vw, 38px);
     }
     .form-shell-header h2 {
       font-size: 25px;
@@ -554,7 +562,6 @@
           id="applicationForm"
           action="https://formspree.io/f/mykoqjdp"
           method="POST"
-          novalidate
         >
           <input type="hidden" name="_subject" value="New Fitstronomy coaching application">
           <input type="hidden" name="_captcha" value="false">
@@ -593,7 +600,7 @@
               </div>
               <div class="form-field">
                 <label for="mobile">Mobile</label>
-                <input id="mobile" name="mobile" type="tel" autocomplete="tel" required>
+                <input id="mobile" name="mobile" type="tel" autocomplete="tel">
               </div>
             </div>
             <div class="field-grid compact">
@@ -603,11 +610,11 @@
               </div>
               <div class="form-field">
                 <label for="height">Height</label>
-                <input id="height" name="height_cm" type="number" min="80" max="240" step="0.1" placeholder="cm" required>
+                <input id="height" name="height_cm" type="number" min="80" max="240" step="0.1" placeholder="cm">
               </div>
               <div class="form-field">
                 <label for="weight">Weight</label>
-                <input id="weight" name="weight_kg" type="number" min="25" max="300" step="0.1" placeholder="kg" required>
+                <input id="weight" name="weight_kg" type="number" min="25" max="300" step="0.1" placeholder="kg">
               </div>
             </div>
           </div>
@@ -630,12 +637,12 @@
               </div>
               <div class="form-field full">
                 <label for="mainGoal">What is your goal with your training?</label>
-                <textarea id="mainGoal" name="main_training_goal" required></textarea>
+                <textarea id="mainGoal" name="main_training_goal"></textarea>
               </div>
               <div class="form-field full">
                 <span class="field-label">Timeline for achieving your goal</span>
                 <div class="choice-grid">
-                  <label class="choice"><input type="radio" name="goal_timeline" value="8 weeks" required><span>8 weeks</span></label>
+                  <label class="choice"><input type="radio" name="goal_timeline" value="8 weeks"><span>8 weeks</span></label>
                   <label class="choice"><input type="radio" name="goal_timeline" value="16 weeks"><span>16 weeks</span></label>
                   <label class="choice"><input type="radio" name="goal_timeline" value="24 weeks"><span>24 weeks</span></label>
                   <label class="choice"><input type="radio" name="goal_timeline" value="32 weeks"><span>32 weeks</span></label>
@@ -645,7 +652,7 @@
               </div>
               <div class="form-field">
                 <label for="weeklyTraining">How many days per week can you realistically train?</label>
-                <select id="weeklyTraining" name="weekly_training_commitment" required>
+                <select id="weeklyTraining" name="weekly_training_commitment">
                   <option value="">Please select</option>
                   <option value="1 day per week">1 day per week</option>
                   <option value="2 days per week">2 days per week</option>
@@ -666,19 +673,19 @@
             <div class="field-grid">
               <div class="form-field full">
                 <label for="trainingHistory">Tell me about your training history.</label>
-                <textarea id="trainingHistory" name="training_history" required></textarea>
+                <textarea id="trainingHistory" name="training_history"></textarea>
               </div>
               <div class="form-field">
                 <span class="field-label">Are you currently exercising regularly, at least 3x per week?</span>
                 <div class="choice-grid">
-                  <label class="choice"><input type="radio" name="currently_exercising" value="Yes" required><span>Yes</span></label>
+                  <label class="choice"><input type="radio" name="currently_exercising" value="Yes"><span>Yes</span></label>
                   <label class="choice"><input type="radio" name="currently_exercising" value="No"><span>No</span></label>
                 </div>
               </div>
               <div class="form-field">
                 <span class="field-label">Have you trained with a personal trainer before?</span>
                 <div class="choice-grid">
-                  <label class="choice"><input type="radio" name="trained_with_pt_before" value="Yes" required><span>Yes</span></label>
+                  <label class="choice"><input type="radio" name="trained_with_pt_before" value="Yes"><span>Yes</span></label>
                   <label class="choice"><input type="radio" name="trained_with_pt_before" value="No"><span>No</span></label>
                 </div>
               </div>
@@ -700,8 +707,8 @@
                 <textarea id="healthConditions" name="diagnosed_health_conditions"></textarea>
               </div>
               <div class="form-field full">
-                <label for="injuries">If you have any injuries, please list them.</label>
-                <textarea id="injuries" name="injuries"></textarea>
+                <label for="injuries">If you have any injuries, please list them. If none, write None.</label>
+                <textarea id="injuries" name="injuries" required></textarea>
               </div>
             </div>
             <div class="notice">
@@ -769,7 +776,7 @@
               <div class="form-field full">
                 <span class="field-label">Which option are you applying for?</span>
                 <div class="choice-grid">
-                  <label class="choice"><input type="radio" name="package_interest" value="Workout Plan, 30 euro per program" required><span>Workout Plan, €30 per program</span></label>
+                  <label class="choice"><input type="radio" name="package_interest" value="Workout Plan, 30 euro per program"><span>Workout Plan, €30 per program</span></label>
                   <label class="choice"><input type="radio" name="package_interest" value="Plan + Intro Session, 80 euro package"><span>Plan + Intro Session, €80 package</span></label>
                   <label class="choice"><input type="radio" name="package_interest" value="In-Person Coaching, 70 euro per session"><span>In-Person Coaching, €70 per session</span></label>
                   <label class="choice"><input type="radio" name="package_interest" value="Online Coaching, 20 euro per session"><span>Online Coaching, €20 per session</span></label>
@@ -779,7 +786,7 @@
               <div class="form-field full">
                 <span class="field-label">Where do you prefer to train?</span>
                 <div class="choice-grid">
-                  <label class="choice"><input type="radio" name="training_location" value="Home" required><span>Home</span></label>
+                  <label class="choice"><input type="radio" name="training_location" value="Home"><span>Home</span></label>
                   <label class="choice"><input type="radio" name="training_location" value="Gym"><span>Gym</span></label>
                   <label class="choice"><input type="radio" name="training_location" value="Both or flexible"><span>Both or flexible</span></label>
                 </div>
@@ -814,7 +821,7 @@
     const wizardStepCount = document.getElementById('wizardStepCount');
     const wizardStepTitle = document.getElementById('wizardStepTitle');
     const wizardProgressBar = document.getElementById('wizardProgressBar');
-    const enforceApplicationRequiredFields = false;
+    const enforceApplicationRequiredFields = true;
     let currentWizardStep = 0;
 
     function setApplicationStatus(message, state = '') {
@@ -955,7 +962,7 @@
         setApplicationStatus('Application sent successfully. I will review it and get back to you soon.', 'success');
       } catch (error) {
         setApplicationStatus(
-          'The application could not be sent right now. Please try again or email me directly at armin.nabizade@gmail.com.',
+          'The application could not be sent right now. Please try again later.',
           'error'
         );
       } finally {
