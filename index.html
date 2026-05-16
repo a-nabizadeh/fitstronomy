@@ -1529,6 +1529,17 @@
 <script src="contact-form.js"></script>
 <script src="pricing-modal.js"></script>
 <script>
+if (window.location.hash) {
+  history.replaceState(null, '', window.location.pathname);
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener('load', function () {
+  setTimeout(function () {
+    window.scrollTo(0, 0);
+  }, 0);
+});
+
 const heroScienceText = document.getElementById('heroScienceText');
 
 function renderScienceText(fullText, typedLength) {
