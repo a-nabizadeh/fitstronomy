@@ -852,6 +852,23 @@
     font-family: 'Inter', sans-serif;
     margin-left: 6px;
   }
+  .plan-duration {
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+  .plan-discount-note {
+    font-size: 11px;
+    color: var(--text3);
+    font-style: italic;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    padding: 6px 10px;
+    border-left: 2px solid var(--red);
+  }
   .pricing-card p {
     color: var(--text2);
     font-size: 14px;
@@ -886,6 +903,24 @@
     gap: 12px;
     flex-wrap: wrap;
     margin-top: auto;
+  }
+  .pricing-single-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 32px 24px 8px;
+    text-align: center;
+  }
+  .pricing-cta-note {
+    font-size: 13px;
+    color: var(--text3);
+    letter-spacing: 0.5px;
+  }
+  .pricing-single-cta .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
   }
   .pricing-footnote {
     margin-top: 20px;
@@ -1543,6 +1578,7 @@
         <span class="pricing-badge">Starter</span>
         <h3>Workout Plan</h3>
         <div class="pricing-price">€30<small>/ program</small></div>
+        <div class="plan-duration">5–6 week program</div>
         <p>Best for clients who want a clear training structure they can follow independently.</p>
         <ul class="pricing-list">
           <li>Custom workout program built around your goal</li>
@@ -1550,9 +1586,6 @@
           <li>Ideal for self-directed training</li>
           <li>Simple, focused, and affordable starting point</li>
         </ul>
-        <div class="pricing-actions">
-          <a href="apply.html" class="btn-primary">Apply For This Plan</a>
-        </div>
       </article>
       <article class="pricing-card featured">
         <span class="pricing-badge">Most Popular</span>
@@ -1565,41 +1598,56 @@
           <li>Technique and structure explained in person</li>
           <li>Best fit for beginners or restart clients</li>
         </ul>
-        <div class="pricing-actions">
-          <a href="apply.html" class="btn-primary">Start Application</a>
-          <a href="#contact" class="btn-secondary">Ask A Question</a>
-        </div>
       </article>
       <article class="pricing-card">
         <span class="pricing-badge">Premium</span>
         <h3>In-Person Coaching</h3>
         <div class="pricing-price">€70<small>/ session</small></div>
         <p>Hands-on personal training with live coaching, form correction, and structured accountability.</p>
+        <p class="plan-discount-note">
+          Monthly packages include a discount on the per-session rate.
+        </p>
         <ul class="pricing-list">
           <li>2 sessions per week: €500 per month</li>
           <li>3 sessions per week: €700 per month</li>
           <li>Live form correction and progression guidance</li>
           <li>Best for clients who want maximum structure and support</li>
         </ul>
-        <div class="pricing-actions">
-          <a href="apply.html" class="btn-primary">Apply Now</a>
-        </div>
       </article>
       <article class="pricing-card">
         <span class="pricing-badge">Remote</span>
         <h3>Online Coaching</h3>
         <div class="pricing-price">€20<small>/ session</small></div>
         <p>A lighter-touch remote option for clients who want ongoing programming support without in-person sessions.</p>
+        <p class="plan-discount-note">
+          Monthly packages include a discount on the per-session rate.
+        </p>
         <ul class="pricing-list">
-          <li>2 sessions per week: €200 per month</li>
+          <li>3 sessions per week: €200 per month</li>
           <li>Remote coaching structure and accountability</li>
           <li>Flexible option for clients training on their own schedule</li>
           <li>Good fit for consistent independent trainees</li>
         </ul>
-        <div class="pricing-actions">
-          <a href="apply.html" class="btn-primary">Apply Online</a>
-        </div>
       </article>
+    </div>
+    <div class="pricing-single-cta">
+      <p class="pricing-cta-note">
+        Tell us which plan interests you in the application form.
+      </p>
+      <a href="apply.html" class="btn-primary">
+        <svg width="44" height="26" viewBox="0 0 300 110" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+          <rect x="118" y="43" width="63" height="24" rx="2" fill="white"/>
+          <rect x="99" y="43" width="19" height="24" rx="2" fill="white"/>
+          <rect x="77" y="5" width="20" height="98" rx="2" fill="white"/>
+          <rect x="56" y="16" width="18" height="76" rx="2" fill="white"/>
+          <rect x="38" y="28" width="16" height="52" rx="2" fill="white"/>
+          <rect x="181" y="43" width="19" height="24" rx="2" fill="white"/>
+          <rect x="202" y="5" width="20" height="98" rx="2" fill="white"/>
+          <rect x="225" y="16" width="18" height="76" rx="2" fill="white"/>
+          <rect x="245" y="28" width="16" height="52" rx="2" fill="white"/>
+        </svg>
+        Start Application
+      </a>
     </div>
     <p class="pricing-footnote">Prices are listed clearly so you can compare options before applying. Final recommendations depend on your goal, training background, schedule, and health screening.</p>
   </div>
@@ -1663,6 +1711,22 @@
 <script src="https://unpkg.com/body-muscles/dist/umd/body-muscles.umd.min.js"></script>
 <script>
 (function () {
+  var introSeen = sessionStorage.getItem('introSeen');
+  if (introSeen) {
+    var introEl = document.getElementById('anatomyIntro');
+    if (introEl) {
+      introEl.style.display = 'none';
+      introEl.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('intro-lock');
+    }
+    setTimeout(function () {
+      if (typeof startHeroScienceTyping === 'function') {
+        startHeroScienceTyping();
+      }
+    }, 400);
+    return;
+  }
+
   var intro = document.getElementById('anatomyIntro');
   var canvasWrap = intro && intro.querySelector('.intro-canvas-wrap');
   var skipButton = intro && intro.querySelector('[data-intro-skip]');
@@ -1680,6 +1744,7 @@
     timers.forEach(clearTimeout);
     if (chart) chart.destroy();
     document.body.classList.remove('intro-lock');
+    sessionStorage.setItem('introSeen', '1');
     if (typeof startHeroScienceTyping === 'function') {
       setTimeout(startHeroScienceTyping, 400);
     }
