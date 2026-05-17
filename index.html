@@ -1791,11 +1791,13 @@
 
     var totalDuration = sequence.length * 260;
 
+    var third = Math.round(totalDuration / 3);
     var s1In  = 0;
-    var s1Out = Math.round(totalDuration * 0.33);
-    var s2In  = Math.round(totalDuration * 0.33);
-    var s2Out = Math.round(totalDuration * 0.66);
-    var s3In  = Math.round(totalDuration * 0.66);
+    var s1Out = third;
+    var s2In  = third;
+    var s2Out = third * 2;
+    var s3In  = third * 2;
+    var s3Out = totalDuration;
 
     function showStmt(id, inTime, outTime) {
       var el = document.getElementById(id);
@@ -1814,9 +1816,9 @@
 
     showStmt('stmt-1', s1In, s1Out);
     showStmt('stmt-2', s2In, s2Out);
-    showStmt('stmt-3', s3In, null);
+    showStmt('stmt-3', s3In, s3Out);
 
-    var holdDelay = totalDuration + 2500;
+    var holdDelay = totalDuration + 600;
     var tf = setTimeout(finishIntro, holdDelay);
     timers.push(tf);
   }
