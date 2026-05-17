@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Armin Nabizadeh · Personal Trainer</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;display=swap" rel="stylesheet">
 <style>
   :root {
     --red: #E24B4A;
@@ -21,10 +22,120 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; overflow-x: hidden; }
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+  body.intro-lock { overflow: hidden; }
   button,
   input,
   select,
   textarea { font: inherit; }
+
+  .intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    min-height: 100dvh;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    background: #0d0c0c;
+    color: var(--text);
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.7s ease, visibility 0.7s ease;
+  }
+  .intro-overlay.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .intro-canvas-wrap {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .intro-canvas-wrap canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .body-muscles-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .body-muscles-container svg {
+    max-height: 90vh;
+    width: auto;
+  }
+  .intro-copy {
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .intro-statement {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-family: 'Caveat', cursive;
+    font-size: clamp(32px, 7.5vw, 52px);
+    font-weight: 600;
+    font-style: normal;
+    color: var(--text);
+    letter-spacing: 1px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .intro-statement.is-visible {
+    opacity: 1;
+  }
+  .intro-statement span {
+    color: var(--red);
+  }
+  .intro-status {
+    margin-top: 14px;
+    color: var(--text3);
+    font-size: 12px;
+    letter-spacing: 0.6px;
+  }
+  .intro-overlay.has-error .intro-status {
+    color: var(--text2);
+    max-width: 48ch;
+    line-height: 1.7;
+  }
+  .intro-overlay.has-error .intro-copy {
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+  }
+  .intro-skip {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 3;
+    border: 1px solid var(--border2);
+    border-radius: 999px;
+    background: rgba(10,10,10,0.54);
+    color: var(--text2);
+    padding: 10px 16px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .intro-skip:hover,
+  .intro-skip:focus-visible {
+    color: var(--text);
+    border-color: rgba(226,75,74,0.62);
+    background: rgba(226,75,74,0.12);
+    outline: none;
+  }
 
   .site-nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -629,7 +740,6 @@
     45%  { transform: scale(1.1); }
     100% { transform: scale(1); }
   }
-
   .pricing-modal {
     position: fixed;
     inset: 0;
@@ -886,6 +996,12 @@
   }
 
   @media (max-width: 768px) {
+    .intro-skip {
+      top: 16px;
+      right: 16px;
+      padding: 9px 14px;
+      font-size: 13px;
+    }
     .site-nav { padding: 14px 20px; }
     .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: #0a0a0a; border-bottom: 1px solid var(--border2); padding: 20px; gap: 20px; align-items: stretch; }
     .nav-links.open { display: flex; }
@@ -1055,9 +1171,25 @@
       font-size: 38px;
     }
   }
+  @media (prefers-reduced-motion: reduce) {
+    .intro-overlay {
+      display: none;
+    }
+  }
 </style>
 </head>
 <body>
+
+<!-- Place the final GLB at assets/anatomy-body.glb or update data-model-src below. Expected mesh names: Body_Base and Muscle_* groups. -->
+<div class="intro-overlay" id="anatomyIntro" data-model-src="assets/anatomy-body.glb" aria-label="Anatomy intro animation">
+  <div class="intro-canvas-wrap" data-intro-canvas></div>
+  <div class="intro-copy">
+    <div class="intro-statement" id="stmt-1">Backed by <span>science.</span></div>
+    <div class="intro-statement" id="stmt-2">Built for <span>results.</span></div>
+    <div class="intro-statement" id="stmt-3">Designed for <span>you.</span></div>
+  </div>
+  <button class="intro-skip" type="button" data-intro-skip>Skip intro</button>
+</div>
 
 <nav class="site-nav">
   <a href="#" class="nav-logo">Armin Nabizadeh <span>·</span> PT</a>
@@ -1528,6 +1660,183 @@
 <script src="nutrition-calculator.js"></script>
 <script src="contact-form.js"></script>
 <script src="pricing-modal.js"></script>
+<script src="https://unpkg.com/body-muscles/dist/umd/body-muscles.umd.min.js"></script>
+<script>
+(function () {
+  var intro = document.getElementById('anatomyIntro');
+  var canvasWrap = intro && intro.querySelector('.intro-canvas-wrap');
+  var skipButton = intro && intro.querySelector('[data-intro-skip]');
+  var statusEl = intro && intro.querySelector('[data-intro-status]');
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var chart = null;
+  var timers = [];
+  var finished = false;
+
+  function finishIntro() {
+    if (!intro || finished) return;
+    finished = true;
+    intro.classList.add('is-hidden');
+    intro.setAttribute('aria-hidden', 'true');
+    timers.forEach(clearTimeout);
+    if (chart) chart.destroy();
+    document.body.classList.remove('intro-lock');
+    if (typeof startHeroScienceTyping === 'function') {
+      setTimeout(startHeroScienceTyping, 400);
+    }
+  }
+
+  if (reducedMotion || !canvasWrap || !window.BodyMuscles) {
+    finishIntro();
+    return;
+  }
+
+  intro.dataset.ready = 'true';
+  document.body.classList.add('intro-lock');
+
+  // Create container for body-muscles chart
+  var container = document.createElement('div');
+  container.className = 'body-muscles-container';
+  container.style.cssText = 'width:100%;height:100%;display:flex;align-items:center;justify-content:center;';
+  canvasWrap.appendChild(container);
+
+  var BodyChart = window.BodyMuscles.BodyChart;
+  var ViewSide = window.BodyMuscles.ViewSide;
+  var frontMuscles = window.BodyMuscles.FRONT_MUSCLES || [];
+  var availableIds = frontMuscles.map(function (muscle) { return muscle.id; });
+  console.log('BodyMuscles front muscle IDs', availableIds);
+
+  // Override the library's default colors to match site palette
+  if (window.BodyMuscles.INTENSITY_COLORS) {
+    Object.assign(window.BodyMuscles.INTENSITY_COLORS, {
+      0: '#2a1a1a',
+      1: '#351f1f',
+      2: '#442323',
+      3: '#5b2929',
+      4: '#733030',
+      5: '#8c3535',
+      6: '#a73b3b',
+      7: '#bf4141',
+      8: '#d34848',
+      9: '#e24b4a',
+      10: '#ff6b68'
+    });
+  }
+
+  var style = document.createElement('style');
+  style.textContent = [
+    '.body-muscles-container .body-chart-background path { fill: #2a1a1a; stroke: #3a2020; stroke-width: 0.5; }',
+    '.body-muscles-container .body-chart-muscle { stroke: #3a2020; stroke-width: 0.18; transition: fill 0.3s, fill-opacity 0.3s, filter 0.3s; }',
+    '.body-muscles-container .body-chart-svg { background: transparent !important; filter: drop-shadow(0 18px 42px rgba(0,0,0,0.45)) drop-shadow(0 0 30px rgba(226,75,74,0.16)) !important; }'
+  ].join('');
+  document.head.appendChild(style);
+
+  chart = new BodyChart(container, {
+    view: ViewSide.FRONT,
+    bodyState: {},
+    showViewLabel: false,
+    enableTransitions: true,
+    className: 'body-muscles-container'
+  });
+
+  // Front muscle IDs verified from body-muscles FRONT_MUSCLES.
+  var sequence = [
+    ['foot-left', 'foot-right'],
+    ['tibialis-anterior-left', 'tibialis-anterior-right'],
+    ['knee-left', 'knee-right'],
+    ['quads-left', 'quads-right'],
+    ['adductors-left', 'adductors-right'],
+    ['hip-flexor-left', 'hip-flexor-right'],
+    ['obliques-left', 'obliques-right'],
+    ['serratus-anterior-left', 'serratus-anterior-right'],
+    ['abs-lower-left', 'abs-lower-right'],
+    ['abs-upper-left', 'abs-upper-right'],
+    ['hand-left', 'hand-right'],
+    ['forearm-left', 'forearm-right'],
+    ['elbow-left', 'elbow-right'],
+    ['biceps-left', 'biceps-right'],
+    ['chest-lower-left', 'chest-lower-right'],
+    ['chest-upper-left', 'chest-upper-right'],
+    ['shoulder-side-left', 'shoulder-side-right'],
+    ['shoulder-front-left', 'shoulder-front-right'],
+    ['neck-left', 'neck-right'],
+    ['face'],
+    ['head']
+  ];
+
+  var bodyState = {};
+
+  function lightUp(ids, intensity) {
+    ids.forEach(function (id) {
+      if (!availableIds.includes(id)) return;
+      bodyState[id] = { intensity: intensity, selected: false };
+    });
+    chart.update({ bodyState: Object.assign({}, bodyState) });
+  }
+
+  function runSequence() {
+    var delay = 300;
+    sequence.forEach(function (group) {
+      var t1 = setTimeout(function () {
+        // Flash bright
+        lightUp(group, 10);
+        // Settle to dim after flash
+        var t2 = setTimeout(function () {
+          lightUp(group, 4);
+        }, 600);
+        timers.push(t2);
+      }, delay);
+      timers.push(t1);
+      delay += 260;
+    });
+
+    var totalDuration = sequence.length * 260;
+
+    var s1In  = 0;
+    var s1Out = Math.round(totalDuration * 0.33);
+    var s2In  = Math.round(totalDuration * 0.33);
+    var s2Out = Math.round(totalDuration * 0.66);
+    var s3In  = Math.round(totalDuration * 0.66);
+
+    function showStmt(id, inTime, outTime) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var tIn = setTimeout(function () {
+        el.classList.add('is-visible');
+      }, inTime);
+      timers.push(tIn);
+      if (outTime) {
+        var tOut = setTimeout(function () {
+          el.classList.remove('is-visible');
+        }, outTime);
+        timers.push(tOut);
+      }
+    }
+
+    showStmt('stmt-1', s1In, s1Out);
+    showStmt('stmt-2', s2In, s2Out);
+    showStmt('stmt-3', s3In, null);
+
+    var holdDelay = totalDuration + 2500;
+    var tf = setTimeout(finishIntro, holdDelay);
+    timers.push(tf);
+  }
+
+  if (skipButton) {
+    skipButton.addEventListener('click', function () {
+      timers.forEach(clearTimeout);
+      finishIntro();
+    });
+  }
+
+  if (statusEl) statusEl.textContent = '';
+
+  // Small delay to let library render SVG first
+  timers.push(setTimeout(runSequence, 400));
+
+  // Hard fallback
+  timers.push(setTimeout(finishIntro, 12000));
+})();
+</script>
 <script>
 if (window.location.hash) {
   history.replaceState(null, '', window.location.pathname);
@@ -1574,7 +1883,6 @@ function startHeroScienceTyping() {
   }, 22);
 }
 
-startHeroScienceTyping();
 </script>
 <script>
 (function () {
