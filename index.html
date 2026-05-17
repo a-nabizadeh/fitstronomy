@@ -922,6 +922,17 @@
     align-items: center;
     gap: 14px;
   }
+  .pricing-ask-link {
+    font-size: 13px;
+    color: var(--text3);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+    margin-top: 4px;
+  }
+  .pricing-ask-link:hover {
+    color: var(--text);
+  }
   .pricing-footnote {
     margin-top: 20px;
     color: var(--text3);
@@ -1648,6 +1659,9 @@
         </svg>
         Start Application
       </a>
+      <a href="#contact" data-close-pricing class="pricing-ask-link">
+        Not sure yet? Ask a question →
+      </a>
     </div>
     <p class="pricing-footnote">Prices are listed clearly so you can compare options before applying. Final recommendations depend on your goal, training background, schedule, and health screening.</p>
   </div>
@@ -1712,6 +1726,8 @@
 <script>
 (function () {
   var introSeen = sessionStorage.getItem('introSeen');
+  sessionStorage.removeItem('introSeen');
+
   if (introSeen) {
     var introEl = document.getElementById('anatomyIntro');
     if (introEl) {
@@ -1723,7 +1739,7 @@
       if (typeof startHeroScienceTyping === 'function') {
         startHeroScienceTyping();
       }
-    }, 400);
+    }, 800);
     return;
   }
 
@@ -1736,7 +1752,7 @@
   var timers = [];
   var finished = false;
 
-  function finishIntro() {
+  function finishIntro(completed) {
     if (!intro || finished) return;
     finished = true;
     intro.classList.add('is-hidden');
@@ -1744,14 +1760,16 @@
     timers.forEach(clearTimeout);
     if (chart) chart.destroy();
     document.body.classList.remove('intro-lock');
-    sessionStorage.setItem('introSeen', '1');
+    if (completed) {
+      sessionStorage.setItem('introSeen', '1');
+    }
     if (typeof startHeroScienceTyping === 'function') {
       setTimeout(startHeroScienceTyping, 400);
     }
   }
 
   if (reducedMotion || !canvasWrap || !window.BodyMuscles) {
-    finishIntro();
+    finishIntro(false);
     return;
   }
 
@@ -1884,14 +1902,16 @@
     showStmt('stmt-3', s3In, s3Out);
 
     var holdDelay = totalDuration + 600;
-    var tf = setTimeout(finishIntro, holdDelay);
+    var tf = setTimeout(function () {
+      finishIntro(true);
+    }, holdDelay);
     timers.push(tf);
   }
 
   if (skipButton) {
     skipButton.addEventListener('click', function () {
       timers.forEach(clearTimeout);
-      finishIntro();
+      finishIntro(false);
     });
   }
 
@@ -1901,7 +1921,10 @@
   timers.push(setTimeout(runSequence, 400));
 
   // Hard fallback
-  timers.push(setTimeout(finishIntro, 12000));
+  timers.push(setTimeout(function () {
+    finishIntro(false);
+  }, 12000));
+
 })();
 </script>
 <script>
