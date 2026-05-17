@@ -151,6 +151,44 @@
   .nav-links button { font-size: 14px; color: var(--text2); text-decoration: none; letter-spacing: 1px; transition: color 0.2s, background 0.2s, border-color 0.2s; background: transparent; border: none; font-family: inherit; cursor: pointer; }
   .nav-links a:hover,
   .nav-links button:hover { color: var(--text); }
+  .replay-intro-btn {
+    background: transparent;
+    border: none;
+    color: var(--text3);
+    font-size: 12px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    padding: 6px 10px;
+    transition: color 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .replay-intro-btn:hover {
+    color: var(--red);
+  }
+
+  .replay-intro-mobile {
+    font-size: 14px;
+    padding: 12px 0;
+    text-align: left;
+    width: 100%;
+  }
+
+  .mobile-nav-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 0;
+  }
+
+  @media (min-width: 769px) {
+    .replay-intro-mobile,
+    .mobile-nav-divider { display: none; }
+  }
+
+  @media (max-width: 768px) {
+    #replayIntroBtn { display: none; }
+  }
+
   .nav-links .nav-cta { background: var(--red); color: #fff; padding: 10px 22px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; }
   .nav-links .nav-cta:hover { background: var(--red-dark); color: #fff; }
   .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
@@ -1244,7 +1282,14 @@
     <a href="#services">Services</a>
     <a href="#nutrition">Nutrition</a>
     <button type="button" data-open-pricing>Pricing</button>
+    <button type="button" id="replayIntroBtn" class="replay-intro-btn">
+      ↺ Replay Intro
+    </button>
     <a href="apply.html" class="nav-cta">Apply Now</a>
+    <div class="mobile-nav-divider"></div>
+    <button type="button" id="replayIntroBtnMobile" class="replay-intro-btn replay-intro-mobile">
+      ↺ Replay Intro
+    </button>
   </div>
   <div
     class="hamburger"
@@ -1925,6 +1970,48 @@
     finishIntro(false);
   }, 12000));
 
+  var introOverlay = document.getElementById('anatomyIntro');
+  if (introOverlay) {
+    introOverlay.addEventListener('replayIntro', function () {
+      finished = false;
+      bodyState = {};
+      timers.forEach(clearTimeout);
+      timers = [];
+
+      // Always destroy and recreate the chart from scratch
+      if (chart) {
+        try { chart.destroy(); } catch(e) {}
+        chart = null;
+      }
+
+      // Clear and rebuild the canvas container
+      if (canvasWrap) {
+        canvasWrap.innerHTML = '';
+        var newContainer = document.createElement('div');
+        newContainer.className = 'body-muscles-container';
+        newContainer.style.cssText = 'width:100%;height:100%;display:flex;align-items:center;justify-content:center;';
+        canvasWrap.appendChild(newContainer);
+
+        if (window.BodyMuscles) {
+          chart = new window.BodyMuscles.BodyChart(newContainer, {
+            view: window.BodyMuscles.ViewSide.FRONT,
+            bodyState: {},
+            showViewLabel: false,
+            enableTransitions: true,
+          });
+        }
+      }
+
+      // Wait for chart to render then run sequence
+      setTimeout(runSequence, 500);
+
+      // Hard fallback
+      timers.push(setTimeout(function () {
+        finishIntro(true);
+      }, 12000));
+    });
+  }
+
 })();
 </script>
 <script>
@@ -2047,6 +2134,47 @@ function startHeroScienceTyping() {
       }
     });
   });
+})();
+</script>
+<script>
+(function () {
+  function replayIntro() {
+    var intro = document.getElementById('anatomyIntro');
+    if (!intro) return;
+
+    sessionStorage.removeItem('introSeen');
+
+    // Close mobile nav if open
+    var navLinks = document.getElementById('navLinks');
+    if (navLinks) navLinks.classList.remove('open');
+    var hamburger = document.querySelector('.hamburger');
+    if (hamburger) hamburger.classList.remove('open');
+
+    // Reset statements
+    ['stmt-1','stmt-2','stmt-3'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.remove('is-visible');
+    });
+
+    // Reset hero science text
+    var scienceText = document.getElementById('heroScienceText');
+    if (scienceText) scienceText.innerHTML = '';
+
+    // Show intro overlay
+    intro.style.display = '';
+    intro.classList.remove('is-hidden');
+    intro.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('intro-lock');
+
+    // Re-initialize the body-muscles chart and sequence
+    // Dispatch a custom event that the intro script listens for
+    intro.dispatchEvent(new CustomEvent('replayIntro'));
+  }
+
+  var btn1 = document.getElementById('replayIntroBtn');
+  var btn2 = document.getElementById('replayIntroBtnMobile');
+  if (btn1) btn1.addEventListener('click', replayIntro);
+  if (btn2) btn2.addEventListener('click', replayIntro);
 })();
 </script>
 </body>
