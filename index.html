@@ -2170,7 +2170,11 @@ function startHeroScienceTyping() {
 
     // Re-initialize the body-muscles chart and sequence
     // Dispatch a custom event that the intro script listens for
-    intro.dispatchEvent(new CustomEvent('replayIntro'));
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        intro.dispatchEvent(new CustomEvent('replayIntro'));
+      });
+    });
   }
 
   var btn1 = document.getElementById('replayIntroBtn');
