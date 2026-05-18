@@ -340,6 +340,90 @@
   .application-status.success { color: #7edda0; }
   .application-status.error { color: #ff8989; }
   .application-status.pending { color: var(--text2); }
+  .success-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(13,12,12,0.97);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .success-overlay.is-visible {
+    display: flex;
+  }
+
+  .success-card {
+    background: var(--bg2);
+    border: 1px solid #2a4a2a;
+    border-radius: 12px;
+    padding: 48px 40px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .success-tick {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(40, 167, 69, 0.12);
+    border: 2px solid #28a745;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .success-tick svg {
+    width: 36px;
+    height: 36px;
+    stroke: #28a745;
+    stroke-width: 2.5;
+    fill: none;
+  }
+
+  .success-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 1px;
+  }
+
+  .success-message {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .success-back {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .success-back:hover {
+    border-color: var(--red);
+    color: var(--text);
+  }
   .hidden-field {
     display: none;
   }
@@ -560,9 +644,11 @@
         <form
           class="application-form"
           id="applicationForm"
-          action="https://formspree.io/f/mykoqjdp"
+          action="https://api.web3forms.com/submit"
           method="POST"
         >
+          <input type="hidden" name="access_key" value="9183abf9-58bc-42ac-a1d8-88a473420cde">
+          <input type="hidden" name="subject" value="New Coaching Application — Fitstronomy">
           <input type="hidden" name="_subject" value="New Fitstronomy coaching application">
           <input type="hidden" name="_captcha" value="false">
           <div class="hidden-field" aria-hidden="true">
@@ -811,6 +897,21 @@
       </section>
     </div>
   </div>
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-card">
+      <div class="success-tick">
+        <svg viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div class="success-title">Application Sent!</div>
+      <p class="success-message">
+        Thank you — your application has been received.<br>
+        Armin will review it and get back to you soon.
+      </p>
+      <a href="index.html" class="success-back">← Back to site</a>
+    </div>
+  </div>
   <script>
     const applicationForm = document.getElementById('applicationForm');
     const applicationStatus = document.getElementById('applicationStatus');
@@ -959,7 +1060,9 @@
 
         form.reset();
         setWizardStep(0, true);
-        setApplicationStatus('Application sent successfully. I will review it and get back to you soon.', 'success');
+        setApplicationStatus('Application sent successfully.', 'success');
+        var overlay = document.getElementById('successOverlay');
+        if (overlay) overlay.classList.add('is-visible');
       } catch (error) {
         setApplicationStatus(
           'The application could not be sent right now. Please try again later.',
