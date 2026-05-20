@@ -794,6 +794,145 @@
     background: rgba(5, 5, 5, 0.74);
     backdrop-filter: blur(10px);
   }
+  .currency-drawer {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    z-index: 10;
+  }
+  .currency-drawer-tab {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    color: var(--text2);
+    padding: 14px 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.2s, color 0.2s;
+  }
+  .currency-drawer-tab:hover {
+    background: var(--bg2);
+    color: var(--text);
+  }
+  .currency-drawer-tab svg {
+    transition: transform 0.3s ease;
+  }
+  .currency-drawer.is-open .currency-drawer-tab svg {
+    transform: none;
+  }
+  .currency-drawer-panel {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.25s ease;
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(100%);
+    min-width: 110px;
+  }
+  .currency-drawer.is-open .currency-drawer-panel {
+    transform: translateY(-50%) translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .currency-btn {
+    background: transparent;
+    border: none;
+    color: var(--text3);
+    font-size: 15px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    transition: color 0.2s;
+    text-align: left;
+    padding: 0;
+    white-space: nowrap;
+  }
+  .currency-btn:hover {
+    color: var(--text2);
+  }
+  .currency-btn.is-active {
+    color: var(--text);
+    font-weight: 700;
+  }
+  @media (min-width: 769px) {
+    .currency-drawer {
+      position: absolute;
+      top: 80px;
+      right: 24px;
+      transform: none;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .currency-drawer-tab {
+      display: none;
+    }
+
+    .currency-drawer-panel {
+      position: static;
+      transform: none !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      background: transparent;
+      border: none;
+      padding: 0;
+      flex-direction: column;
+      gap: 4px;
+      min-width: unset;
+    }
+
+    .currency-btn {
+      font-size: 21px;
+      text-align: right;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .currency-drawer {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+    }
+
+    .currency-drawer-tab {
+      padding: 22px 14px;
+      font-size: 18px;
+      gap: 10px;
+    }
+
+    .currency-drawer-tab svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+  .price-value {
+    transition: opacity 0.2s;
+  }
+  .price-value.is-switching {
+    opacity: 0;
+  }
   .pricing-dialog {
     position: relative;
     width: min(1080px, 100%);
@@ -1624,6 +1763,22 @@
   <div class="pricing-backdrop" data-close-pricing></div>
   <div class="pricing-dialog" role="dialog" aria-modal="true" aria-labelledby="pricingTitle">
     <button class="pricing-close" type="button" data-close-pricing aria-label="Close pricing">×</button>
+    <div class="currency-drawer" id="currencyDrawer">
+      <button type="button" class="currency-drawer-tab" id="currencyDrawerTab">
+        <span id="currencyDrawerLabel">€</span>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+          <path id="currencyDrawerArrow" d="M7 1.5L3.5 5L7 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="currency-drawer-panel" id="currencyDrawerPanel">
+        <button type="button" class="currency-btn is-active" data-currency="eur">
+          🇫🇮 EUR
+        </button>
+        <button type="button" class="currency-btn" data-currency="sek">
+          🇸🇪 SEK
+        </button>
+      </div>
+    </div>
     <div class="pricing-header">
       <div class="section-tag">PRICING</div>
       <h2 class="section-title" id="pricingTitle">Choose The Support Level That Matches Your Goal</h2>
@@ -1633,7 +1788,7 @@
       <article class="pricing-card">
         <span class="pricing-badge">Starter</span>
         <h3>Workout Plan</h3>
-        <div class="pricing-price">€30<small>/ program</small></div>
+        <div class="pricing-price"><span class="price-value" data-eur="€30" data-sek="330 kr">€30</span><small>/ program</small></div>
         <div class="plan-duration">5–6 week program</div>
         <p>Best for clients who want a clear training structure they can follow independently.</p>
         <ul class="pricing-list">
@@ -1646,7 +1801,7 @@
       <article class="pricing-card featured">
         <span class="pricing-badge">Most Popular</span>
         <h3>Plan + Intro Session</h3>
-        <div class="pricing-price">€80<small>/ package</small></div>
+        <div class="pricing-price"><span class="price-value" data-eur="€80" data-sek="850 kr">€80</span><small>/ package</small></div>
         <p>Great for people who want a training plan plus a guided first session to learn the structure properly.</p>
         <ul class="pricing-list">
           <li>Custom workout plan included</li>
@@ -1658,14 +1813,14 @@
       <article class="pricing-card">
         <span class="pricing-badge">Premium</span>
         <h3>In-Person Coaching</h3>
-        <div class="pricing-price">€70<small>/ session</small></div>
+        <div class="pricing-price"><span class="price-value" data-eur="€70" data-sek="750 kr">€70</span><small>/ session</small></div>
         <p>Hands-on personal training with live coaching, form correction, and structured accountability.</p>
         <p class="plan-discount-note">
           Monthly packages include a discount on the per-session rate.
         </p>
         <ul class="pricing-list">
-          <li>2 sessions per week: €500 per month</li>
-          <li>3 sessions per week: €700 per month</li>
+          <li>2 sessions per week: <span class="price-value" data-eur="€500" data-sek="5,500 kr">€500</span> per month</li>
+          <li>3 sessions per week: <span class="price-value" data-eur="€700" data-sek="7,500 kr">€700</span> per month</li>
           <li>Live form correction and progression guidance</li>
           <li>Best for clients who want maximum structure and support</li>
         </ul>
@@ -1673,13 +1828,13 @@
       <article class="pricing-card">
         <span class="pricing-badge">Remote</span>
         <h3>Online Coaching</h3>
-        <div class="pricing-price">€20<small>/ session</small></div>
+        <div class="pricing-price"><span class="price-value" data-eur="€20" data-sek="220 kr">€20</span><small>/ session</small></div>
         <p>A lighter-touch remote option for clients who want ongoing programming support without in-person sessions.</p>
         <p class="plan-discount-note">
           Monthly packages include a discount on the per-session rate.
         </p>
         <ul class="pricing-list">
-          <li>3 sessions per week: €200 per month</li>
+          <li>3 sessions per week: <span class="price-value" data-eur="€200" data-sek="2,200 kr">€200</span> per month</li>
           <li>Remote coaching structure and accountability</li>
           <li>Flexible option for clients training on their own schedule</li>
           <li>Good fit for consistent independent trainees</li>
@@ -2181,6 +2336,68 @@ function startHeroScienceTyping() {
   var btn2 = document.getElementById('replayIntroBtnMobile');
   if (btn1) btn1.addEventListener('click', replayIntro);
   if (btn2) btn2.addEventListener('click', replayIntro);
+})();
+</script>
+<script>
+(function () {
+  var drawer = document.getElementById('currencyDrawer');
+  var tab = document.getElementById('currencyDrawerTab');
+  var label = document.getElementById('currencyDrawerLabel');
+  var currentCurrency = 'eur';
+
+  function closeDrawer() {
+    if (drawer) drawer.classList.remove('is-open');
+  }
+
+  function openDrawer() {
+    if (drawer) drawer.classList.add('is-open');
+  }
+
+  if (tab) {
+    tab.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (drawer.classList.contains('is-open')) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    if (drawer && !drawer.contains(e.target)) {
+      closeDrawer();
+    }
+  });
+
+  document.querySelectorAll('.currency-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var currency = btn.dataset.currency;
+      if (currency === currentCurrency) {
+        closeDrawer();
+        return;
+      }
+      currentCurrency = currency;
+
+      document.querySelectorAll('.currency-btn').forEach(function (b) {
+        b.classList.toggle('is-active', b.dataset.currency === currency);
+      });
+
+      if (label) {
+        label.textContent = currency === 'eur' ? '€' : 'kr';
+      }
+
+      document.querySelectorAll('.price-value').forEach(function (el) {
+        el.classList.add('is-switching');
+        setTimeout(function () {
+          el.textContent = el.dataset[currency];
+          el.classList.remove('is-switching');
+        }, 200);
+      });
+
+      setTimeout(closeDrawer, 300);
+    });
+  });
 })();
 </script>
 </body>
