@@ -845,13 +845,16 @@
     backdrop-filter: blur(10px);
   }
   .currency-drawer {
-    position: absolute;
+    position: sticky;
     top: 50%;
-    right: 0;
     transform: translateY(-50%);
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     z-index: 10;
+    width: max-content;
+    height: 0;
+    margin-left: auto;
   }
   .currency-drawer-tab {
     background: var(--bg3);
@@ -925,13 +928,15 @@
   }
   @media (min-width: 769px) {
     .currency-drawer {
-      position: absolute;
-      top: 80px;
-      right: 24px;
+      position: sticky;
+      top: 74px;
       transform: none;
       flex-direction: column;
       align-items: flex-end;
       gap: 4px;
+      width: max-content;
+      height: 0;
+      margin-left: auto;
     }
 
     .currency-drawer-tab {
@@ -959,9 +964,8 @@
 
   @media (max-width: 768px) {
     .currency-drawer {
-      position: absolute;
+      position: sticky;
       top: 50%;
-      right: 0;
       transform: translateY(-50%);
     }
 
