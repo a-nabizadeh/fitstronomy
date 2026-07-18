@@ -408,6 +408,55 @@
   .about-text p { font-size: 15px; color: var(--text2); line-height: 1.9; margin-bottom: 20px; }
   .about-text p strong { color: var(--text); font-weight: 500; }
   .about-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .about-social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .about-social-link:hover { color: var(--red); }
+  .about-social-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color 0.2s;
+  }
+  .about-social-link:hover .about-social-icon { border-color: rgba(226,75,74,0.6); }
+  .about-social-icon svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .about-social-copy {
+    display: grid;
+    gap: 3px;
+  }
+  .about-social-copy strong {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    letter-spacing: 1px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .about-social-copy span {
+    color: var(--text3);
+    font-size: 13px;
+    transition: color 0.2s;
+  }
+  .about-social-link:hover .about-social-copy span { color: var(--text2); }
   .badge { font-size: 11px; letter-spacing: 1px; padding: 6px 12px; border: 1px solid var(--border2); border-radius: 20px; color: var(--text2); font-family: 'Oswald', sans-serif; }
 
   #nutrition { background: #0e0e0e; }
@@ -1581,6 +1630,19 @@
           <span class="badge">NUTRITION COACHING</span>
           <span class="badge">ONLINE COACHING</span>
         </div>
+        <a class="about-social-link" href="https://www.instagram.com/fitsronomy?igsh=MTJnZTV3bm43c3R1cA==" target="_blank" rel="noopener" aria-label="Follow Fitstronomy on Instagram">
+          <span class="about-social-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="4" y="4" width="16" height="16" rx="5"></rect>
+              <circle cx="12" cy="12" r="3.5"></circle>
+              <circle cx="17" cy="7" r="0.8"></circle>
+            </svg>
+          </span>
+          <span class="about-social-copy">
+            <strong>More from your coach</strong>
+            <span>@fitsronomy</span>
+          </span>
+        </a>
       </div>
     </div>
   </div>
@@ -1828,13 +1890,14 @@
       <article class="pricing-card">
         <span class="pricing-badge">Remote</span>
         <h3>Online Coaching</h3>
-        <div class="pricing-price"><span class="price-value" data-eur="€20" data-sek="220 kr">€20</span><small>/ session</small></div>
+        <div class="pricing-price"><span class="price-value" data-eur="€35" data-sek="350 kr">€35</span><small>/ session</small></div>
         <p>A lighter-touch remote option for clients who want ongoing programming support without in-person sessions.</p>
         <p class="plan-discount-note">
           Monthly packages include a discount on the per-session rate.
         </p>
         <ul class="pricing-list">
-          <li>3 sessions per week: <span class="price-value" data-eur="€200" data-sek="2,200 kr">€200</span> per month</li>
+          <li>2 sessions per week: <span class="price-value" data-eur="€250" data-sek="2,500 kr">€250</span> per month</li>
+          <li>3 sessions per week: <span class="price-value" data-eur="€380" data-sek="3,800 kr">€380</span> per month</li>
           <li>Remote coaching structure and accountability</li>
           <li>Flexible option for clients training on their own schedule</li>
           <li>Good fit for consistent independent trainees</li>
@@ -1874,9 +1937,7 @@
     <p class="section-subtitle">Book a free 30-minute consultation and let's talk about your goals.</p>
     <div class="contact-grid">
       <div class="contact-info">
-        <p>Whether you want to train in person or online, I'd love to hear from you. Fill out the form or reach out directly through any of the channels below.</p>
-        <div class="contact-links">
-        </div>
+        <p>Whether you want to train in person or online, I'd love to hear from you. Fill out the form and I'll get back to you directly.</p>
       </div>
       <form
         class="contact-form"
@@ -1911,7 +1972,7 @@
     <a href="apply.html">Apply</a>
   </nav>
   <div class="footer-social">
-    <a href="#" aria-label="Instagram">
+    <a href="https://www.instagram.com/fitsronomy?igsh=MTJnZTV3bm43c3R1cA==" target="_blank" rel="noopener" aria-label="Instagram">
       <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
         <rect x="4" y="4" width="16" height="16" rx="5"></rect>
         <circle cx="12" cy="12" r="3.5"></circle>
