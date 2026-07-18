@@ -835,6 +835,7 @@
     justify-content: center;
     padding: 24px;
     z-index: 300;
+    overflow: hidden;
   }
   .pricing-modal.is-open { display: flex; }
   .pricing-backdrop {
@@ -887,14 +888,13 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    transform: translateX(100%);
     opacity: 0;
     pointer-events: none;
     transition: transform 0.3s ease, opacity 0.25s ease;
     position: absolute;
     right: 100%;
     top: 50%;
-    transform: translateY(-50%) translateX(100%);
+    transform: translateY(-50%) translateX(12px);
     min-width: 110px;
   }
   .currency-drawer.is-open .currency-drawer-panel {
@@ -986,7 +986,10 @@
     position: relative;
     width: min(1080px, 100%);
     max-height: min(88vh, 920px);
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
     padding: 32px;
     border-radius: 28px;
     border: 1px solid rgba(255,255,255,0.08);
@@ -1327,7 +1330,7 @@
     }
     .pricing-modal { padding: 14px; align-items: stretch; }
     .pricing-close { position: sticky; top: 0; margin-left: auto; display: block; }
-    .pricing-dialog { padding: 24px 18px; }
+    .pricing-dialog { width: 100%; max-width: 100%; padding: 24px 18px; }
     footer { padding: 20px; }
   }
 
