@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; img-src 'self' data:; font-src https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' https://unpkg.com/body-muscles@1.0.0/dist/umd/body-muscles.umd.min.js; connect-src 'self' https://api.web3forms.com; form-action https://api.web3forms.com; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; img-src 'self' data:; font-src https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; connect-src 'self' https://api.web3forms.com; form-action https://api.web3forms.com; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="icon" href="favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
@@ -24,7 +24,7 @@
     --border2: #333333;
     --text: #ffffff;
     --text2: #aaaaaa;
-    --text3: #666666;
+    --text3: #8a8a8a;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { overflow-x: hidden; }
@@ -42,6 +42,11 @@
   select,
   textarea { font: inherit; }
   a { color: inherit; }
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 4px;
+  }
   .page-shell {
     width: min(1240px, calc(100% - 40px));
     margin: 0 auto;
@@ -64,7 +69,7 @@
   .back-link {
     text-decoration: none;
     color: var(--text2);
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 1px;
     text-transform: uppercase;
   }
@@ -93,7 +98,7 @@
     gap: 10px;
     color: var(--red);
     letter-spacing: 2px;
-    font-size: 11px;
+    font-size: 12px;
     text-transform: uppercase;
     margin-bottom: 18px;
   }
@@ -138,7 +143,7 @@
   .quick-card span {
     display: block;
     color: var(--text2);
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.7;
   }
   .form-shell-header {
@@ -155,7 +160,7 @@
   }
   .form-shell-header p {
     color: var(--text2);
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.7;
     max-width: 28ch;
     text-align: right;
@@ -187,7 +192,7 @@
   }
   .form-section-header p {
     color: var(--text2);
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.7;
     max-width: 34ch;
     text-align: right;
@@ -215,13 +220,14 @@
   label,
   .field-label {
     color: var(--text);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     line-height: 1.45;
   }
   .form-field:has(input:required) > label::after,
   .form-field:has(select:required) > label::after,
   .form-field:has(textarea:required) > label::after,
+  fieldset.form-field:has(input:required) > legend::after,
   .question-block:has(input:required) > .field-label::after,
   .choice.terms:has(input:required) > span::after {
     content: ' *';
@@ -274,7 +280,7 @@
     border-radius: 8px;
     background: rgba(255,255,255,0.025);
     color: var(--text2);
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.45;
     padding: 12px;
   }
@@ -299,7 +305,7 @@
     border-left: 3px solid var(--red);
     background: rgba(226,75,74,0.08);
     color: var(--text2);
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.7;
     margin: 16px 0;
     padding: 14px 16px;
@@ -436,10 +442,153 @@
   .hidden-field {
     display: none;
   }
+  .selected-plan {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    border: 1px solid rgba(226,75,74,0.4);
+    border-radius: 8px;
+    background: rgba(226,75,74,0.08);
+    padding: 14px 16px;
+    margin-bottom: 22px;
+  }
+  .selected-plan[hidden] { display: none; }
+  .selected-plan-copy { display: grid; gap: 3px; }
+  .selected-plan-copy span {
+    color: var(--text2);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .selected-plan-copy strong { font-size: 15px; }
+  .selected-plan a {
+    color: var(--red);
+    font-size: 13px;
+    text-decoration: none;
+  }
+  .application-sections {
+    display: grid;
+    gap: 8px;
+    margin-top: 26px;
+  }
+  .application-sections + .quick-grid { display: none; }
+  .application-sections button {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.02);
+    color: var(--text2);
+    cursor: pointer;
+    padding: 10px 12px;
+    text-align: left;
+  }
+  .application-sections button:disabled { cursor: not-allowed; opacity: 0.45; }
+  .application-sections button.is-current {
+    border-color: rgba(226,75,74,0.58);
+    color: var(--text);
+    background: rgba(226,75,74,0.09);
+  }
+  .application-section-number {
+    color: var(--red);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+  }
+  .conditional-field[hidden] { display: none; }
+  fieldset {
+    border: 0;
+    min-width: 0;
+    padding: 0;
+  }
+  legend { padding: 0; }
+  .validation-summary {
+    border-left: 3px solid #ff8989;
+    background: rgba(255,90,90,0.08);
+    color: #ffb0b0;
+    border-radius: 6px;
+    padding: 13px 15px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .validation-summary[hidden] { display: none; }
+  .privacy-notice {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text2);
+    font-size: 14px;
+    line-height: 1.7;
+    padding: 15px 16px;
+  }
+  .privacy-notice a,
+  .terms a { color: var(--red); }
   .wizard-progress,
   .wizard-controls {
     display: none;
   }
+  .application-form.wizard-active { gap: 20px; }
+  .application-form.wizard-active .wizard-progress { display: block; }
+  .application-form.wizard-active .form-section {
+    display: none;
+    border-top: 0;
+    padding-top: 0;
+  }
+  .application-form.wizard-active .form-section.is-active { display: block; }
+  .application-form.wizard-active .form-actions { display: none; }
+  .application-form.wizard-active.wizard-last-step .form-actions { display: flex; }
+  .application-form.wizard-active .wizard-controls { display: flex; }
+  .application-form.wizard-active.wizard-last-step .wizard-next { display: none; }
+  .wizard-progress { margin-bottom: 22px; }
+  .wizard-progress-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    color: var(--text2);
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+  .wizard-progress-meta strong { color: var(--text); font-weight: 600; }
+  .wizard-progress-track {
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+  }
+  .wizard-progress-bar {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--red);
+    transition: width 0.25s ease;
+  }
+  .wizard-controls {
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+  }
+  .wizard-button {
+    width: auto;
+    min-width: 112px;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 13px 16px;
+  }
+  .wizard-button.primary { border-color: var(--red); background: var(--red); }
+  .wizard-button.secondary { background: transparent; color: var(--text2); }
+  .wizard-button:disabled { cursor: not-allowed; opacity: 0.45; }
+  .wizard-button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
   @media (max-width: 900px) {
     .page-shell {
       width: min(100% - 24px, 680px);
@@ -456,7 +605,7 @@
     .form-shell {
       padding: 22px;
     }
-    .intro { position: static; }
+    .intro { display: none; }
     h1 {
       font-size: clamp(30px, 10vw, 44px);
     }
@@ -467,97 +616,14 @@
     .quick-grid {
       display: none;
     }
-    .wizard-progress {
-      display: none;
-      margin-bottom: 22px;
-    }
-    .application-form.wizard-active .wizard-progress {
-      display: block;
-    }
-    .wizard-progress-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      color: var(--text2);
-      font-size: 12px;
-      line-height: 1.4;
-      margin-bottom: 10px;
-    }
-    .wizard-progress-meta strong {
-      color: var(--text);
-      font-weight: 600;
-    }
-    .wizard-progress-track {
-      height: 6px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-    }
-    .wizard-progress-bar {
-      display: block;
-      width: 0;
-      height: 100%;
-      border-radius: inherit;
-      background: var(--red);
-      transition: width 0.25s ease;
-    }
-    .application-form.wizard-active {
-      gap: 20px;
-    }
-    .application-form.wizard-active .form-section {
-      display: none;
-      border-top: 0;
-      padding-top: 0;
-    }
-    .application-form.wizard-active .form-section.is-active {
-      display: block;
-    }
-    .application-form.wizard-active .form-actions {
-      display: none;
-    }
-    .application-form.wizard-active.wizard-last-step .form-actions {
-      display: flex;
-    }
-    .application-form.wizard-active .wizard-controls {
-      display: flex;
-    }
-    .application-form.wizard-active.wizard-last-step .wizard-next {
-      display: none;
-    }
     .wizard-controls {
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      border-top: 1px solid var(--border);
-      padding-top: 18px;
-    }
-    .wizard-button {
-      width: auto;
-      min-width: 112px;
-      border: 1px solid var(--border2);
-      border-radius: 8px;
-      color: var(--text);
-      cursor: pointer;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      padding: 13px 16px;
-    }
-    .wizard-button.primary {
-      border-color: var(--red);
-      background: var(--red);
-    }
-    .wizard-button.secondary {
-      background: transparent;
-      color: var(--text2);
-    }
-    .wizard-button:disabled {
-      cursor: not-allowed;
-      opacity: 0.45;
-    }
-    .wizard-button:focus-visible {
-      outline: 2px solid #fff;
-      outline-offset: 3px;
+      position: sticky;
+      bottom: 0;
+      z-index: 20;
+      margin: 0 -10px -10px;
+      padding: 14px 10px 10px;
+      background: rgba(17,17,17,0.97);
+      backdrop-filter: blur(10px);
     }
   }
   @media (max-width: 520px) {
@@ -623,10 +689,17 @@
         <div class="eyebrow">Coaching Application</div>
         <h1>Tell Me Where You Are Now And Where You Want To Go</h1>
         <p>Use this application to share your current training, goals, lifestyle, and what has or has not worked before. Your answers help me understand where you are starting from and how to guide your next step.</p>
+        <nav class="application-sections" aria-label="Application sections">
+          <button type="button" class="is-current" data-wizard-step="0"><span class="application-section-number">01</span><span>Contact &amp; Basics</span></button>
+          <button type="button" data-wizard-step="1" disabled><span class="application-section-number">02</span><span>Goals</span></button>
+          <button type="button" data-wizard-step="2" disabled><span class="application-section-number">03</span><span>Training Background</span></button>
+          <button type="button" data-wizard-step="3" disabled><span class="application-section-number">04</span><span>Safety Screening</span></button>
+          <button type="button" data-wizard-step="4" disabled><span class="application-section-number">05</span><span>Coaching Preference</span></button>
+        </nav>
         <div class="quick-grid">
           <div class="quick-card">
             <strong>Your starting point</strong>
-            <span>Tell me about your training history, schedule, injuries, confidence level, and the habits you are working with right now.</span>
+            <span>Tell me about your training history, schedule, confidence level, and the habits you are working with right now.</span>
           </div>
           <div class="quick-card">
             <strong>Your main goal</strong>
@@ -648,7 +721,14 @@
             <div class="eyebrow">Application Form</div>
             <h2>Complete The Coaching Intake</h2>
           </div>
-          <p>Take a few minutes to fill this out thoroughly. The more precise the answers, the better I can guide the next step.</p>
+          <p>Usually takes 5–8 minutes. You will review goals, training background, safety screening, and coaching preferences.</p>
+        </div>
+        <div class="selected-plan" id="selectedPlanNotice" hidden>
+          <div class="selected-plan-copy">
+            <span>Selected coaching option</span>
+            <strong id="selectedPlanName"></strong>
+          </div>
+          <a href="index.html#pricing-overview">Change</a>
         </div>
         <form
           class="application-form"
@@ -671,16 +751,17 @@
           <div class="wizard-progress" id="applicationWizardProgress">
             <div class="wizard-progress-meta">
               <span id="wizardStepCount">Step 1 of 5</span>
-              <strong id="wizardStepTitle">Contact Details</strong>
+              <strong id="wizardStepTitle">Contact &amp; Basics</strong>
             </div>
             <div class="wizard-progress-track" aria-hidden="true">
               <span class="wizard-progress-bar" id="wizardProgressBar"></span>
             </div>
           </div>
+          <div class="validation-summary" id="applicationValidationSummary" role="alert" tabindex="-1" hidden></div>
 
           <div class="form-section">
             <div class="form-section-header">
-              <h3>Contact Details</h3>
+              <h3>Contact &amp; Basics</h3>
               <p>The essentials I need to contact you and understand your starting point.</p>
             </div>
             <div class="field-grid">
@@ -723,8 +804,8 @@
               <p>What you want to achieve and what kind of change matters most right now.</p>
             </div>
             <div class="field-grid">
-              <div class="form-field full">
-                <span class="field-label">Which goals fit best?</span>
+              <fieldset class="form-field full">
+                <legend class="field-label">Which goals fit best?</legend>
                 <div class="choice-grid">
                   <label class="choice"><input type="checkbox" name="goal_areas[]" value="Improved health"><span>Improved health</span></label>
                   <label class="choice"><input type="checkbox" name="goal_areas[]" value="Improved endurance"><span>Improved endurance</span></label>
@@ -732,13 +813,13 @@
                   <label class="choice"><input type="checkbox" name="goal_areas[]" value="Increased muscle mass"><span>Increased muscle mass</span></label>
                   <label class="choice"><input type="checkbox" name="goal_areas[]" value="Fat loss"><span>Fat loss</span></label>
                 </div>
-              </div>
+              </fieldset>
               <div class="form-field full">
                 <label for="mainGoal">What is your goal with your training?</label>
-                <textarea id="mainGoal" name="main_training_goal" maxlength="2000"></textarea>
+                <textarea id="mainGoal" name="main_training_goal" maxlength="2000" required></textarea>
               </div>
-              <div class="form-field full">
-                <span class="field-label">Timeline for achieving your goal</span>
+              <fieldset class="form-field full">
+                <legend class="field-label">Timeline for achieving your goal</legend>
                 <div class="choice-grid">
                   <label class="choice"><input type="radio" name="goal_timeline" value="8 weeks"><span>8 weeks</span></label>
                   <label class="choice"><input type="radio" name="goal_timeline" value="16 weeks"><span>16 weeks</span></label>
@@ -746,11 +827,13 @@
                   <label class="choice"><input type="radio" name="goal_timeline" value="32 weeks"><span>32 weeks</span></label>
                   <label class="choice"><input type="radio" name="goal_timeline" value="40 weeks"><span>40 weeks</span></label>
                   <label class="choice"><input type="radio" name="goal_timeline" value="1 year"><span>1 year</span></label>
+                  <label class="choice"><input type="radio" name="goal_timeline" value="No fixed deadline"><span>No fixed deadline</span></label>
+                  <label class="choice"><input type="radio" name="goal_timeline" value="Not sure yet"><span>Not sure yet</span></label>
                 </div>
-              </div>
+              </fieldset>
               <div class="form-field">
                 <label for="weeklyTraining">How many days per week can you realistically train?</label>
-                <select id="weeklyTraining" name="weekly_training_commitment">
+                <select id="weeklyTraining" name="weekly_training_commitment" required>
                   <option value="">Please select</option>
                   <option value="1 day per week">1 day per week</option>
                   <option value="2 days per week">2 days per week</option>
@@ -773,22 +856,22 @@
                 <label for="trainingHistory">Tell me about your training history.</label>
                 <textarea id="trainingHistory" name="training_history" maxlength="2000"></textarea>
               </div>
-              <div class="form-field">
-                <span class="field-label">Are you currently exercising regularly, at least 3x per week?</span>
+              <fieldset class="form-field">
+                <legend class="field-label">Are you currently exercising regularly, at least 3x per week?</legend>
                 <div class="choice-grid">
-                  <label class="choice"><input type="radio" name="currently_exercising" value="Yes"><span>Yes</span></label>
+                  <label class="choice"><input type="radio" name="currently_exercising" value="Yes" required><span>Yes</span></label>
                   <label class="choice"><input type="radio" name="currently_exercising" value="No"><span>No</span></label>
                 </div>
-              </div>
-              <div class="form-field">
-                <span class="field-label">Have you trained with a personal trainer before?</span>
+              </fieldset>
+              <fieldset class="form-field">
+                <legend class="field-label">Have you trained with a personal trainer before?</legend>
                 <div class="choice-grid">
                   <label class="choice"><input type="radio" name="trained_with_pt_before" value="Yes"><span>Yes</span></label>
                   <label class="choice"><input type="radio" name="trained_with_pt_before" value="No"><span>No</span></label>
                 </div>
-              </div>
-              <div class="form-field full">
-                <label for="previousTrainingType">If yes, what kind of training did you do?</label>
+              </fieldset>
+              <div class="form-field full conditional-field" id="previousTrainingField" hidden>
+                <label for="previousTrainingType">What kind of training are you doing now?</label>
                 <textarea id="previousTrainingType" name="previous_training_type" maxlength="2000"></textarea>
               </div>
             </div>
@@ -796,73 +879,17 @@
 
           <div class="form-section">
             <div class="form-section-header">
-              <h3>Health And PAR-Q</h3>
-              <p>Health conditions, injuries, and the full PAR-Q screening before training starts.</p>
+              <h3>Safety Screening</h3>
+              <p>The full health and PAR-Q screening is completed separately before training starts.</p>
             </div>
-            <div class="field-grid">
-              <div class="form-field full">
-                <label for="healthConditions">If you have any diagnosed health problems, list the condition(s).</label>
-                <textarea id="healthConditions" name="diagnosed_health_conditions" maxlength="2000"></textarea>
-              </div>
-              <div class="form-field full">
-                <label for="injuries">If you have any injuries, please list them. If none, write None.</label>
-                <textarea id="injuries" name="injuries" maxlength="2000" required></textarea>
-              </div>
-            </div>
+            <p class="privacy-notice">For your privacy, this website does not ask you to submit diagnoses, injury details, medication information, or PAR-Q answers through the application form. Read the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a> for more information.</p>
             <div class="notice">
-              <strong>If you answer yes to one or more PAR-Q questions,</strong> talk to your doctor before becoming much more physically active or before doing a fitness appraisal.
+              <strong>Before coaching begins,</strong> you will need to complete a separate safety screening. Medical clearance may be required depending on your answers.
             </div>
-            <div class="field-grid">
-              <div class="question-block full">
-                <span class="field-label">Has your doctor ever said that you have a heart condition and that you should only do physical activity recommended by a doctor?</span>
-                <div class="choice-grid tight">
-                  <label class="choice"><input type="radio" name="parq_heart_condition" value="No" required><span>No</span></label>
-                  <label class="choice"><input type="radio" name="parq_heart_condition" value="Yes"><span>Yes</span></label>
-                </div>
-              </div>
-              <div class="question-block full">
-                <span class="field-label">Do you feel pain in your chest when you do physical activity?</span>
-                <div class="choice-grid tight">
-                  <label class="choice"><input type="radio" name="parq_chest_pain_activity" value="No" required><span>No</span></label>
-                  <label class="choice"><input type="radio" name="parq_chest_pain_activity" value="Yes"><span>Yes</span></label>
-                </div>
-              </div>
-              <div class="question-block full">
-                <span class="field-label">In the past month, have you had chest pain when you were not doing physical activity?</span>
-                <div class="choice-grid tight">
-                  <label class="choice"><input type="radio" name="parq_chest_pain_rest" value="No" required><span>No</span></label>
-                  <label class="choice"><input type="radio" name="parq_chest_pain_rest" value="Yes"><span>Yes</span></label>
-                </div>
-              </div>
-              <div class="question-block full">
-                <span class="field-label">Do you lose your balance because of dizziness, or do you ever lose consciousness?</span>
-                <div class="choice-grid tight">
-                  <label class="choice"><input type="radio" name="parq_dizziness_balance" value="No" required><span>No</span></label>
-                  <label class="choice"><input type="radio" name="parq_dizziness_balance" value="Yes"><span>Yes</span></label>
-                </div>
-              </div>
-              <div class="question-block full">
-                <span class="field-label">Do you have a bone or joint problem that could be made worse by a change in your physical activity?</span>
-                <div class="choice-grid tight">
-                  <label class="choice"><input type="radio" name="parq_bone_joint_problem" value="No" required><span>No</span></label>
-                  <label class="choice"><input type="radio" name="parq_bone_joint_problem" value="Yes"><span>Yes</span></label>
-                </div>
-              </div>
-              <div class="question-block full">
-                <span class="field-label">Is your doctor currently prescribing drugs for your blood pressure or heart condition?</span>
-                <div class="choice-grid tight">
-                  <label class="choice"><input type="radio" name="parq_prescribed_drugs" value="No" required><span>No</span></label>
-                  <label class="choice"><input type="radio" name="parq_prescribed_drugs" value="Yes"><span>Yes</span></label>
-                </div>
-              </div>
-              <div class="question-block full">
-                <span class="field-label">Do you know of any other reason why you should not do physical activity?</span>
-                <div class="choice-grid tight">
-                  <label class="choice"><input type="radio" name="parq_other_reason" value="No" required><span>No</span></label>
-                  <label class="choice"><input type="radio" name="parq_other_reason" value="Yes"><span>Yes</span></label>
-                </div>
-              </div>
-            </div>
+            <label class="choice terms full">
+              <input type="checkbox" name="pre_training_screening_acknowledgement" value="Acknowledged" required>
+              <span>I understand that coaching cannot begin until the required health and PAR-Q screening has been completed through the process provided by the coach.</span>
+            </label>
           </div>
 
           <div class="form-section">
@@ -871,27 +898,27 @@
               <p>Choose the kind of support you are most interested in. We can refine the details together.</p>
             </div>
             <div class="field-grid">
-              <div class="form-field full">
-                <span class="field-label">Which option are you applying for?</span>
+              <fieldset class="form-field full">
+                <legend class="field-label">Which option are you applying for?</legend>
                 <div class="choice-grid">
-                  <label class="choice"><input type="radio" name="package_interest" value="Workout Plan, 30 euro per program"><span>Workout Plan, €30 per program</span></label>
-                  <label class="choice"><input type="radio" name="package_interest" value="Plan + Intro Session, 80 euro package"><span>Plan + Intro Session, €80 package</span></label>
-                  <label class="choice"><input type="radio" name="package_interest" value="In-Person Coaching, 70 euro per session"><span>In-Person Coaching, €70 per session</span></label>
-                  <label class="choice"><input type="radio" name="package_interest" value="Online Coaching, 20 euro per session"><span>Online Coaching, €20 per session</span></label>
+                  <label class="choice"><input type="radio" name="package_interest" value="Workout Plan, 30 euro per program" data-plan="workout-plan" required><span>Workout Plan, €30 per program</span></label>
+                  <label class="choice"><input type="radio" name="package_interest" value="Plan + Intro Session, 80 euro package" data-plan="plan-intro"><span>Plan + Intro Session, €80 package</span></label>
+                  <label class="choice"><input type="radio" name="package_interest" value="In-Person Coaching, 70 euro per session" data-plan="in-person"><span>In-Person Coaching, €70 per session</span></label>
+                  <label class="choice"><input type="radio" name="package_interest" value="Online Coaching, 35 euro per session" data-plan="online"><span>Online Coaching, €35 per session</span></label>
                   <label class="choice"><input type="radio" name="package_interest" value="Not sure yet"><span>Not sure yet</span></label>
                 </div>
-              </div>
-              <div class="form-field full">
-                <span class="field-label">Where do you prefer to train?</span>
+              </fieldset>
+              <fieldset class="form-field full">
+                <legend class="field-label">Where do you prefer to train?</legend>
                 <div class="choice-grid">
                   <label class="choice"><input type="radio" name="training_location" value="Home"><span>Home</span></label>
                   <label class="choice"><input type="radio" name="training_location" value="Gym"><span>Gym</span></label>
                   <label class="choice"><input type="radio" name="training_location" value="Both or flexible"><span>Both or flexible</span></label>
                 </div>
-              </div>
+              </fieldset>
               <label class="choice terms full">
                 <input type="checkbox" name="information_accuracy_confirmation" value="Confirmed" required>
-                <span>All the information on this form is correct to the best of my knowledge. I have sought and followed any necessary medical advice, and I understand that the information given will be kept confidential.</span>
+                <span>I confirm that the information in this application is accurate to the best of my knowledge.</span>
               </label>
             </div>
           </div>

@@ -362,6 +362,19 @@
     observer.observe(bar);
   }
 
+  function setupNutritionDisclosure() {
+    var button = document.getElementById('nutritionToggle');
+    var calculator = document.getElementById('nutritionCalculator');
+    if (!button || !calculator) return;
+
+    button.addEventListener('click', function () {
+      var willOpen = calculator.hidden;
+      calculator.hidden = !willOpen;
+      button.setAttribute('aria-expanded', String(willOpen));
+      button.textContent = willOpen ? 'Close Calculator' : 'Open Calculator';
+    });
+  }
+
   function setupServiceCards() {
     document.querySelectorAll('.service-card').forEach(function (card) {
       function toggle() {
@@ -419,56 +432,22 @@
     if (btn2) btn2.addEventListener('click', replayIntro);
   }
 
-  function setupCurrencyDrawer() {
-    var drawer = document.getElementById('currencyDrawer');
-    var tab = document.getElementById('currencyDrawerTab');
-    var label = document.getElementById('currencyDrawerLabel');
+  function setupCurrencySwitcher() {
     var currentCurrency = 'eur';
-
-    function closeDrawer() {
-      if (drawer) drawer.classList.remove('is-open');
-    }
-
-    function openDrawer() {
-      if (drawer) drawer.classList.add('is-open');
-    }
-
-    if (tab) {
-      tab.addEventListener('click', function (event) {
-        event.stopPropagation();
-        if (drawer && drawer.classList.contains('is-open')) {
-          closeDrawer();
-        } else {
-          openDrawer();
-        }
-      });
-    }
-
-    document.addEventListener('click', function (event) {
-      if (drawer && !drawer.contains(event.target)) {
-        closeDrawer();
-      }
-    });
 
     document.querySelectorAll('.currency-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var currency = btn.dataset.currency;
         if (!['eur', 'sek'].includes(currency)) return;
-
-        if (currency === currentCurrency) {
-          closeDrawer();
-          return;
-        }
+        if (currency === currentCurrency) return;
 
         currentCurrency = currency;
 
         document.querySelectorAll('.currency-btn').forEach(function (otherButton) {
-          otherButton.classList.toggle('is-active', otherButton.dataset.currency === currency);
+          var isActive = otherButton.dataset.currency === currency;
+          otherButton.classList.toggle('is-active', isActive);
+          otherButton.setAttribute('aria-pressed', String(isActive));
         });
-
-        if (label) {
-          label.textContent = currency === 'eur' ? '\u20ac' : 'kr';
-        }
 
         document.querySelectorAll('.price-value').forEach(function (el) {
           el.classList.add('is-switching');
@@ -477,8 +456,6 @@
             el.classList.remove('is-switching');
           }, 200);
         });
-
-        setTimeout(closeDrawer, 300);
       });
     });
   }
@@ -487,7 +464,8 @@
   setupPageReset();
   setupIntro();
   setupStatsAnimation();
+  setupNutritionDisclosure();
   setupServiceCards();
   setupIntroReplay();
-  setupCurrencyDrawer();
+  setupCurrencySwitcher();
 })();

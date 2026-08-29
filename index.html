@@ -26,7 +26,7 @@
     --border2: #333333;
     --text: #ffffff;
     --text2: #aaaaaa;
-    --text3: #666666;
+    --text3: #8a8a8a;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; overflow-x: hidden; }
@@ -36,6 +36,12 @@
   input,
   select,
   textarea { font: inherit; }
+  a:focus-visible,
+  button:focus-visible,
+  .hamburger:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 4px;
+  }
 
   .intro-overlay {
     position: fixed;
@@ -222,7 +228,7 @@
     background-size: 60px 60px; opacity: 0.15; pointer-events: none;
   }
   .hero-content { position: relative; z-index: 1; max-width: 640px; min-width: 0; width: 100%; }
-  .hero-tag { font-size: 11px; color: var(--red); letter-spacing: 3px; font-family: 'Oswald', sans-serif; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .hero-tag { font-size: 12px; color: var(--red); letter-spacing: 3px; font-family: 'Oswald', sans-serif; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
   .hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--red); }
   .hero h1 { font-family: 'Oswald', sans-serif; font-size: clamp(48px, 7vw, 80px); font-weight: 700; line-height: 1.05; margin-bottom: 24px; letter-spacing: 1px; }
   .hero h1 .accent { color: var(--red); }
@@ -291,7 +297,7 @@
   .stat-num.pulse {
     animation: statPulse 0.35s ease-out;
   }
-  .stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; letter-spacing: 1px; }
+  .stat-label { font-size: 13px; color: var(--text3); margin-top: 4px; letter-spacing: 1px; }
   .stat-progress {
     height: 2px;
     background: var(--border);
@@ -309,7 +315,7 @@
 
   section { padding: 80px 48px; }
   .section-inner { max-width: 860px; margin: 0 auto; }
-  .section-tag { font-size: 11px; color: var(--red); letter-spacing: 3px; font-family: 'Oswald', sans-serif; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .section-tag { font-size: 12px; color: var(--red); letter-spacing: 3px; font-family: 'Oswald', sans-serif; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
   .section-tag::before { content: ''; width: 24px; height: 1px; background: var(--red); }
   .section-title { font-family: 'Oswald', sans-serif; font-size: clamp(28px, 4vw, 40px); font-weight: 600; margin-bottom: 16px; letter-spacing: 1px; }
   .section-subtitle { font-size: 15px; color: var(--text2); line-height: 1.8; max-width: 560px; margin-bottom: 48px; }
@@ -326,9 +332,7 @@
     border: none;
     padding: 0;
   }
-  .service-card.is-flipped {
-    transform: rotateY(180deg);
-  }
+  .service-card.is-flipped { transform: rotateY(180deg); }
   .card-face {
     position: absolute;
     inset: 0;
@@ -340,10 +344,7 @@
     background: var(--bg2);
     transition: border-color 0.2s;
   }
-  .card-front {
-    display: flex;
-    flex-direction: column;
-  }
+  .card-front { display: flex; flex-direction: column; }
   .card-back {
     transform: rotateY(180deg);
     background: var(--bg3);
@@ -352,15 +353,13 @@
     flex-direction: column;
     justify-content: space-between;
   }
-  .service-card:hover .card-face {
-    border-color: var(--red);
-  }
+  .service-card:hover .card-face { border-color: var(--red); }
   .service-icon { width: 40px; height: 40px; background: rgba(226,75,74,0.1); border-radius: 8px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
   .service-icon svg { width: 18px; height: 18px; stroke: var(--red); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .service-card h3 { font-family: 'Oswald', sans-serif; font-size: 17px; letter-spacing: 1px; margin-bottom: 8px; }
-  .card-front p { font-size: 13px; color: var(--text2); line-height: 1.7; }
+  .card-front p { font-size: 14px; color: var(--text2); line-height: 1.75; }
   .card-back-label {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 2px;
     color: var(--red);
     font-family: 'Oswald', sans-serif;
@@ -369,12 +368,7 @@
     align-items: center;
     gap: 8px;
   }
-  .card-back-label::before {
-    content: '';
-    width: 20px;
-    height: 1px;
-    background: var(--red);
-  }
+  .card-back-label::before { content: ''; width: 20px; height: 1px; background: var(--red); }
   .card-back-fact {
     font-size: 14px;
     color: var(--text);
@@ -382,13 +376,13 @@
     flex: 1;
   }
   .card-back-source {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--text3);
     margin-top: 16px;
     letter-spacing: 0.5px;
   }
   .card-flip-hint {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--text3);
     margin-top: 14px;
     letter-spacing: 0.8px;
@@ -404,6 +398,56 @@
     border-radius: 50%;
     display: inline-block;
     flex-shrink: 0;
+  }
+
+  #pricing-overview {
+    background: #151414;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .pricing-overview-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: 34px;
+  }
+  .pricing-overview-header .section-subtitle { margin-bottom: 0; }
+  .pricing-preview-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--border2);
+    border-bottom: 1px solid var(--border2);
+  }
+  .pricing-preview-item {
+    padding: 24px;
+    border-right: 1px solid var(--border2);
+    display: flex;
+    flex-direction: column;
+  }
+  .pricing-preview-item:last-child { border-right: 0; }
+  .pricing-preview-item h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 19px;
+    margin-bottom: 10px;
+  }
+  .pricing-preview-price {
+    color: var(--red);
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+  }
+  .pricing-preview-price small {
+    color: var(--text2);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .pricing-preview-item p {
+    color: var(--text2);
+    font-size: 14px;
+    line-height: 1.65;
+    margin-top: 12px;
   }
 
   #about { background: var(--bg); }
@@ -428,21 +472,16 @@
   }
   .about-social-link:hover { color: var(--red); }
   .about-social-icon {
-    width: 40px;
-    height: 40px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: border-color 0.2s;
   }
-  .about-social-link:hover .about-social-icon { border-color: rgba(226,75,74,0.6); }
   .about-social-icon svg {
-    width: 17px;
-    height: 17px;
+    width: 30px;
+    height: 30px;
     fill: none;
     stroke: currentColor;
     stroke-width: 1.9;
@@ -462,14 +501,31 @@
   }
   .about-social-copy span {
     color: var(--text3);
-    font-size: 13px;
+    font-size: 14px;
     transition: color 0.2s;
   }
   .about-social-link:hover .about-social-copy span { color: var(--text2); }
-  .badge { font-size: 11px; letter-spacing: 1px; padding: 6px 12px; border: 1px solid var(--border2); border-radius: 20px; color: var(--text2); font-family: 'Oswald', sans-serif; }
+  .badge { font-size: 12px; letter-spacing: 1px; padding: 6px 12px; border: 1px solid var(--border2); border-radius: 20px; color: var(--text2); font-family: 'Oswald', sans-serif; }
 
   #nutrition { background: #0e0e0e; }
   #nutrition .section-inner { max-width: 1180px; }
+  .nutrition-launch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    border-top: 1px solid var(--border2);
+    border-bottom: 1px solid var(--border2);
+    padding: 24px 0;
+  }
+  .nutrition-launch-copy {
+    color: var(--text2);
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 62ch;
+  }
+  .nutrition-shell[hidden] { display: none; }
+  .nutrition-shell:not([hidden]) { margin-top: 28px; }
   .nutrition-shell {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
@@ -547,7 +603,7 @@
   .guide-kicker {
     display: inline-block;
     margin-bottom: 10px;
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 1.6px;
     text-transform: uppercase;
     color: var(--red);
@@ -584,7 +640,7 @@
     color: var(--text2);
     border-radius: 999px;
     padding: 9px 10px;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.4px;
     cursor: pointer;
     transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
@@ -619,7 +675,7 @@
   }
   .guide-mini-card span {
     display: block;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text2);
     line-height: 1.6;
   }
@@ -635,7 +691,7 @@
   }
   .field-group.full { grid-column: 1 / -1; }
   .field-group label {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 1.4px;
     text-transform: uppercase;
     color: var(--text3);
@@ -660,7 +716,7 @@
     box-shadow: 0 0 0 3px rgba(226, 75, 74, 0.18);
   }
   .field-hint {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text3);
     line-height: 1.5;
   }
@@ -693,7 +749,7 @@
   .nutrition-status {
     grid-column: 1 / -1;
     min-height: 22px;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text2);
   }
   .nutrition-status.error { color: #ff8d8d; }
@@ -717,7 +773,7 @@
   }
   .results-heading p {
     color: var(--text2);
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.7;
     max-width: 26ch;
     text-align: right;
@@ -735,7 +791,7 @@
   }
   .summary-label {
     display: block;
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 1.4px;
     color: var(--text3);
     text-transform: uppercase;
@@ -773,7 +829,7 @@
   }
   .macro-card small {
     color: var(--text3);
-    font-size: 12px;
+    font-size: 13px;
   }
   .meal-plan {
     border: 1px solid var(--border);
@@ -791,14 +847,14 @@
   }
   .meal-plan-header {
     background: rgba(226,75,74,0.08);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 1.3px;
     text-transform: uppercase;
     color: var(--text3);
   }
   .meal-row {
     border-top: 1px solid var(--border);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text2);
   }
   .meal-row strong {
@@ -806,7 +862,7 @@
     font-weight: 500;
   }
   .nutrition-note {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text3);
     line-height: 1.7;
   }
@@ -853,141 +909,36 @@
     background: rgba(5, 5, 5, 0.74);
     backdrop-filter: blur(10px);
   }
-  .currency-drawer {
-    position: sticky;
-    top: 50%;
-    transform: translateY(-50%);
+  .currency-switcher {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    z-index: 10;
-    width: max-content;
-    height: 0;
-    margin-left: auto;
-  }
-  .currency-drawer-tab {
-    background: var(--bg3);
-    border: 1px solid var(--border2);
-    border-right: none;
-    border-radius: 8px 0 0 8px;
-    color: var(--text2);
-    padding: 14px 10px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    font-family: 'Inter', sans-serif;
-    transition: background 0.2s, color 0.2s;
-  }
-  .currency-drawer-tab:hover {
-    background: var(--bg2);
-    color: var(--text);
-  }
-  .currency-drawer-tab svg {
-    transition: transform 0.3s ease;
-  }
-  .currency-drawer.is-open .currency-drawer-tab svg {
-    transform: none;
-  }
-  .currency-drawer-panel {
-    background: var(--bg3);
-    border: 1px solid var(--border2);
-    border-right: none;
-    border-radius: 8px 0 0 8px;
-    padding: 12px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    opacity: 0;
-    pointer-events: none;
     transition: transform 0.3s ease, opacity 0.25s ease;
     position: absolute;
-    right: 100%;
-    top: 50%;
-    transform: translateY(-50%) translateX(12px);
-    min-width: 110px;
-  }
-  .currency-drawer.is-open .currency-drawer-panel {
-    transform: translateY(-50%) translateX(0);
-    opacity: 1;
-    pointer-events: auto;
+    top: 22px;
+    right: 76px;
+    z-index: 2;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 3px;
+    background: rgba(10,10,10,0.52);
   }
   .currency-btn {
     background: transparent;
     border: none;
     color: var(--text3);
-    font-size: 15px;
-    letter-spacing: 1px;
+    font-size: 13px;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
     font-weight: 400;
-    transition: color 0.2s;
-    text-align: left;
-    padding: 0;
+    transition: color 0.2s, background 0.2s;
+    padding: 8px 10px;
+    border-radius: 5px;
     white-space: nowrap;
   }
-  .currency-btn:hover {
-    color: var(--text2);
-  }
+  .currency-btn:hover { color: var(--text); }
   .currency-btn.is-active {
     color: var(--text);
     font-weight: 700;
-  }
-  @media (min-width: 769px) {
-    .currency-drawer {
-      position: sticky;
-      top: 74px;
-      transform: none;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
-      width: max-content;
-      height: 0;
-      margin-left: auto;
-    }
-
-    .currency-drawer-tab {
-      display: none;
-    }
-
-    .currency-drawer-panel {
-      position: static;
-      transform: none !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-      background: transparent;
-      border: none;
-      padding: 0;
-      flex-direction: column;
-      gap: 4px;
-      min-width: unset;
-    }
-
-    .currency-btn {
-      font-size: 21px;
-      text-align: right;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .currency-drawer {
-      position: sticky;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
-    .currency-drawer-tab {
-      padding: 22px 14px;
-      font-size: 18px;
-      gap: 10px;
-    }
-
-    .currency-drawer-tab svg {
-      width: 14px;
-      height: 14px;
-    }
+    background: rgba(226,75,74,0.18);
   }
   .price-value {
     transition: opacity 0.2s;
@@ -1041,15 +992,30 @@
     gap: 18px;
   }
   .pricing-card {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 24px;
     border-radius: 8px;
     border: 1px solid var(--border);
     background: rgba(255,255,255,0.025);
     position: relative;
     overflow: hidden;
+  }
+  .pricing-card[open] { display: flex; flex-direction: column; }
+  .pricing-card summary {
+    display: grid;
+    gap: 16px;
+    padding: 24px 24px 0;
+    list-style: none;
+  }
+  .pricing-card summary::-webkit-details-marker { display: none; }
+  .pricing-card summary:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: -2px;
+  }
+  .pricing-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 24px 24px;
+    flex: 1;
   }
   .pricing-card::before {
     content: '';
@@ -1068,7 +1034,7 @@
     box-shadow: 0 18px 34px rgba(226,75,74,0.1);
   }
   .pricing-badge {
-    align-self: start;
+    justify-self: start;
     padding: 6px 10px;
     border-radius: 999px;
     background: rgba(226,75,74,0.16);
@@ -1077,7 +1043,8 @@
     letter-spacing: 1.3px;
     text-transform: uppercase;
   }
-  .pricing-card h3 {
+  .pricing-card-title {
+    display: block;
     font-family: 'Oswald', sans-serif;
     font-size: 30px;
     letter-spacing: 1px;
@@ -1146,6 +1113,31 @@
     flex-wrap: wrap;
     margin-top: auto;
   }
+  .pricing-plan-cta,
+  .pricing-preview-cta {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 11px 14px;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .pricing-plan-cta { margin-top: auto; }
+  .pricing-preview-cta {
+    display: inline-flex;
+    align-self: flex-start;
+    margin-top: auto;
+    color: var(--red);
+  }
+  .pricing-plan-cta:hover,
+  .pricing-preview-cta:hover {
+    border-color: var(--red);
+    color: var(--text);
+    background: rgba(226,75,74,0.1);
+  }
   .pricing-single-cta {
     display: flex;
     flex-direction: column;
@@ -1211,8 +1203,10 @@
   .contact-status.pending { color: var(--text2); }
 
   footer { background: #0a0a0a; border-top: 1px solid var(--border); padding: 24px 48px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 24px; align-items: center; }
+  .footer-brand { display: grid; gap: 6px; }
   .footer-logo { font-family: 'Oswald', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--text3); }
   .footer-logo span { color: var(--red); }
+  .footer-copyright { color: var(--text3); font-size: 11px; line-height: 1.4; }
   .footer-nav { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--text3); font-size: 12px; }
   .footer-nav a,
   .footer-social a { color: var(--text3); text-decoration: none; transition: color 0.2s; }
@@ -1282,6 +1276,9 @@
       text-align: left;
       max-width: none;
     }
+    .pricing-preview-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pricing-preview-item:nth-child(2) { border-right: 0; }
+    .pricing-preview-item:nth-child(-n + 2) { border-bottom: 1px solid var(--border2); }
   }
 
   @media (max-width: 768px) {
@@ -1345,10 +1342,42 @@
     .pricing-modal { padding: 14px; align-items: stretch; }
     .pricing-close { position: sticky; top: 0; margin-left: auto; display: block; }
     .pricing-dialog { width: 100%; max-width: 100%; padding: 24px 18px; }
+    .currency-switcher { position: absolute; top: 28px; right: 78px; }
+    .pricing-grid { gap: 10px; }
+    .pricing-card summary {
+      cursor: pointer;
+      padding: 20px 58px 20px 20px;
+      position: relative;
+    }
+    .pricing-card summary::after {
+      content: '+';
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--red);
+      font-size: 26px;
+      font-weight: 400;
+    }
+    .pricing-card[open] summary { padding-bottom: 0; }
+    .pricing-card[open] summary::after { content: '−'; }
+    .pricing-card-body { padding: 16px 20px 20px; }
     footer { padding: 20px; }
   }
 
   @media (max-width: 600px) {
+    .pricing-overview-header,
+    .nutrition-launch {
+      align-items: stretch;
+      flex-direction: column;
+    }
+    .pricing-preview-list { grid-template-columns: 1fr; }
+    .pricing-preview-item,
+    .pricing-preview-item:nth-child(2) {
+      border-right: 0;
+      border-bottom: 1px solid var(--border2);
+    }
+    .pricing-preview-item:last-child { border-bottom: 0; }
     footer {
       grid-template-columns: 1fr;
       justify-items: center;
@@ -1430,8 +1459,7 @@
     section { padding: 56px 22px; }
     .nutrition-panel,
     .nutrition-results,
-    .coach-guide,
-    .pricing-card {
+    .coach-guide {
       padding: 22px;
     }
     .contact-link {
@@ -1449,7 +1477,7 @@
       max-height: calc(100vh - 28px);
       border-radius: 14px;
     }
-    .pricing-card h3 {
+    .pricing-card-title {
       font-size: 26px;
     }
     #pricingTitle {
@@ -1486,7 +1514,7 @@
     <a href="#about">About</a>
     <a href="#services">Services</a>
     <a href="#nutrition">Nutrition</a>
-    <button type="button" data-open-pricing>Pricing</button>
+    <a href="#pricing-overview">Pricing</a>
     <button type="button" id="replayIntroBtn" class="replay-intro-btn">
       ↺ Replay Intro
     </button>
@@ -1523,7 +1551,7 @@
         <span class="cta-long">Start Your Coaching Application</span>
         <span class="cta-short">Start Application</span>
       </a>
-      <button type="button" class="btn-secondary" data-open-pricing>View Pricing</button>
+      <a href="#pricing-overview" class="btn-secondary">View Pricing</a>
     </div>
   </div>
   <div class="hero-science">
@@ -1533,8 +1561,8 @@
 </section>
 
 <div class="stats" id="statsBar">
-  <div class="stat" data-target="25" data-suffix="+">
-    <div class="stat-num">25+</div>
+  <div class="stat" data-target="30" data-suffix="+">
+    <div class="stat-num">30+</div>
     <div class="stat-label">CLIENTS TRAINED</div>
     <div class="stat-progress"><div class="stat-progress-fill"></div></div>
   </div>
@@ -1623,6 +1651,45 @@
   </div>
 </section>
 
+<section id="pricing-overview">
+  <div class="section-inner">
+    <div class="pricing-overview-header">
+      <div>
+        <div class="section-tag">PRICING AT A GLANCE</div>
+        <h2 class="section-title">Compare Coaching Options</h2>
+        <p class="section-subtitle">Start with the level of guidance that fits your training style and current goal.</p>
+      </div>
+      <button type="button" class="btn-secondary" data-open-pricing>View Full Pricing</button>
+    </div>
+    <div class="pricing-preview-list">
+      <article class="pricing-preview-item">
+        <h3>Workout Plan</h3>
+        <div class="pricing-preview-price"><span class="price-value" data-eur="€30" data-sek="330 kr">€30</span> <small>/ program</small></div>
+        <p>For independent training with a custom 5–6 week structure.</p>
+        <a class="pricing-preview-cta" href="apply.html?plan=workout-plan">Choose Plan</a>
+      </article>
+      <article class="pricing-preview-item">
+        <h3>Plan + Intro</h3>
+        <div class="pricing-preview-price"><span class="price-value" data-eur="€80" data-sek="850 kr">€80</span> <small>/ package</small></div>
+        <p>For learning your custom plan with one guided session.</p>
+        <a class="pricing-preview-cta" href="apply.html?plan=plan-intro">Choose Plan</a>
+      </article>
+      <article class="pricing-preview-item">
+        <h3>In-Person Coaching</h3>
+        <div class="pricing-preview-price"><span class="price-value" data-eur="€70" data-sek="750 kr">€70</span> <small>/ session</small></div>
+        <p>For hands-on coaching, live feedback, and accountability.</p>
+        <a class="pricing-preview-cta" href="apply.html?plan=in-person">Choose Plan</a>
+      </article>
+      <article class="pricing-preview-item">
+        <h3>Online Coaching</h3>
+        <div class="pricing-preview-price"><span class="price-value" data-eur="€35" data-sek="350 kr">€35</span> <small>/ session</small></div>
+        <p>For a scheduled remote check-in, programming guidance, and accountability.</p>
+        <a class="pricing-preview-cta" href="apply.html?plan=online">Choose Plan</a>
+      </article>
+    </div>
+  </div>
+</section>
+
 <section id="about">
   <div class="section-inner">
     <div class="about-grid">
@@ -1663,8 +1730,12 @@
   <div class="section-inner">
     <div class="section-tag">NUTRITION TOOL</div>
     <h2 class="section-title">Estimate Your Daily Nutrition Needs</h2>
-    <p class="section-subtitle">Use the calculator below to get a practical estimate for calories, macros, and a simple meal split based on your body data, activity, and goal.</p>
-    <div class="nutrition-shell">
+    <p class="section-subtitle">Get a practical estimate for calories, macros, and a simple meal split based on your body data, activity, and goal.</p>
+    <div class="nutrition-launch">
+      <p class="nutrition-launch-copy">Enter your measurements and training goal when you are ready. The calculator opens here and keeps your results on this page.</p>
+      <button type="button" class="btn-primary" id="nutritionToggle" aria-expanded="false" aria-controls="nutritionCalculator">Open Calculator</button>
+    </div>
+    <div class="nutrition-shell" id="nutritionCalculator" hidden>
       <div class="nutrition-panel">
         <p class="nutrition-intro">This tool is based on the same core logic I use to build nutrition targets from real client data. Fill in your details, choose your target split, and I’ll generate a daily calorie and macro estimate instantly.</p>
         <div class="coach-guide" id="coachGuide">
@@ -1836,21 +1907,9 @@
   <div class="pricing-backdrop" data-close-pricing></div>
   <div class="pricing-dialog" role="dialog" aria-modal="true" aria-labelledby="pricingTitle">
     <button class="pricing-close" type="button" data-close-pricing aria-label="Close pricing">×</button>
-    <div class="currency-drawer" id="currencyDrawer">
-      <button type="button" class="currency-drawer-tab" id="currencyDrawerTab">
-        <span id="currencyDrawerLabel">€</span>
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <path id="currencyDrawerArrow" d="M7 1.5L3.5 5L7 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <div class="currency-drawer-panel" id="currencyDrawerPanel">
-        <button type="button" class="currency-btn is-active" data-currency="eur">
-          🇫🇮 EUR
-        </button>
-        <button type="button" class="currency-btn" data-currency="sek">
-          🇸🇪 SEK
-        </button>
-      </div>
+    <div class="currency-switcher" role="group" aria-label="Display currency">
+      <button type="button" class="currency-btn is-active" data-currency="eur" aria-pressed="true">🇫🇮 EUR</button>
+      <button type="button" class="currency-btn" data-currency="sek" aria-pressed="false">🇸🇪 SEK</button>
     </div>
     <div class="pricing-header">
       <div class="section-tag">PRICING</div>
@@ -1858,62 +1917,73 @@
       <p>Choose the level of support that fits your goal right now. If you are not sure which option is best, start the application and we can decide together after reviewing your needs.</p>
     </div>
     <div class="pricing-grid">
-      <article class="pricing-card">
-        <span class="pricing-badge">Starter</span>
-        <h3>Workout Plan</h3>
-        <div class="pricing-price"><span class="price-value" data-eur="€30" data-sek="330 kr">€30</span><small>/ program</small></div>
-        <div class="plan-duration">5–6 week program</div>
-        <p>Best for clients who want a clear training structure they can follow independently.</p>
-        <ul class="pricing-list">
-          <li>Custom workout program built around your goal</li>
-          <li>Clear exercise structure and session flow</li>
-          <li>Ideal for self-directed training</li>
-          <li>Simple, focused, and affordable starting point</li>
-        </ul>
-      </article>
-      <article class="pricing-card featured">
-        <span class="pricing-badge">Most Popular</span>
-        <h3>Plan + Intro Session</h3>
-        <div class="pricing-price"><span class="price-value" data-eur="€80" data-sek="850 kr">€80</span><small>/ package</small></div>
-        <p>Great for people who want a training plan plus a guided first session to learn the structure properly.</p>
-        <ul class="pricing-list">
-          <li>Custom workout plan included</li>
-          <li>One introduction session to walk through the program</li>
-          <li>Technique and structure explained in person</li>
-          <li>Best fit for beginners or restart clients</li>
-        </ul>
-      </article>
-      <article class="pricing-card">
-        <span class="pricing-badge">Premium</span>
-        <h3>In-Person Coaching</h3>
-        <div class="pricing-price"><span class="price-value" data-eur="€70" data-sek="750 kr">€70</span><small>/ session</small></div>
-        <p>Hands-on personal training with live coaching, form correction, and structured accountability.</p>
-        <p class="plan-discount-note">
-          Monthly packages include a discount on the per-session rate.
-        </p>
-        <ul class="pricing-list">
-          <li>2 sessions per week: <span class="price-value" data-eur="€500" data-sek="5,500 kr">€500</span> per month</li>
-          <li>3 sessions per week: <span class="price-value" data-eur="€700" data-sek="7,500 kr">€700</span> per month</li>
-          <li>Live form correction and progression guidance</li>
-          <li>Best for clients who want maximum structure and support</li>
-        </ul>
-      </article>
-      <article class="pricing-card">
-        <span class="pricing-badge">Remote</span>
-        <h3>Online Coaching</h3>
-        <div class="pricing-price"><span class="price-value" data-eur="€35" data-sek="350 kr">€35</span><small>/ session</small></div>
-        <p>A lighter-touch remote option for clients who want ongoing programming support without in-person sessions.</p>
-        <p class="plan-discount-note">
-          Monthly packages include a discount on the per-session rate.
-        </p>
-        <ul class="pricing-list">
-          <li>2 sessions per week: <span class="price-value" data-eur="€250" data-sek="2,500 kr">€250</span> per month</li>
-          <li>3 sessions per week: <span class="price-value" data-eur="€380" data-sek="3,800 kr">€380</span> per month</li>
-          <li>Remote coaching structure and accountability</li>
-          <li>Flexible option for clients training on their own schedule</li>
-          <li>Good fit for consistent independent trainees</li>
-        </ul>
-      </article>
+      <details class="pricing-card" open>
+        <summary>
+          <span class="pricing-badge">Starter</span>
+          <span class="pricing-card-title">Workout Plan</span>
+          <span class="pricing-price"><span class="price-value" data-eur="€30" data-sek="330 kr">€30</span><small>/ program</small></span>
+        </summary>
+        <div class="pricing-card-body">
+          <div class="plan-duration">5–6 week program</div>
+          <p>Best for clients who want a clear training structure they can follow independently.</p>
+          <ul class="pricing-list">
+            <li>Custom exercises, sets, reps, and session flow</li>
+            <li>Built around your goal and available equipment</li>
+            <li>One-time delivery for self-directed training</li>
+          </ul>
+          <a class="pricing-plan-cta" href="apply.html?plan=workout-plan">Choose Workout Plan</a>
+        </div>
+      </details>
+      <details class="pricing-card featured" open>
+        <summary>
+          <span class="pricing-badge">Most Popular</span>
+          <span class="pricing-card-title">Plan + Intro Session</span>
+          <span class="pricing-price"><span class="price-value" data-eur="€80" data-sek="850 kr">€80</span><small>/ package</small></span>
+        </summary>
+        <div class="pricing-card-body">
+          <p>For clients who want a custom plan plus one guided session to learn it properly.</p>
+          <ul class="pricing-list">
+            <li>Custom 5–6 week workout plan</li>
+            <li>One scheduled introduction session</li>
+            <li>Technique, structure, and progression explained</li>
+          </ul>
+          <a class="pricing-plan-cta" href="apply.html?plan=plan-intro">Choose Plan + Intro</a>
+        </div>
+      </details>
+      <details class="pricing-card" open>
+        <summary>
+          <span class="pricing-badge">Premium</span>
+          <span class="pricing-card-title">In-Person Coaching</span>
+          <span class="pricing-price"><span class="price-value" data-eur="€70" data-sek="750 kr">€70</span><small>/ session</small></span>
+        </summary>
+        <div class="pricing-card-body">
+          <p>Hands-on personal training with live coaching, form correction, and accountability.</p>
+          <p class="plan-discount-note">Four-week packages include a lower per-session rate.</p>
+          <ul class="pricing-list">
+            <li>8 sessions over 4 weeks: <span class="price-value" data-eur="€500" data-sek="5,500 kr">€500</span></li>
+            <li>12 sessions over 4 weeks: <span class="price-value" data-eur="€700" data-sek="7,500 kr">€700</span></li>
+            <li>Live form correction and progression guidance</li>
+          </ul>
+          <a class="pricing-plan-cta" href="apply.html?plan=in-person">Choose In-Person</a>
+        </div>
+      </details>
+      <details class="pricing-card" open>
+        <summary>
+          <span class="pricing-badge">Remote</span>
+          <span class="pricing-card-title">Online Coaching</span>
+          <span class="pricing-price"><span class="price-value" data-eur="€35" data-sek="350 kr">€35</span><small>/ session</small></span>
+        </summary>
+        <div class="pricing-card-body">
+          <p>Each session is a scheduled remote coaching check-in for programming guidance, progress review, and accountability.</p>
+          <p class="plan-discount-note">Four-week packages include a lower per-session rate.</p>
+          <ul class="pricing-list">
+            <li>8 remote sessions over 4 weeks: <span class="price-value" data-eur="€250" data-sek="2,500 kr">€250</span></li>
+            <li>12 remote sessions over 4 weeks: <span class="price-value" data-eur="€360" data-sek="3,600 kr">€360</span></li>
+            <li>Programming review included in every check-in</li>
+          </ul>
+          <a class="pricing-plan-cta" href="apply.html?plan=online">Choose Online Coaching</a>
+        </div>
+      </details>
     </div>
     <div class="pricing-single-cta">
       <p class="pricing-cta-note">
@@ -1980,7 +2050,10 @@
 </section>
 
 <footer>
-  <div class="footer-logo">Armin Nabizadeh <span>·</span> PT</div>
+  <div class="footer-brand">
+    <div class="footer-logo">Armin Nabizadeh <span>·</span> PT</div>
+    <div class="footer-copyright">&copy; 2026 Fitstronomy. All rights reserved.</div>
+  </div>
   <nav class="footer-nav" aria-label="Footer navigation">
     <a href="#about">About</a>
     <span class="footer-separator">·</span>
@@ -1989,6 +2062,8 @@
     <a href="#nutrition">Nutrition</a>
     <span class="footer-separator">·</span>
     <a href="apply.html">Apply</a>
+    <span class="footer-separator">·</span>
+    <a href="privacy.html">Privacy</a>
   </nav>
   <div class="footer-social">
     <a href="https://www.instagram.com/fitsronomy?igsh=MTJnZTV3bm43c3R1cA==" target="_blank" rel="noopener" aria-label="Instagram">
