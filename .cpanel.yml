@@ -1,4 +1,5 @@
+---
 deployment:
   tasks:
     - export DEPLOYPATH=/home/fitsxkjo/arminfit.com/
-    - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp -R images $DEPLOYPATH
