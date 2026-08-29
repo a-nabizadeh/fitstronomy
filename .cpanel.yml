@@ -2,4 +2,7 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/fitsxkjo/arminfit.com/
-    - /bin/cp -R images $DEPLOYPATH
+    - /bin/mkdir -p $DEPLOYPATH/assets $DEPLOYPATH/favicon
+    - /bin/cp index.html apply.html nutrition-calculator.js contact-form.js pricing-modal.js site.js application-form.js .htaccess $DEPLOYPATH
+    - /bin/cp -R assets/* $DEPLOYPATH/assets/
+    - /bin/cp -R favicon/* $DEPLOYPATH/favicon/

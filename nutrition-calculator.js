@@ -68,19 +68,23 @@ function parseFormValues(form) {
 
 function validateInput(data) {
   const requiredNumbers = [
-    ['age', data.age],
-    ['weight', data.weight],
-    ['height', data.height],
-    ['waist', data.waist],
-    ['hip', data.hip],
-    ['activity index', data.activityIndex],
-    ['protein percentage', data.proteinPercentage],
-    ['carbohydrate percentage', data.carbohydratesPercentage],
-    ['calorie adjustment', data.calorieAdjustment],
+    ['age', data.age, 14, 100],
+    ['weight', data.weight, 30, 300],
+    ['height', data.height, 120, 240],
+    ['waist', data.waist, 30, 250],
+    ['hip', data.hip, 30, 250],
+    ['activity index', data.activityIndex, 1.2, 1.9],
+    ['protein percentage', data.proteinPercentage, 0, 100],
+    ['carbohydrate percentage', data.carbohydratesPercentage, 0, 100],
+    ['calorie adjustment', data.calorieAdjustment, 0, 2000],
   ];
 
   if (!data.name) {
     throw new Error('Please enter a name before calculating.');
+  }
+
+  if (data.name.length > 80) {
+    throw new Error('Please enter a shorter name.');
   }
 
   if (!['M', 'F'].includes(data.sex)) {
@@ -91,8 +95,8 @@ function validateInput(data) {
     throw new Error('Please choose a valid goal.');
   }
 
-  for (const [label, value] of requiredNumbers) {
-    if (!Number.isFinite(value) || value < 0) {
+  for (const [label, value, min, max] of requiredNumbers) {
+    if (!Number.isFinite(value) || value < min || value > max) {
       throw new Error(`Please enter a valid ${label}.`);
     }
   }
@@ -127,6 +131,10 @@ function calculateNutrition(data) {
     dailyCalories -= data.calorieAdjustment;
   } else if (data.goal === 'gain') {
     dailyCalories += data.calorieAdjustment;
+  }
+
+  if (dailyCalories <= 0) {
+    throw new Error('The calorie adjustment is too large for the details entered.');
   }
 
   const fatPercentage = 100 - data.proteinPercentage - data.carbohydratesPercentage;
@@ -328,8 +336,8 @@ function buildPdfDocument(result) {
 </head>
 <body>
   <div class="toolbar">
-    <button type="button" onclick="window.print()">Print / Save PDF</button>
-    <button type="button" class="secondary" onclick="window.close()">Close</button>
+    <button type="button" id="printReport">Print / Save PDF</button>
+    <button type="button" class="secondary" id="closeReport">Close</button>
   </div>
   <main>
     <header>
@@ -408,11 +416,6 @@ function buildPdfDocument(result) {
     </table>
     <p class="note">These numbers are estimates and should be adjusted based on progress, recovery, hunger, training performance, and adherence.</p>
   </main>
-  <script>
-    window.addEventListener('load', () => {
-      window.setTimeout(() => window.print(), 300);
-    });
-  <\/script>
 </body>
 </html>`;
 }
@@ -434,14 +437,26 @@ function renderResults(result) {
     `Estimated from the data entered for ${result.name}. Use this as a starting point, then adjust based on progress, recovery, and adherence.`;
 
   const mealRows = document.getElementById('mealRows');
-  mealRows.innerHTML = result.mealPlan.map((meal) => `
-    <div class="meal-row">
-      <strong>${meal.label}</strong>
-      <span>${formatNumber(meal.protein, 1)} g</span>
-      <span>${formatNumber(meal.carbs, 1)} g</span>
-      <span>${formatNumber(meal.fat, 1)} g</span>
-    </div>
-  `).join('');
+  const fragment = document.createDocumentFragment();
+
+  result.mealPlan.forEach((meal) => {
+    const row = document.createElement('div');
+    const label = document.createElement('strong');
+    const protein = document.createElement('span');
+    const carbs = document.createElement('span');
+    const fat = document.createElement('span');
+
+    row.className = 'meal-row';
+    label.textContent = meal.label;
+    protein.textContent = `${formatNumber(meal.protein, 1)} g`;
+    carbs.textContent = `${formatNumber(meal.carbs, 1)} g`;
+    fat.textContent = `${formatNumber(meal.fat, 1)} g`;
+
+    row.append(label, protein, carbs, fat);
+    fragment.append(row);
+  });
+
+  mealRows.replaceChildren(fragment);
 }
 
 function setStatus(message, type = '') {
@@ -510,9 +525,16 @@ function handlePdfExport() {
   }
 
   reportWindow.opener = null;
-  reportWindow.document.open();
-  reportWindow.document.write(buildPdfDocument(latestResult));
-  reportWindow.document.close();
+  const parsedReport = new DOMParser().parseFromString(buildPdfDocument(latestResult), 'text/html');
+  const reportRoot = reportWindow.document.importNode(parsedReport.documentElement, true);
+  reportWindow.document.replaceChild(reportRoot, reportWindow.document.documentElement);
+  reportWindow.document.getElementById('printReport')?.addEventListener('click', () => {
+    reportWindow.print();
+  });
+  reportWindow.document.getElementById('closeReport')?.addEventListener('click', () => {
+    reportWindow.close();
+  });
+  reportWindow.setTimeout(() => reportWindow.print(), 300);
   setStatus('PDF report opened. Choose Save as PDF in the print dialog.', 'success');
 }
 

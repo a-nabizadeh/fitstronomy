@@ -2,6 +2,12 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const REQUIRED_MODEL_HINT = 'For this static site, place the real model at assets/anatomy-body.glb with separate meshes named Body_Base and Muscle_* (for example Muscle_Pecs, Muscle_Abs, Muscle_Biceps_L, Muscle_Quads_R). If you later use a public folder build, place it at public/models/anatomy-intro.glb and update data-model-src to /models/anatomy-intro.glb.';
+const DEBUG_ANATOMY_INTRO = false;
+
+function logAnatomyIntro(level, ...args) {
+  if (!DEBUG_ANATOMY_INTRO) return;
+  console[level](...args);
+}
 
 const MUSCLE_ORDER = [
   'Muscle_Pecs',
@@ -66,7 +72,7 @@ class AnatomyIntro {
 
     this.createScene();
     this.setState('loading', 'Preview anatomy animation — anatomy model missing.');
-    console.info('[AnatomyIntro] Loading model:', this.modelSrc);
+    logAnatomyIntro('info', '[AnatomyIntro] Loading model:', this.modelSrc);
 
     this.loadAnatomyModel()
       .then(({ scene, animations }) => this.startWithLoadedModel(scene, animations))
@@ -93,7 +99,7 @@ class AnatomyIntro {
     this.renderer.domElement.style.width = '100%';
     this.renderer.domElement.style.height = '100%';
     this.canvasWrap.appendChild(this.renderer.domElement);
-    console.info('[AnatomyIntro] Canvas created and sized.', { width, height });
+    logAnatomyIntro('info', '[AnatomyIntro] Canvas created and sized.', { width, height });
 
     this.bodyGroup = new THREE.Group();
     this.bodyGroup.name = 'Intro_Body_Group';
@@ -112,7 +118,7 @@ class AnatomyIntro {
     softFill.position.set(0, 1.2, 5);
 
     this.scene.add(ambient, hemi, key, rim, redDepth, softFill);
-    console.info('[AnatomyIntro] Lights added: ambient, hemisphere, key, rim, red depth, and fill.');
+    logAnatomyIntro('info', '[AnatomyIntro] Lights added: ambient, hemisphere, key, rim, red depth, and fill.');
     this.handleResize();
   }
 
@@ -147,7 +153,7 @@ class AnatomyIntro {
           if (settled) return;
           settled = true;
           window.clearTimeout(timeoutId);
-          console.error('[AnatomyIntro] Exact GLTFLoader error:', error);
+          logAnatomyIntro('error', '[AnatomyIntro] Exact GLTFLoader error:', error);
           reject(new Error(`Could not load ${this.modelSrc}. ${REQUIRED_MODEL_HINT}`));
         }
       );
@@ -168,7 +174,7 @@ class AnatomyIntro {
         throw new Error(`HTTP ${response.status} while checking ${this.modelSrc}`);
       }
     } catch (error) {
-      console.error('[AnatomyIntro] Model availability check failed:', error);
+      logAnatomyIntro('error', '[AnatomyIntro] Model availability check failed:', error);
       throw new Error(`Could not find ${this.modelSrc}. ${REQUIRED_MODEL_HINT}`);
     } finally {
       window.clearTimeout(timeoutId);
@@ -206,7 +212,7 @@ class AnatomyIntro {
   startWithFallback(error) {
     if (this.finished || this.destroyed) return;
 
-    console.error('[AnatomyIntro] Model failed, using fallback Three.js placeholder.', error);
+    logAnatomyIntro('error', '[AnatomyIntro] Model failed, using fallback Three.js placeholder.', error);
     this.usingFallback = true;
     this.root.classList.add('using-fallback');
     this.setState('model-failed-using-fallback', 'Preview anatomy animation — anatomy model missing.');
@@ -460,7 +466,7 @@ class AnatomyIntro {
 
     if (!this.renderLoopLogged) {
       this.renderLoopLogged = true;
-      console.info('[AnatomyIntro] Render loop running.', {
+      logAnatomyIntro('info', '[AnatomyIntro] Render loop running.', {
         fallback: this.usingFallback,
         records: this.records.length,
         canvas: {
@@ -511,7 +517,7 @@ class AnatomyIntro {
     this.camera.lookAt(0, mobile ? 0.28 : 0.38, 0);
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height, false);
-    console.info('[AnatomyIntro] Camera and renderer updated.', {
+    logAnatomyIntro('info', '[AnatomyIntro] Camera and renderer updated.', {
       width,
       height,
       cameraPosition: this.camera.position.toArray()

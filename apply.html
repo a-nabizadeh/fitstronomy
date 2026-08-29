@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/favicon/favicon-180x180.png">
-<link rel="manifest" href="/favicon/site.webmanifest">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; img-src 'self' data:; font-src https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' https://unpkg.com/body-muscles@1.0.0/dist/umd/body-muscles.umd.min.js; connect-src 'self' https://api.web3forms.com; form-action https://api.web3forms.com; frame-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="icon" href="favicon/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/favicon-180x180.png">
+<link rel="manifest" href="favicon/site.webmanifest">
 <meta name="theme-color" content="#000000">
 <title>Apply For Coaching · Armin Nabizadeh</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet">
@@ -660,7 +662,10 @@
           <input type="hidden" name="_captcha" value="false">
           <div class="hidden-field" aria-hidden="true">
             <label>Leave this field empty
-              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" data-honeypot>
+            </label>
+            <label>Do not check this
+              <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" data-honeypot>
             </label>
           </div>
           <div class="wizard-progress" id="applicationWizardProgress">
@@ -681,19 +686,19 @@
             <div class="field-grid">
               <div class="form-field">
                 <label for="firstName">First name</label>
-                <input id="firstName" name="first_name" type="text" autocomplete="given-name" required>
+                <input id="firstName" name="first_name" type="text" autocomplete="given-name" maxlength="80" required>
               </div>
               <div class="form-field">
                 <label for="lastName">Last name</label>
-                <input id="lastName" name="last_name" type="text" autocomplete="family-name" required>
+                <input id="lastName" name="last_name" type="text" autocomplete="family-name" maxlength="80" required>
               </div>
               <div class="form-field">
                 <label for="email">Email</label>
-                <input id="email" name="email" type="email" autocomplete="email" required>
+                <input id="email" name="email" type="email" autocomplete="email" maxlength="254" required>
               </div>
               <div class="form-field">
                 <label for="mobile">Mobile</label>
-                <input id="mobile" name="mobile" type="tel" autocomplete="tel">
+                <input id="mobile" name="mobile" type="tel" autocomplete="tel" maxlength="32">
               </div>
             </div>
             <div class="field-grid compact">
@@ -730,7 +735,7 @@
               </div>
               <div class="form-field full">
                 <label for="mainGoal">What is your goal with your training?</label>
-                <textarea id="mainGoal" name="main_training_goal"></textarea>
+                <textarea id="mainGoal" name="main_training_goal" maxlength="2000"></textarea>
               </div>
               <div class="form-field full">
                 <span class="field-label">Timeline for achieving your goal</span>
@@ -766,7 +771,7 @@
             <div class="field-grid">
               <div class="form-field full">
                 <label for="trainingHistory">Tell me about your training history.</label>
-                <textarea id="trainingHistory" name="training_history"></textarea>
+                <textarea id="trainingHistory" name="training_history" maxlength="2000"></textarea>
               </div>
               <div class="form-field">
                 <span class="field-label">Are you currently exercising regularly, at least 3x per week?</span>
@@ -784,7 +789,7 @@
               </div>
               <div class="form-field full">
                 <label for="previousTrainingType">If yes, what kind of training did you do?</label>
-                <textarea id="previousTrainingType" name="previous_training_type"></textarea>
+                <textarea id="previousTrainingType" name="previous_training_type" maxlength="2000"></textarea>
               </div>
             </div>
           </div>
@@ -797,11 +802,11 @@
             <div class="field-grid">
               <div class="form-field full">
                 <label for="healthConditions">If you have any diagnosed health problems, list the condition(s).</label>
-                <textarea id="healthConditions" name="diagnosed_health_conditions"></textarea>
+                <textarea id="healthConditions" name="diagnosed_health_conditions" maxlength="2000"></textarea>
               </div>
               <div class="form-field full">
                 <label for="injuries">If you have any injuries, please list them. If none, write None.</label>
-                <textarea id="injuries" name="injuries" required></textarea>
+                <textarea id="injuries" name="injuries" maxlength="2000" required></textarea>
               </div>
             </div>
             <div class="notice">
@@ -919,197 +924,6 @@
       <a href="index.html" class="success-back">← Back to site</a>
     </div>
   </div>
-  <script>
-    const applicationForm = document.getElementById('applicationForm');
-    const applicationStatus = document.getElementById('applicationStatus');
-    const wizardMedia = window.matchMedia('(max-width: 900px)');
-    const wizardSections = applicationForm ? Array.from(applicationForm.querySelectorAll('.form-section')) : [];
-    const wizardBack = document.getElementById('wizardBack');
-    const wizardNext = document.getElementById('wizardNext');
-    const wizardStepCount = document.getElementById('wizardStepCount');
-    const wizardStepTitle = document.getElementById('wizardStepTitle');
-    const wizardProgressBar = document.getElementById('wizardProgressBar');
-    const enforceApplicationRequiredFields = true;
-    let currentWizardStep = 0;
-
-    function setApplicationStatus(message, state = '') {
-      if (!applicationStatus) return;
-
-      applicationStatus.textContent = message;
-      applicationStatus.className = 'application-status';
-      if (state) {
-        applicationStatus.classList.add(state);
-      }
-    }
-
-    function isWizardActive() {
-      return applicationForm?.classList.contains('wizard-active');
-    }
-
-    function getWizardStepTitle(step) {
-      return step.querySelector('h3')?.textContent.trim() || 'Application';
-    }
-
-    function setWizardStep(index, shouldScroll = false) {
-      if (!applicationForm || !wizardSections.length) return;
-
-      currentWizardStep = Math.max(0, Math.min(index, wizardSections.length - 1));
-      wizardSections.forEach((section, sectionIndex) => {
-        section.classList.toggle('is-active', sectionIndex === currentWizardStep);
-      });
-
-      const isLastStep = currentWizardStep === wizardSections.length - 1;
-      applicationForm.classList.toggle('wizard-last-step', isLastStep);
-
-      if (wizardBack) {
-        wizardBack.disabled = currentWizardStep === 0;
-      }
-
-      if (wizardStepCount) {
-        wizardStepCount.textContent = `Step ${currentWizardStep + 1} of ${wizardSections.length}`;
-      }
-
-      if (wizardStepTitle) {
-        wizardStepTitle.textContent = getWizardStepTitle(wizardSections[currentWizardStep]);
-      }
-
-      if (wizardProgressBar) {
-        wizardProgressBar.style.width = `${((currentWizardStep + 1) / wizardSections.length) * 100}%`;
-      }
-
-      if (shouldScroll) {
-        document.querySelector('.form-shell')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-
-    function validateFields(fields) {
-      if (!enforceApplicationRequiredFields) return true;
-
-      const invalidField = Array.from(fields).find((field) => !field.checkValidity());
-
-      if (invalidField) {
-        invalidField.reportValidity();
-        return false;
-      }
-
-      return true;
-    }
-
-    function validateCurrentWizardStep() {
-      const activeStep = wizardSections[currentWizardStep];
-      if (!activeStep) return true;
-
-      return validateFields(activeStep.querySelectorAll('input, select, textarea'));
-    }
-
-    function validateApplicationBeforeSubmit() {
-      if (isWizardActive()) {
-        return validateCurrentWizardStep();
-      }
-
-      return validateFields(applicationForm.querySelectorAll('input, select, textarea'));
-    }
-
-    function updateRequiredFieldsMode() {
-      if (!applicationForm) return;
-
-      applicationForm.querySelectorAll('[required]').forEach((field) => {
-        field.required = enforceApplicationRequiredFields;
-      });
-    }
-
-    function updateWizardMode() {
-      if (!applicationForm || !wizardSections.length) return;
-
-      if (wizardMedia.matches) {
-        applicationForm.classList.add('wizard-active');
-        setWizardStep(currentWizardStep);
-      } else {
-        applicationForm.classList.remove('wizard-active', 'wizard-last-step');
-        wizardSections.forEach((section) => section.classList.remove('is-active'));
-      }
-    }
-
-    async function submitApplicationForm(event) {
-      event.preventDefault();
-
-      if (isWizardActive() && currentWizardStep < wizardSections.length - 1) {
-        if (validateCurrentWizardStep()) {
-          setWizardStep(currentWizardStep + 1, true);
-        }
-        return;
-      }
-
-      const form = event.currentTarget;
-      const submitButton = form.querySelector('button[type="submit"]');
-      const endpoint = form.getAttribute('action') || '';
-
-      if (!validateApplicationBeforeSubmit()) {
-        return;
-      }
-
-      submitButton.disabled = true;
-      submitButton.textContent = 'Sending...';
-      setApplicationStatus('Sending your application...', 'pending');
-
-      try {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: {
-            Accept: 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Application submission failed.');
-        }
-
-        form.reset();
-        setWizardStep(0, true);
-        setApplicationStatus('Application sent successfully.', 'success');
-        var overlay = document.getElementById('successOverlay');
-        if (overlay) overlay.classList.add('is-visible');
-      } catch (error) {
-        setApplicationStatus(
-          'The application could not be sent right now. Please try again later.',
-          'error'
-        );
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Send Application';
-      }
-    }
-
-    if (applicationForm) {
-      applicationForm.addEventListener('submit', submitApplicationForm);
-    }
-
-    if (wizardNext) {
-      wizardNext.addEventListener('click', () => {
-        if (validateCurrentWizardStep()) {
-          setWizardStep(currentWizardStep + 1, true);
-        }
-      });
-    }
-
-    if (wizardBack) {
-      wizardBack.addEventListener('click', () => {
-        setWizardStep(currentWizardStep - 1, true);
-      });
-    }
-
-    if (wizardMedia.addEventListener) {
-      wizardMedia.addEventListener('change', updateWizardMode);
-    } else {
-      wizardMedia.addListener(updateWizardMode);
-    }
-
-    updateRequiredFieldsMode();
-    updateWizardMode();
-  </script>
-  <script>
-    sessionStorage.setItem('introSeen', '1');
-  </script>
+  <script src="application-form.js"></script>
 </body>
 </html>

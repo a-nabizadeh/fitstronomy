@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/favicon/favicon-180x180.png">
-<link rel="manifest" href="/favicon/site.webmanifest">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; img-src 'self' data:; font-src https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' https://unpkg.com/body-muscles@1.0.0/dist/umd/body-muscles.umd.min.js; connect-src 'self' https://api.web3forms.com; form-action https://api.web3forms.com; frame-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="icon" href="favicon/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/favicon-180x180.png">
+<link rel="manifest" href="favicon/site.webmanifest">
 <meta name="theme-color" content="#000000">
 <title>Armin Nabizadeh · Personal Trainer</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet">
@@ -1198,6 +1200,7 @@
   .contact-form button { background: var(--red); color: #fff; border: none; padding: 14px; border-radius: 6px; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer; transition: background 0.2s, box-shadow 0.2s; }
   .contact-form button:hover { background: var(--red-dark); }
   .contact-form button:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(226,75,74,0.24); }
+  .hidden-field { display: none; }
   .contact-status {
     min-height: 22px;
     font-size: 13px;
@@ -1493,13 +1496,7 @@
       ↺ Replay Intro
     </button>
   </div>
-  <div
-    class="hamburger"
-    onclick="
-      document.getElementById('navLinks').classList.toggle('open');
-      this.classList.toggle('open');
-    "
-  >
+  <div class="hamburger" role="button" tabindex="0" aria-controls="navLinks" aria-expanded="false">
     <span></span><span></span><span></span>
   </div>
 </nav>
@@ -1963,10 +1960,18 @@
         <input type="hidden" name="subject" value="New Contact Message — Fitstronomy">
         <input type="hidden" name="_subject" value="New Fitstronomy contact form enquiry">
         <input type="hidden" name="_captcha" value="false">
-        <input type="text" name="name" placeholder="Your name" required>
-        <input type="email" name="email" placeholder="Your email" required>
-        <input type="text" name="goal" placeholder="Your goal (e.g. lose weight, build muscle)">
-        <textarea name="message" placeholder="Tell me a bit about yourself and what you're looking for..." required></textarea>
+        <div class="hidden-field" aria-hidden="true">
+          <label>Leave this field empty
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" data-honeypot>
+          </label>
+          <label>Do not check this
+            <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" data-honeypot>
+          </label>
+        </div>
+        <input type="text" name="name" placeholder="Your name" maxlength="80" required>
+        <input type="email" name="email" placeholder="Your email" maxlength="254" required>
+        <input type="text" name="goal" placeholder="Your goal (e.g. lose weight, build muscle)" maxlength="180">
+        <textarea name="message" placeholder="Tell me a bit about yourself and what you're looking for..." maxlength="2000" required></textarea>
         <button type="submit">Send Message</button>
         <div class="contact-status" id="contactStatus" aria-live="polite"></div>
       </form>
@@ -1999,481 +2004,7 @@
 <script src="nutrition-calculator.js"></script>
 <script src="contact-form.js"></script>
 <script src="pricing-modal.js"></script>
-<script src="https://unpkg.com/body-muscles/dist/umd/body-muscles.umd.min.js"></script>
-<script>
-(function () {
-  var introSeen = sessionStorage.getItem('introSeen');
-  sessionStorage.removeItem('introSeen');
-
-  if (introSeen) {
-    var introEl = document.getElementById('anatomyIntro');
-    if (introEl) {
-      introEl.style.display = 'none';
-      introEl.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('intro-lock');
-    }
-    setTimeout(function () {
-      if (typeof startHeroScienceTyping === 'function') {
-        startHeroScienceTyping();
-      }
-    }, 800);
-    return;
-  }
-
-  var intro = document.getElementById('anatomyIntro');
-  var canvasWrap = intro && intro.querySelector('.intro-canvas-wrap');
-  var skipButton = intro && intro.querySelector('[data-intro-skip]');
-  var statusEl = intro && intro.querySelector('[data-intro-status]');
-  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var chart = null;
-  var timers = [];
-  var finished = false;
-
-  function finishIntro(completed) {
-    if (!intro || finished) return;
-    finished = true;
-    intro.classList.add('is-hidden');
-    intro.setAttribute('aria-hidden', 'true');
-    timers.forEach(clearTimeout);
-    if (chart) chart.destroy();
-    document.body.classList.remove('intro-lock');
-    if (completed) {
-      sessionStorage.setItem('introSeen', '1');
-    }
-    if (typeof startHeroScienceTyping === 'function') {
-      setTimeout(startHeroScienceTyping, 400);
-    }
-  }
-
-  if (reducedMotion || !canvasWrap || !window.BodyMuscles) {
-    finishIntro(false);
-    return;
-  }
-
-  intro.dataset.ready = 'true';
-  document.body.classList.add('intro-lock');
-
-  // Create container for body-muscles chart
-  var container = document.createElement('div');
-  container.className = 'body-muscles-container';
-  container.style.cssText = 'width:100%;height:100%;display:flex;align-items:center;justify-content:center;';
-  canvasWrap.appendChild(container);
-
-  var BodyChart = window.BodyMuscles.BodyChart;
-  var ViewSide = window.BodyMuscles.ViewSide;
-  var frontMuscles = window.BodyMuscles.FRONT_MUSCLES || [];
-  var availableIds = frontMuscles.map(function (muscle) { return muscle.id; });
-  console.log('BodyMuscles front muscle IDs', availableIds);
-
-  // Override the library's default colors to match site palette
-  if (window.BodyMuscles.INTENSITY_COLORS) {
-    Object.assign(window.BodyMuscles.INTENSITY_COLORS, {
-      0: '#2a1a1a',
-      1: '#351f1f',
-      2: '#442323',
-      3: '#5b2929',
-      4: '#733030',
-      5: '#8c3535',
-      6: '#a73b3b',
-      7: '#bf4141',
-      8: '#d34848',
-      9: '#e24b4a',
-      10: '#ff6b68'
-    });
-  }
-
-  var style = document.createElement('style');
-  style.textContent = [
-    '.body-muscles-container .body-chart-background path { fill: #2a1a1a; stroke: #3a2020; stroke-width: 0.5; }',
-    '.body-muscles-container .body-chart-muscle { stroke: #3a2020; stroke-width: 0.18; transition: fill 0.3s, fill-opacity 0.3s, filter 0.3s; }',
-    '.body-muscles-container .body-chart-svg { background: transparent !important; filter: drop-shadow(0 18px 42px rgba(0,0,0,0.45)) drop-shadow(0 0 30px rgba(226,75,74,0.16)) !important; }'
-  ].join('');
-  document.head.appendChild(style);
-
-  chart = new BodyChart(container, {
-    view: ViewSide.FRONT,
-    bodyState: {},
-    showViewLabel: false,
-    enableTransitions: true,
-    className: 'body-muscles-container'
-  });
-
-  // Front muscle IDs verified from body-muscles FRONT_MUSCLES.
-  var sequence = [
-    ['foot-left', 'foot-right'],
-    ['tibialis-anterior-left', 'tibialis-anterior-right'],
-    ['knee-left', 'knee-right'],
-    ['quads-left', 'quads-right'],
-    ['adductors-left', 'adductors-right'],
-    ['hip-flexor-left', 'hip-flexor-right'],
-    ['obliques-left', 'obliques-right'],
-    ['serratus-anterior-left', 'serratus-anterior-right'],
-    ['abs-lower-left', 'abs-lower-right'],
-    ['abs-upper-left', 'abs-upper-right'],
-    ['hand-left', 'hand-right'],
-    ['forearm-left', 'forearm-right'],
-    ['elbow-left', 'elbow-right'],
-    ['biceps-left', 'biceps-right'],
-    ['chest-lower-left', 'chest-lower-right'],
-    ['chest-upper-left', 'chest-upper-right'],
-    ['shoulder-side-left', 'shoulder-side-right'],
-    ['shoulder-front-left', 'shoulder-front-right'],
-    ['neck-left', 'neck-right'],
-    ['face'],
-    ['head']
-  ];
-
-  var bodyState = {};
-
-  function lightUp(ids, intensity) {
-    ids.forEach(function (id) {
-      if (!availableIds.includes(id)) return;
-      bodyState[id] = { intensity: intensity, selected: false };
-    });
-    chart.update({ bodyState: Object.assign({}, bodyState) });
-  }
-
-  function runSequence() {
-    var delay = 300;
-    sequence.forEach(function (group) {
-      var t1 = setTimeout(function () {
-        // Flash bright
-        lightUp(group, 10);
-        // Settle to dim after flash
-        var t2 = setTimeout(function () {
-          lightUp(group, 4);
-        }, 600);
-        timers.push(t2);
-      }, delay);
-      timers.push(t1);
-      delay += 260;
-    });
-
-    var totalDuration = sequence.length * 260;
-
-    var third = Math.round(totalDuration / 3);
-    var s1In  = 0;
-    var s1Out = third;
-    var s2In  = third;
-    var s2Out = third * 2;
-    var s3In  = third * 2;
-    var s3Out = totalDuration;
-
-    function showStmt(id, inTime, outTime) {
-      var el = document.getElementById(id);
-      if (!el) return;
-      var tIn = setTimeout(function () {
-        el.classList.add('is-visible');
-      }, inTime);
-      timers.push(tIn);
-      if (outTime) {
-        var tOut = setTimeout(function () {
-          el.classList.remove('is-visible');
-        }, outTime);
-        timers.push(tOut);
-      }
-    }
-
-    showStmt('stmt-1', s1In, s1Out);
-    showStmt('stmt-2', s2In, s2Out);
-    showStmt('stmt-3', s3In, s3Out);
-
-    var holdDelay = totalDuration + 600;
-    var tf = setTimeout(function () {
-      finishIntro(true);
-    }, holdDelay);
-    timers.push(tf);
-  }
-
-  if (skipButton) {
-    skipButton.addEventListener('click', function () {
-      timers.forEach(clearTimeout);
-      finishIntro(false);
-    });
-  }
-
-  if (statusEl) statusEl.textContent = '';
-
-  // Small delay to let library render SVG first
-  timers.push(setTimeout(runSequence, 400));
-
-  // Hard fallback
-  timers.push(setTimeout(function () {
-    finishIntro(false);
-  }, 12000));
-
-  var introOverlay = document.getElementById('anatomyIntro');
-  if (introOverlay) {
-    introOverlay.addEventListener('replayIntro', function () {
-      finished = false;
-      bodyState = {};
-      timers.forEach(clearTimeout);
-      timers = [];
-
-      // Always destroy and recreate the chart from scratch
-      if (chart) {
-        try { chart.destroy(); } catch(e) {}
-        chart = null;
-      }
-
-      // Clear and rebuild the canvas container
-      if (canvasWrap) {
-        canvasWrap.innerHTML = '';
-        var newContainer = document.createElement('div');
-        newContainer.className = 'body-muscles-container';
-        newContainer.style.cssText = 'width:100%;height:100%;display:flex;align-items:center;justify-content:center;';
-        canvasWrap.appendChild(newContainer);
-
-        if (window.BodyMuscles) {
-          chart = new window.BodyMuscles.BodyChart(newContainer, {
-            view: window.BodyMuscles.ViewSide.FRONT,
-            bodyState: {},
-            showViewLabel: false,
-            enableTransitions: true,
-          });
-        }
-      }
-
-      // Wait for chart to render then run sequence
-      setTimeout(runSequence, 500);
-
-      // Hard fallback
-      timers.push(setTimeout(function () {
-        finishIntro(true);
-      }, 12000));
-    });
-  }
-
-})();
-</script>
-<script>
-if (window.location.hash) {
-  history.replaceState(null, '', window.location.pathname);
-  window.scrollTo(0, 0);
-}
-
-window.addEventListener('load', function () {
-  setTimeout(function () {
-    window.scrollTo(0, 0);
-  }, 0);
-});
-
-const heroScienceText = document.getElementById('heroScienceText');
-
-function renderScienceText(fullText, typedLength) {
-  const visibleText = fullText.slice(0, typedLength);
-  const boldPrefix = 'Science-Backed Training.';
-
-  if (visibleText.startsWith(boldPrefix)) {
-    const rest = visibleText.slice(boldPrefix.length);
-    heroScienceText.innerHTML = `<strong>${boldPrefix}</strong>${rest}<span class="hero-science-cursor">|</span>`;
-    return;
-  }
-
-  heroScienceText.innerHTML = `${visibleText}<span class="hero-science-cursor">|</span>`;
-}
-
-function startHeroScienceTyping() {
-  if (!heroScienceText) return;
-
-  const fullText = heroScienceText.dataset.fullText || '';
-
-  let index = 0;
-  renderScienceText(fullText, index);
-
-  const typingInterval = window.setInterval(() => {
-    index += 1;
-    renderScienceText(fullText, index);
-
-    if (index >= fullText.length) {
-      window.clearInterval(typingInterval);
-      renderScienceText(fullText, fullText.length);
-    }
-  }, 22);
-}
-
-</script>
-<script>
-(function () {
-  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
-
-  function animateStat(statEl, delay) {
-    const num = statEl.querySelector('.stat-num');
-    const fill = statEl.querySelector('.stat-progress-fill');
-    const target = parseInt(statEl.dataset.target, 10);
-    const suffix = statEl.dataset.suffix;
-    const duration = 1800;
-
-    setTimeout(function () {
-      fill.style.width = '100%';
-      var start = performance.now();
-      (function tick(now) {
-        var progress = Math.min((now - start) / duration, 1);
-        num.textContent = Math.round(easeOut(progress) * target) + suffix;
-        if (progress < 1) {
-          requestAnimationFrame(tick);
-        } else {
-          num.textContent = target + suffix;
-          num.classList.add('pulse');
-          num.addEventListener('animationend', function () {
-            num.classList.remove('pulse');
-          }, { once: true });
-        }
-      })(start);
-    }, delay);
-  }
-
-  var observed = false;
-  var stats = document.querySelectorAll('#statsBar .stat');
-
-  function runAnimation() {
-    if (observed) return;
-    observed = true;
-    stats.forEach(function (stat, i) {
-      var delay = i * 140;
-      setTimeout(function () {
-        stat.classList.add('visible');
-      }, delay);
-      animateStat(stat, delay + 100);
-    });
-  }
-
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        runAnimation();
-        observer.disconnect();
-      }
-    });
-  }, { threshold: 0.3 });
-
-  var bar = document.getElementById('statsBar');
-  if (bar) observer.observe(bar);
-})();
-</script>
-<script>
-(function () {
-  var cards = document.querySelectorAll('.service-card');
-  cards.forEach(function (card) {
-    function toggle() {
-      card.classList.toggle('is-flipped');
-    }
-    card.addEventListener('click', toggle);
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggle();
-      }
-    });
-  });
-})();
-</script>
-<script>
-(function () {
-  function replayIntro() {
-    var intro = document.getElementById('anatomyIntro');
-    if (!intro) return;
-
-    sessionStorage.removeItem('introSeen');
-
-    // Close mobile nav if open
-    var navLinks = document.getElementById('navLinks');
-    if (navLinks) navLinks.classList.remove('open');
-    var hamburger = document.querySelector('.hamburger');
-    if (hamburger) hamburger.classList.remove('open');
-
-    // Reset statements
-    ['stmt-1','stmt-2','stmt-3'].forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el) el.classList.remove('is-visible');
-    });
-
-    // Reset hero science text
-    var scienceText = document.getElementById('heroScienceText');
-    if (scienceText) scienceText.innerHTML = '';
-
-    // Show intro overlay
-    intro.style.display = '';
-    intro.classList.remove('is-hidden');
-    intro.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('intro-lock');
-
-    // Re-initialize the body-muscles chart and sequence
-    // Dispatch a custom event that the intro script listens for
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        intro.dispatchEvent(new CustomEvent('replayIntro'));
-      });
-    });
-  }
-
-  var btn1 = document.getElementById('replayIntroBtn');
-  var btn2 = document.getElementById('replayIntroBtnMobile');
-  if (btn1) btn1.addEventListener('click', replayIntro);
-  if (btn2) btn2.addEventListener('click', replayIntro);
-})();
-</script>
-<script>
-(function () {
-  var drawer = document.getElementById('currencyDrawer');
-  var tab = document.getElementById('currencyDrawerTab');
-  var label = document.getElementById('currencyDrawerLabel');
-  var currentCurrency = 'eur';
-
-  function closeDrawer() {
-    if (drawer) drawer.classList.remove('is-open');
-  }
-
-  function openDrawer() {
-    if (drawer) drawer.classList.add('is-open');
-  }
-
-  if (tab) {
-    tab.addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (drawer.classList.contains('is-open')) {
-        closeDrawer();
-      } else {
-        openDrawer();
-      }
-    });
-  }
-
-  document.addEventListener('click', function (e) {
-    if (drawer && !drawer.contains(e.target)) {
-      closeDrawer();
-    }
-  });
-
-  document.querySelectorAll('.currency-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var currency = btn.dataset.currency;
-      if (currency === currentCurrency) {
-        closeDrawer();
-        return;
-      }
-      currentCurrency = currency;
-
-      document.querySelectorAll('.currency-btn').forEach(function (b) {
-        b.classList.toggle('is-active', b.dataset.currency === currency);
-      });
-
-      if (label) {
-        label.textContent = currency === 'eur' ? '€' : 'kr';
-      }
-
-      document.querySelectorAll('.price-value').forEach(function (el) {
-        el.classList.add('is-switching');
-        setTimeout(function () {
-          el.textContent = el.dataset[currency];
-          el.classList.remove('is-switching');
-        }, 200);
-      });
-
-      setTimeout(closeDrawer, 300);
-    });
-  });
-})();
-</script>
+<script src="https://unpkg.com/body-muscles@1.0.0/dist/umd/body-muscles.umd.min.js" integrity="sha384-TiJRzXzqcxvNgiBKWWkxSCFrWUGxw0O83AYli/tNrFXIl2xxMX4P3PyqtIjUQDgj" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="site.js"></script>
 </body>
 </html>
