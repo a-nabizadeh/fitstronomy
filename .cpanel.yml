@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/fitsxkjo/arminfit.com/
+    - /bin/cp -R * $DEPLOYPATH
