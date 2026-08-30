@@ -43,7 +43,13 @@ function closePricingModal() {
   pricingModal.setAttribute('aria-hidden', 'true');
   document.body.classList.remove('modal-open');
 
-  if (pricingTrigger instanceof HTMLElement) pricingTrigger.focus();
+  if (pricingTrigger instanceof HTMLElement) {
+    const mobileNavTrigger = mobilePricing.matches && pricingTrigger.closest('#navLinks');
+    const focusTarget = mobileNavTrigger
+      ? document.querySelector('.hamburger')
+      : pricingTrigger;
+    focusTarget?.focus();
+  }
   pricingTrigger = null;
 }
 
