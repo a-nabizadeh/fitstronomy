@@ -71,7 +71,7 @@ class AnatomyIntro {
     window.addEventListener('pagehide', this.handlePageHide);
 
     this.createScene();
-    this.setState('loading', 'Preview anatomy animation — anatomy model missing.');
+    this.setState('loading', 'Preview anatomy animation: anatomy model missing.');
     logAnatomyIntro('info', '[AnatomyIntro] Loading model:', this.modelSrc);
 
     this.loadAnatomyModel()
@@ -215,7 +215,7 @@ class AnatomyIntro {
     logAnatomyIntro('error', '[AnatomyIntro] Model failed, using fallback Three.js placeholder.', error);
     this.usingFallback = true;
     this.root.classList.add('using-fallback');
-    this.setState('model-failed-using-fallback', 'Preview anatomy animation — anatomy model missing.');
+    this.setState('model-failed-using-fallback', 'Preview anatomy animation: anatomy model missing.');
 
     const fallback = this.createFallbackModel();
     const muscles = this.collectMuscles(fallback);

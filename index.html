@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; img-src 'self' data:; font-src https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' https://unpkg.com/body-muscles@1.0.0/dist/umd/body-muscles.umd.min.js; connect-src 'self' https://api.web3forms.com; form-action https://api.web3forms.com; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; img-src 'self' data:; font-src https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' https://unpkg.com; connect-src 'self' https://api.web3forms.com; form-action https://api.web3forms.com; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="icon" href="favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
@@ -13,12 +13,13 @@
 <link rel="manifest" href="favicon/site.webmanifest">
 <meta name="theme-color" content="#000000">
 <title>Armin Nabizadeh · Personal Trainer</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Inter:wght@300;400;500&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&amp;family=Russo+One&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <style>
   :root {
-    --red: #E24B4A;
-    --red-dark: #b83736;
+    --red: #8B6BFF;
+    --red-dark: #7558e8;
     --bg: #1d1c1c;
     --bg2: #242222;
     --bg3: #2a2828;
@@ -31,7 +32,6 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; overflow-x: hidden; }
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
-  body.intro-lock { overflow: hidden; }
   button,
   input,
   select,
@@ -43,115 +43,6 @@
     outline-offset: 4px;
   }
 
-  .intro-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 500;
-    min-height: 100dvh;
-    overflow: hidden;
-    display: grid;
-    place-items: center;
-    background: #0d0c0c;
-    color: var(--text);
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.7s ease, visibility 0.7s ease;
-  }
-  .intro-overlay.is-hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-  .intro-canvas-wrap {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-  }
-  .intro-canvas-wrap canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-  .body-muscles-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .body-muscles-container svg {
-    max-height: 90vh;
-    width: auto;
-  }
-  .intro-copy {
-    position: absolute;
-    bottom: 60px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 2;
-    pointer-events: none;
-  }
-  .intro-statement {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    font-family: 'Russo One', sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: clamp(24px, 5.5vw, 42px);
-    color: var(--text);
-    letter-spacing: 1.5px;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
-  .intro-statement.is-visible {
-    opacity: 1;
-  }
-  .intro-statement span {
-    color: var(--red);
-  }
-  .intro-status {
-    margin-top: 14px;
-    color: var(--text3);
-    font-size: 12px;
-    letter-spacing: 0.6px;
-  }
-  .intro-overlay.has-error .intro-status {
-    color: var(--text2);
-    max-width: 48ch;
-    line-height: 1.7;
-  }
-  .intro-overlay.has-error .intro-copy {
-    top: 50%;
-    bottom: auto;
-    transform: translateY(-50%);
-  }
-  .intro-skip {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    z-index: 3;
-    border: 1px solid var(--border2);
-    border-radius: 999px;
-    background: rgba(10,10,10,0.54);
-    color: var(--text2);
-    padding: 10px 16px;
-    cursor: pointer;
-    backdrop-filter: blur(8px);
-    transition: color 0.2s, border-color 0.2s, background 0.2s;
-  }
-  .intro-skip:hover,
-  .intro-skip:focus-visible {
-    color: var(--text);
-    border-color: rgba(226,75,74,0.62);
-    background: rgba(226,75,74,0.12);
-    outline: none;
-  }
-
   .site-nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     background: rgba(10,10,10,0.98); backdrop-filter: blur(8px);
@@ -159,51 +50,13 @@
     display: flex; justify-content: space-between; align-items: center;
     padding: 18px 48px;
   }
-  .nav-logo { font-family: 'Oswald', sans-serif; font-size: 21px; letter-spacing: 2px; color: var(--text); text-decoration: none; }
+  .nav-logo { font-family: 'Space Grotesk', sans-serif; font-size: 21px; letter-spacing: 2px; color: var(--text); text-decoration: none; }
   .nav-logo span { color: var(--red); }
   .nav-links { display: flex; gap: 32px; align-items: center; }
   .nav-links a,
   .nav-links button { font-size: 14px; color: var(--text2); text-decoration: none; letter-spacing: 1px; transition: color 0.2s, background 0.2s, border-color 0.2s; background: transparent; border: none; font-family: inherit; cursor: pointer; }
   .nav-links a:hover,
   .nav-links button:hover { color: var(--text); }
-  .replay-intro-btn {
-    background: transparent;
-    border: none;
-    color: var(--text3);
-    font-size: 12px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    padding: 6px 10px;
-    transition: color 0.2s;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .replay-intro-btn:hover {
-    color: var(--red);
-  }
-
-  .replay-intro-mobile {
-    font-size: 14px;
-    padding: 12px 0;
-    text-align: left;
-    width: 100%;
-  }
-
-  .mobile-nav-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 8px 0;
-  }
-
-  @media (min-width: 769px) {
-    .replay-intro-mobile,
-    .mobile-nav-divider { display: none; }
-  }
-
-  @media (max-width: 768px) {
-    #replayIntroBtn { display: none; }
-  }
-
   .nav-links .nav-cta { background: var(--red); color: #fff; padding: 10px 22px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; }
   .nav-links .nav-cta:hover { background: var(--red-dark); color: #fff; }
   .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
@@ -214,11 +67,12 @@
 
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 760px) minmax(320px, 460px);
     align-items: center;
-    gap: 48px;
+    justify-content: space-between;
+    gap: clamp(48px, 7vw, 120px);
     padding: 140px 48px 80px;
-    min-height: 100vh;
+    min-height: calc(100svh - 24px);
     position: relative;
     overflow: hidden;
   }
@@ -227,48 +81,74 @@
     background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
     background-size: 60px 60px; opacity: 0.15; pointer-events: none;
   }
-  .hero-content { position: relative; z-index: 1; max-width: 640px; min-width: 0; width: 100%; }
-  .hero-tag { font-size: 12px; color: var(--red); letter-spacing: 3px; font-family: 'Oswald', sans-serif; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .hero-content { position: relative; z-index: 1; max-width: 760px; min-width: 0; width: 100%; }
+  .hero-tag { font-size: 12px; color: var(--red); letter-spacing: 3px; font-family: 'Space Grotesk', sans-serif; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
   .hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--red); }
-  .hero h1 { font-family: 'Oswald', sans-serif; font-size: clamp(48px, 7vw, 80px); font-weight: 700; line-height: 1.05; margin-bottom: 24px; letter-spacing: 1px; }
+  .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(46px, 6vw, 68px); font-weight: 700; line-height: 1.05; margin-bottom: 22px; letter-spacing: 1px; }
   .hero h1 .accent { color: var(--red); }
-  .hero-sub { font-size: 16px; color: var(--text2); line-height: 1.8; max-width: 460px; margin-bottom: 28px; }
-  .hero-science {
-    position: relative;
-    z-index: 1;
-    width: min(560px, 100%);
-    justify-self: end;
-    padding: 8px 0;
+  .hero-sub { font-size: 16px; color: var(--text2); line-height: 1.75; max-width: 620px; margin-bottom: 24px; }
+  .hero-proof {
+    max-width: 620px;
+    border-left: 2px solid var(--red);
+    margin-bottom: 30px;
+    padding: 3px 0 3px 16px;
   }
-  .hero-science-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
+  .hero-proof strong {
+    display: block;
     color: var(--red);
     font-size: 11px;
     letter-spacing: 1.9px;
     text-transform: uppercase;
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
+    margin-bottom: 6px;
   }
-  .hero-science-label::before {
-    content: '';
-    width: 24px;
-    height: 1px;
-    background: var(--red);
-  }
-  .hero-science-text {
-    min-height: 126px;
-    font-size: 21px;
+  .hero-proof p {
+    font-size: 14px;
     color: var(--text2);
-    line-height: 2.05;
+    line-height: 1.65;
   }
-  .hero-science-text strong { color: var(--text); font-weight: 500; }
-  .hero-science-cursor {
-    display: inline-block;
-    width: 10px;
+  .hero-framework {
+    position: relative;
+    z-index: 1;
+    align-self: center;
+    width: 100%;
+    border-top: 1px solid var(--border2);
+    border-bottom: 1px solid var(--border2);
+  }
+  .hero-framework-label {
     color: var(--red);
-    animation: blink-cursor 1s steps(1) infinite;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0 0 14px;
+  }
+  .hero-framework-step {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 16px;
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+  }
+  .hero-framework-step:first-of-type { border-top: 0; }
+  .hero-framework-number {
+    color: var(--red);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .hero-framework-step strong {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+  }
+  .hero-framework-step p {
+    color: var(--text2);
+    font-size: 13px;
+    line-height: 1.6;
   }
   .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
   .hero-cta .btn-primary,
@@ -280,11 +160,16 @@
     gap: 8px;
     font-size: 17px;
   }
+  .hero-cta .btn-secondary {
+    background: #181818;
+    border-color: #4a4a4a;
+  }
   .cta-short { display: none; }
   .btn-primary { background: var(--red); color: #fff; padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 14px; justify-content: center; text-align: center; transition: background 0.2s; }
   .btn-primary:hover { background: var(--red-dark); }
-  .btn-secondary { background: transparent; color: var(--text); padding: 14px 28px; border-radius: 8px; border: 1px solid var(--border2); font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; text-align: center; transition: border-color 0.2s; }
-  .btn-secondary:hover { border-color: var(--text2); }
+  .button-dumbbell { width: 44px; height: 26px; flex-shrink: 0; }
+  .btn-secondary { background: transparent; color: var(--text); padding: 14px 28px; border-radius: 8px; border: 1px solid var(--border2); font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+  .btn-secondary:hover { border-color: var(--text2); background: rgba(255,255,255,0.045); }
 
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); background: #0d0d0d; }
   .stat { padding: 32px 48px; border-right: 1px solid var(--border2); opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
@@ -293,10 +178,7 @@
     opacity: 1;
     transform: translateY(0);
   }
-  .stat-num { font-family: 'Oswald', sans-serif; font-size: 36px; font-weight: 700; color: var(--red); }
-  .stat-num.pulse {
-    animation: statPulse 0.35s ease-out;
-  }
+  .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700; color: var(--red); }
   .stat-label { font-size: 13px; color: var(--text3); margin-top: 4px; letter-spacing: 1px; }
   .stat-progress {
     height: 2px;
@@ -315,9 +197,9 @@
 
   section { padding: 80px 48px; }
   .section-inner { max-width: 860px; margin: 0 auto; }
-  .section-tag { font-size: 12px; color: var(--red); letter-spacing: 3px; font-family: 'Oswald', sans-serif; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .section-tag { font-size: 12px; color: var(--red); letter-spacing: 3px; font-family: 'Space Grotesk', sans-serif; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
   .section-tag::before { content: ''; width: 24px; height: 1px; background: var(--red); }
-  .section-title { font-family: 'Oswald', sans-serif; font-size: clamp(28px, 4vw, 40px); font-weight: 600; margin-bottom: 16px; letter-spacing: 1px; }
+  .section-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(28px, 4vw, 40px); font-weight: 600; margin-bottom: 16px; letter-spacing: 1px; }
   .section-subtitle { font-size: 15px; color: var(--text2); line-height: 1.8; max-width: 560px; margin-bottom: 48px; }
 
   #services { background: #0e0e0e; }
@@ -332,7 +214,6 @@
     border: none;
     padding: 0;
   }
-  .service-card.is-flipped { transform: rotateY(180deg); }
   .card-face {
     position: absolute;
     inset: 0;
@@ -354,15 +235,15 @@
     justify-content: space-between;
   }
   .service-card:hover .card-face { border-color: var(--red); }
-  .service-icon { width: 40px; height: 40px; background: rgba(226,75,74,0.1); border-radius: 8px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
+  .service-icon { width: 40px; height: 40px; background: rgba(139,107,255,0.1); border-radius: 8px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
   .service-icon svg { width: 18px; height: 18px; stroke: var(--red); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .service-card h3 { font-family: 'Oswald', sans-serif; font-size: 17px; letter-spacing: 1px; margin-bottom: 8px; }
+  .service-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 17px; letter-spacing: 1px; margin-bottom: 8px; }
   .card-front p { font-size: 14px; color: var(--text2); line-height: 1.75; }
   .card-back-label {
     font-size: 12px;
     letter-spacing: 2px;
     color: var(--red);
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     margin-bottom: 16px;
     display: flex;
     align-items: center;
@@ -427,13 +308,13 @@
   }
   .pricing-preview-item:last-child { border-right: 0; }
   .pricing-preview-item h3 {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 19px;
     margin-bottom: 10px;
   }
   .pricing-preview-price {
     color: var(--red);
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 28px;
     line-height: 1;
   }
@@ -453,7 +334,7 @@
   #about { background: var(--bg); }
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
   .about-image { aspect-ratio: 3/4; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-  .about-image::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, rgba(226,75,74,0.2), var(--red), rgba(226,75,74,0.2)); }
+  .about-image::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, rgba(139,107,255,0.2), var(--red), rgba(139,107,255,0.2)); }
   .about-image::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: var(--red); }
   .about-image::before,
   .about-image::after { z-index: 1; }
@@ -493,7 +374,7 @@
     gap: 3px;
   }
   .about-social-copy strong {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 15px;
     letter-spacing: 1px;
     font-weight: 500;
@@ -505,7 +386,7 @@
     transition: color 0.2s;
   }
   .about-social-link:hover .about-social-copy span { color: var(--text2); }
-  .badge { font-size: 12px; letter-spacing: 1px; padding: 6px 12px; border: 1px solid var(--border2); border-radius: 20px; color: var(--text2); font-family: 'Oswald', sans-serif; }
+  .badge { font-size: 12px; letter-spacing: 1px; padding: 6px 12px; border: 1px solid var(--border2); border-radius: 20px; color: var(--text2); font-family: 'Space Grotesk', sans-serif; }
 
   #nutrition { background: #0e0e0e; }
   #nutrition .section-inner { max-width: 1180px; }
@@ -549,7 +430,7 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(circle at top right, rgba(226,75,74,0.14), transparent 32%),
+      radial-gradient(circle at top right, rgba(139,107,255,0.14), transparent 32%),
       linear-gradient(135deg, rgba(255,255,255,0.02), transparent 44%);
     pointer-events: none;
   }
@@ -566,7 +447,7 @@
     border-radius: 18px;
     padding: 20px;
     background:
-      radial-gradient(circle at top right, rgba(226,75,74,0.16), transparent 34%),
+      radial-gradient(circle at top right, rgba(139,107,255,0.16), transparent 34%),
       linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
   }
@@ -578,7 +459,7 @@
     margin-bottom: 18px;
   }
   .guide-header h3 {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 24px;
     letter-spacing: 1px;
   }
@@ -587,8 +468,7 @@
     height: 12px;
     border-radius: 999px;
     background: var(--red);
-    box-shadow: 0 0 0 0 rgba(226,75,74,0.5);
-    animation: pulse-orbit 2.4s infinite;
+    box-shadow: 0 0 0 0 rgba(139,107,255,0.5);
   }
   .guide-highlight {
     min-height: 152px;
@@ -609,7 +489,7 @@
     color: var(--red);
   }
   .guide-highlight h4 {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 24px;
     letter-spacing: 0.6px;
     margin-bottom: 8px;
@@ -648,7 +528,7 @@
   .guide-pill:hover,
   .guide-pill.is-active {
     color: var(--text);
-    background: rgba(226,75,74,0.22);
+    background: rgba(139,107,255,0.22);
     transform: translateY(-1px);
   }
   .guide-mini-grid {
@@ -661,13 +541,10 @@
     border-radius: 14px;
     padding: 14px;
     background: rgba(255,255,255,0.02);
-    animation: drift-card 5s ease-in-out infinite;
   }
-  .guide-mini-card:nth-child(2) { animation-delay: 0.45s; }
-  .guide-mini-card:nth-child(3) { animation-delay: 0.9s; }
   .guide-mini-card strong {
     display: block;
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 18px;
     letter-spacing: 0.8px;
     margin-bottom: 6px;
@@ -713,7 +590,7 @@
     outline: none;
     border-color: var(--red);
     background: rgba(0,0,0,0.36);
-    box-shadow: 0 0 0 3px rgba(226, 75, 74, 0.18);
+    box-shadow: 0 0 0 3px rgba(139, 107, 255, 0.18);
   }
   .field-hint {
     font-size: 13px;
@@ -767,7 +644,7 @@
     align-items: start;
   }
   .results-heading h3 {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     letter-spacing: 1px;
     font-size: 28px;
   }
@@ -798,7 +675,7 @@
     margin-bottom: 8px;
   }
   .summary-value {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 28px;
     color: var(--text);
     line-height: 1;
@@ -817,7 +694,7 @@
   }
   .macro-card strong {
     display: block;
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     letter-spacing: 1px;
     font-size: 20px;
     margin-bottom: 6px;
@@ -846,7 +723,7 @@
     min-width: 0;
   }
   .meal-plan-header {
-    background: rgba(226,75,74,0.08);
+    background: rgba(139,107,255,0.08);
     font-size: 12px;
     letter-spacing: 1.3px;
     text-transform: uppercase;
@@ -874,24 +751,6 @@
     padding: 20px;
     background: rgba(255,255,255,0.015);
   }
-  @keyframes pulse-orbit {
-    0% { box-shadow: 0 0 0 0 rgba(226,75,74,0.45); transform: scale(1); }
-    60% { box-shadow: 0 0 0 12px rgba(226,75,74,0); transform: scale(1.08); }
-    100% { box-shadow: 0 0 0 0 rgba(226,75,74,0); transform: scale(1); }
-  }
-  @keyframes drift-card {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
-  }
-  @keyframes blink-cursor {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
-  }
-  @keyframes statPulse {
-    0%   { transform: scale(1); }
-    45%  { transform: scale(1.1); }
-    100% { transform: scale(1); }
-  }
   .pricing-modal {
     position: fixed;
     inset: 0;
@@ -906,8 +765,10 @@
   .pricing-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(5, 5, 5, 0.74);
-    backdrop-filter: blur(10px);
+    background: rgba(10, 10, 15, 0.45);
+    background: color-mix(in srgb, var(--bg) 45%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
   .currency-switcher {
     display: flex;
@@ -938,7 +799,7 @@
   .currency-btn.is-active {
     color: var(--text);
     font-weight: 700;
-    background: rgba(226,75,74,0.18);
+    background: rgba(139,107,255,0.18);
   }
   .price-value {
     transition: opacity 0.2s;
@@ -958,7 +819,7 @@
     border-radius: 28px;
     border: 1px solid rgba(255,255,255,0.08);
     background:
-      radial-gradient(circle at top right, rgba(226,75,74,0.16), transparent 28%),
+      radial-gradient(circle at top right, rgba(139,107,255,0.16), transparent 28%),
       linear-gradient(180deg, #171717, #0e0e0e);
     box-shadow: 0 30px 70px rgba(0,0,0,0.42);
   }
@@ -975,7 +836,7 @@
     cursor: pointer;
     font-size: 20px;
   }
-  .pricing-close:hover { border-color: rgba(226,75,74,0.5); color: var(--red); }
+  .pricing-close:hover { border-color: rgba(139,107,255,0.5); color: var(--red); }
   .pricing-header {
     max-width: 720px;
     margin-bottom: 28px;
@@ -1024,20 +885,20 @@
     width: 180px;
     height: 180px;
     border-radius: 999px;
-    background: rgba(226,75,74,0.08);
+    background: rgba(139,107,255,0.08);
     filter: blur(16px);
     pointer-events: none;
   }
   .pricing-card.featured {
-    border-color: rgba(226,75,74,0.5);
+    border-color: rgba(139,107,255,0.5);
     transform: translateY(-4px);
-    box-shadow: 0 18px 34px rgba(226,75,74,0.1);
+    box-shadow: 0 18px 34px rgba(139,107,255,0.1);
   }
   .pricing-badge {
     justify-self: start;
     padding: 6px 10px;
     border-radius: 999px;
-    background: rgba(226,75,74,0.16);
+    background: rgba(139,107,255,0.16);
     color: var(--red);
     font-size: 11px;
     letter-spacing: 1.3px;
@@ -1045,12 +906,12 @@
   }
   .pricing-card-title {
     display: block;
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 30px;
     letter-spacing: 1px;
   }
   .pricing-price {
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 44px;
     color: var(--text);
     line-height: 1;
@@ -1136,7 +997,7 @@
   .pricing-preview-cta:hover {
     border-color: var(--red);
     color: var(--text);
-    background: rgba(226,75,74,0.1);
+    background: rgba(139,107,255,0.1);
   }
   .pricing-single-cta {
     display: flex;
@@ -1186,12 +1047,12 @@
   .contact-link:hover .contact-link-icon svg { stroke: var(--red); }
   .contact-form { display: flex; flex-direction: column; gap: 14px; }
   .contact-form input, .contact-form textarea { background: var(--bg2); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 12px 16px; font-size: 14px; font-family: 'Inter', sans-serif; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; width: 100%; }
-  .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--red); background: var(--bg3); box-shadow: 0 0 0 3px rgba(226, 75, 74, 0.18); }
+  .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--red); background: var(--bg3); box-shadow: 0 0 0 3px rgba(139, 107, 255, 0.18); }
   .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--text3); }
   .contact-form textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
   .contact-form button { background: var(--red); color: #fff; border: none; padding: 14px; border-radius: 6px; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer; transition: background 0.2s, box-shadow 0.2s; }
   .contact-form button:hover { background: var(--red-dark); }
-  .contact-form button:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(226,75,74,0.24); }
+  .contact-form button:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(139,107,255,0.24); }
   .hidden-field { display: none; }
   .contact-status {
     min-height: 22px;
@@ -1204,7 +1065,7 @@
 
   footer { background: #0a0a0a; border-top: 1px solid var(--border); padding: 24px 48px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 24px; align-items: center; }
   .footer-brand { display: grid; gap: 6px; }
-  .footer-logo { font-family: 'Oswald', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--text3); }
+  .footer-logo { font-family: 'Space Grotesk', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--text3); }
   .footer-logo span { color: var(--red); }
   .footer-copyright { color: var(--text3); font-size: 11px; line-height: 1.4; }
   .footer-nav { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--text3); font-size: 12px; }
@@ -1223,15 +1084,8 @@
     .hero {
       padding: 112px 32px 72px;
     }
-    .hero-content {
-      max-width: 720px;
-    }
-    .hero-science {
-      width: 100%;
-    }
-    .hero-science-text {
-      min-height: 0;
-    }
+    .hero-content { max-width: 720px; }
+    .hero { grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr); gap: 44px; }
     section { padding: 72px 32px; }
     .about-grid,
     .contact-grid {
@@ -1249,18 +1103,8 @@
   }
 
   @media (max-width: 900px) {
-    .hero {
-      grid-template-columns: 1fr;
-      padding-top: 110px;
-    }
-    .hero-science {
-      order: 2;
-      justify-self: start;
-      text-align: left;
-    }
-    .hero-science-label {
-      justify-content: flex-start;
-    }
+    .hero { grid-template-columns: 1fr; padding-top: 110px; }
+    .hero-framework { display: none; }
     .services-grid,
     .about-grid,
     .contact-grid { grid-template-columns: 1fr; }
@@ -1282,12 +1126,6 @@
   }
 
   @media (max-width: 768px) {
-    .intro-skip {
-      top: 16px;
-      right: 16px;
-      padding: 9px 14px;
-      font-size: 13px;
-    }
     .site-nav { padding: 14px 20px; }
     .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: #0a0a0a; border-bottom: 1px solid var(--border2); padding: 20px; gap: 20px; align-items: stretch; }
     .nav-links.open { display: flex; }
@@ -1295,19 +1133,7 @@
     .nav-links button { width: 100%; text-align: left; }
     .nav-links .nav-cta { text-align: center; }
     .hamburger { display: flex; }
-    .hero { padding: 110px 20px 60px; }
-    .hero-science {
-      width: 100%;
-      padding: 16px 18px;
-      border-radius: 16px;
-      text-align: left;
-    }
-    .hero-science-text {
-      min-height: 0;
-      font-size: 14px;
-      line-height: 1.8;
-      text-align: left;
-    }
+    .hero { min-height: calc(100svh - 24px); padding: 110px 20px 60px; }
     section { padding: 64px 28px; }
     .stats { grid-template-columns: 1fr; }
     .stat { border-right: none; border-bottom: 1px solid var(--border2); padding: 24px 20px; }
@@ -1413,26 +1239,17 @@
       width: 100%;
     }
     .hero-cta .btn-secondary {
-      width: auto;
-      align-self: center;
-      background: transparent;
-      border: none;
-      padding: 8px 0;
-      color: var(--text2);
-      font-size: 13px;
-      letter-spacing: 1px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .hero-cta .btn-secondary::before {
-      content: '→';
-      color: var(--red);
+      width: 100%;
+      align-self: stretch;
+      background: #181818;
+      border: 1px solid #4a4a4a;
+      padding: 14px 20px;
+      color: var(--text);
+      font-size: 14px;
     }
     .hero-cta .btn-secondary:hover {
       color: var(--text);
-      border: none;
+      border-color: var(--text2);
     }
     .cta-long { display: none; }
     .cta-short { display: inline; }
@@ -1488,41 +1305,50 @@
       font-size: 38px;
     }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .intro-overlay {
-      display: none;
-    }
-  }
 </style>
+<link rel="stylesheet" href="design-system.css">
 </head>
-<body>
+<body class="home-page intro-pending">
 
-<!-- Place the final GLB at assets/anatomy-body.glb or update data-model-src below. Expected mesh names: Body_Base and Muscle_* groups. -->
-<div class="intro-overlay" id="anatomyIntro" data-model-src="assets/anatomy-body.glb" aria-label="Anatomy intro animation">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="icon-dumbbell" viewBox="0 0 300 110">
+    <rect x="118" y="43" width="63" height="24" rx="2" fill="currentColor"/>
+    <rect x="99" y="43" width="19" height="24" rx="2" fill="currentColor"/>
+    <rect x="77" y="5" width="20" height="98" rx="2" fill="currentColor"/>
+    <rect x="56" y="16" width="18" height="76" rx="2" fill="currentColor"/>
+    <rect x="38" y="28" width="16" height="52" rx="2" fill="currentColor"/>
+    <rect x="181" y="43" width="19" height="24" rx="2" fill="currentColor"/>
+    <rect x="202" y="5" width="20" height="98" rx="2" fill="currentColor"/>
+    <rect x="225" y="16" width="18" height="76" rx="2" fill="currentColor"/>
+    <rect x="245" y="28" width="16" height="52" rx="2" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<div class="intro-overlay" id="anatomyIntro" aria-label="Anatomy intro animation">
   <div class="intro-canvas-wrap" data-intro-canvas></div>
-  <div class="intro-copy">
+  <div class="intro-copy" aria-live="polite">
     <div class="intro-statement" id="stmt-1">Backed by <span>science.</span></div>
     <div class="intro-statement" id="stmt-2">Built for <span>results.</span></div>
     <div class="intro-statement" id="stmt-3">Designed for <span>you.</span></div>
   </div>
   <button class="intro-skip" type="button" data-intro-skip>Skip intro</button>
 </div>
+<noscript><style>.intro-overlay{display:none!important}.intro-pending .reveal{animation-play-state:running!important}</style></noscript>
 
 <nav class="site-nav">
-  <a href="#" class="nav-logo">Armin Nabizadeh <span>·</span> PT</a>
+  <a href="#" class="nav-logo">
+    <span class="brand-dot" aria-hidden="true"></span>
+    <span class="brand-lockup">
+      <span class="brand-name">Armin Nabizadeh</span>
+      <span class="brand-role">Certified Personal Trainer</span>
+    </span>
+  </a>
   <div class="nav-links" id="navLinks">
     <a href="#about">About</a>
     <a href="#services">Services</a>
     <a href="#nutrition">Nutrition</a>
     <button type="button" data-open-pricing>Pricing</button>
-    <button type="button" id="replayIntroBtn" class="replay-intro-btn">
-      ↺ Replay Intro
-    </button>
     <a href="apply.html" class="nav-cta">Apply Now</a>
-    <div class="mobile-nav-divider"></div>
-    <button type="button" id="replayIntroBtnMobile" class="replay-intro-btn replay-intro-mobile">
-      ↺ Replay Intro
-    </button>
   </div>
   <div class="hamburger" role="button" tabindex="0" aria-controls="navLinks" aria-expanded="false">
     <span></span><span></span><span></span>
@@ -1532,119 +1358,221 @@
 <section class="hero" id="home">
   <div class="hero-grid-bg"></div>
   <div class="hero-content">
-    <div class="hero-tag">CERTIFIED PERSONAL TRAINER</div>
-    <h1>No Guesswork. Just <span class="accent">Progress.</span></h1>
-    <p class="hero-sub">Personalized fitness programs tailored to your goals, whether you want to lose weight, build strength, or level up your overall health.</p>
-    <div class="hero-cta">
+    <h1 class="reveal d1">No guesswork.<br>Just progress.</h1>
+    <p class="hero-sub reveal d2">Coaching built around your goals, schedule, and training history, with programming that adapts as your data comes in.</p>
+    <div class="hero-cta reveal d3">
       <a href="apply.html" class="btn-primary">
-        <svg width="62" height="34" viewBox="0 0 300 110" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
-          <rect x="118" y="43" width="63" height="24" rx="2" fill="white"/>
-          <rect x="99" y="43" width="19" height="24" rx="2" fill="white"/>
-          <rect x="77" y="5" width="20" height="98" rx="2" fill="white"/>
-          <rect x="56" y="16" width="18" height="76" rx="2" fill="white"/>
-          <rect x="38" y="28" width="16" height="52" rx="2" fill="white"/>
-          <rect x="181" y="43" width="19" height="24" rx="2" fill="white"/>
-          <rect x="202" y="5" width="20" height="98" rx="2" fill="white"/>
-          <rect x="225" y="16" width="18" height="76" rx="2" fill="white"/>
-          <rect x="245" y="28" width="16" height="52" rx="2" fill="white"/>
-        </svg>
-        <span class="cta-long">Start Your Coaching Application</span>
-        <span class="cta-short">Start Application</span>
+        <svg class="button-dumbbell" viewBox="0 0 300 110" aria-hidden="true"><use href="#icon-dumbbell"></use></svg>
+        Apply now
       </a>
-      <a href="#pricing-overview" class="btn-secondary">View Pricing</a>
+      <button type="button" class="btn-secondary" data-open-pricing>See pricing</button>
     </div>
   </div>
-  <div class="hero-science">
-    <div class="hero-science-label">Science-Backed Training</div>
-    <p class="hero-science-text" id="heroScienceText" data-full-text="Science-Backed Training. Your program is built on what actually works, not trends, not guesswork. Just the science of how your body moves, adapts, and grows."></p>
+  <div class="dial-stage reveal d4">
+    <div class="dial" id="coachingDial">
+      <div class="dial-aura" aria-hidden="true"></div>
+
+      <svg class="dial-rings" viewBox="0 0 400 400" role="group" aria-label="The coaching cycle: assess, build, progress, then repeat">
+        <defs>
+          <linearGradient id="cycleAssessGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#8B6BFF"></stop><stop offset="100%" stop-color="#C0A8FF"></stop>
+          </linearGradient>
+          <linearGradient id="cycleBuildGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#FF5C7A"></stop><stop offset="100%" stop-color="#FFA0B0"></stop>
+          </linearGradient>
+          <linearGradient id="cycleProgressGradient" x1="100%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#34E2C6"></stop><stop offset="100%" stop-color="#8CF3E2"></stop>
+          </linearGradient>
+          <path id="cycleLabelPath0" fill="none" d="M212.9,15.5 A185,185 0 0,1 366.3,281.1"></path>
+          <path id="cycleLabelPath1" fill="none" d="M38.3,309.0 A195,195 0 0,0 361.7,309.0"></path>
+          <path id="cycleLabelPath2" fill="none" d="M33.7,281.1 A185,185 0 0,1 187.1,15.5"></path>
+        </defs>
+
+        <g id="cycleTicks" aria-hidden="true"></g>
+        <circle class="sat-trail" cx="200" cy="200" r="168"></circle>
+        <g class="sat-orbit" aria-hidden="true"><circle class="sat" cx="200" cy="32" r="3.5"></circle></g>
+
+        <path class="arc-track" d="M210.5,50.4 A150,150 0 0,1 334.8,265.8"></path>
+        <path class="arc-track" d="M324.4,283.9 A150,150 0 0,1 75.6,283.9"></path>
+        <path class="arc-track" d="M65.2,265.8 A150,150 0 0,1 189.5,50.4"></path>
+
+        <g class="cycle-segment is-active" data-cycle-segment="0" tabindex="0" role="button" aria-label="Step one, assess">
+          <path class="cycle-arc" pathLength="100" stroke="url(#cycleAssessGradient)" d="M210.5,50.4 A150,150 0 0,1 334.8,265.8"></path>
+          <path class="cycle-comet" pathLength="100" d="M210.5,50.4 A150,150 0 0,1 334.8,265.8"></path>
+          <path class="cycle-hit" d="M210.5,50.4 A150,150 0 0,1 334.8,265.8"></path>
+          <circle class="cycle-node-halo" cx="329.9" cy="125" r="10" stroke="#8B6BFF"></circle>
+          <circle class="cycle-node" cx="329.9" cy="125" r="6" stroke="#8B6BFF"></circle>
+          <text class="cycle-label" text-anchor="middle"><textPath href="#cycleLabelPath0" startOffset="50%">01 Assess</textPath></text>
+        </g>
+
+        <g class="cycle-segment" data-cycle-segment="1" tabindex="0" role="button" aria-label="Step two, build">
+          <path class="cycle-arc" pathLength="100" stroke="url(#cycleBuildGradient)" d="M324.4,283.9 A150,150 0 0,1 75.6,283.9"></path>
+          <path class="cycle-comet" pathLength="100" d="M324.4,283.9 A150,150 0 0,1 75.6,283.9"></path>
+          <path class="cycle-hit" d="M324.4,283.9 A150,150 0 0,1 75.6,283.9"></path>
+          <circle class="cycle-node-halo" cx="200" cy="350" r="10" stroke="#FF5C7A"></circle>
+          <circle class="cycle-node" cx="200" cy="350" r="6" stroke="#FF5C7A"></circle>
+          <text class="cycle-label" text-anchor="middle"><textPath href="#cycleLabelPath1" startOffset="50%">02 Build</textPath></text>
+        </g>
+
+        <g class="cycle-segment" data-cycle-segment="2" tabindex="0" role="button" aria-label="Step three, progress">
+          <path class="cycle-arc" pathLength="100" stroke="url(#cycleProgressGradient)" d="M65.2,265.8 A150,150 0 0,1 189.5,50.4"></path>
+          <path class="cycle-comet" pathLength="100" d="M65.2,265.8 A150,150 0 0,1 189.5,50.4"></path>
+          <path class="cycle-hit" d="M65.2,265.8 A150,150 0 0,1 189.5,50.4"></path>
+          <circle class="cycle-node-halo" cx="70.1" cy="125" r="10" stroke="#34E2C6"></circle>
+          <circle class="cycle-node" cx="70.1" cy="125" r="6" stroke="#34E2C6"></circle>
+          <text class="cycle-label" text-anchor="middle"><textPath href="#cycleLabelPath2" startOffset="50%">03 Progress</textPath></text>
+        </g>
+      </svg>
+
+      <div class="dial-center" aria-live="polite" aria-atomic="true">
+        <svg class="cycle-viz is-visible" data-cycle-viz="0" viewBox="0 0 112 56" aria-hidden="true">
+          <rect class="measure-bar" x="4" y="8" width="74" height="6" rx="3" fill="#8B6BFF"></rect>
+          <rect class="measure-bar" x="4" y="24" width="52" height="6" rx="3" fill="#8B6BFF" opacity=".72"></rect>
+          <rect class="measure-bar" x="4" y="40" width="88" height="6" rx="3" fill="#8B6BFF" opacity=".5"></rect>
+          <rect class="measure-sweep" x="4" y="2" width="2" height="52" rx="1" fill="#fff" opacity=".5"></rect>
+        </svg>
+        <svg class="cycle-viz" data-cycle-viz="1" viewBox="0 0 112 56" aria-hidden="true">
+          <rect class="build-block" x="10" y="40" width="92" height="12" rx="4" fill="#FF5C7A" opacity=".45"></rect>
+          <rect class="build-block" x="18" y="26" width="76" height="12" rx="4" fill="#FF5C7A" opacity=".65"></rect>
+          <rect class="build-block" x="28" y="12" width="56" height="12" rx="4" fill="#FF5C7A" opacity=".85"></rect>
+          <rect class="build-block" x="42" y="0" width="28" height="10" rx="4" fill="#FF5C7A"></rect>
+        </svg>
+        <svg class="cycle-viz" data-cycle-viz="2" viewBox="0 0 112 56" aria-hidden="true">
+          <path class="progress-line" pathLength="100" d="M6,48 L28,42 L50,45 L72,26 L94,8"></path>
+          <g class="progress-tip">
+            <circle cx="94" cy="8" r="5" fill="#34E2C6"></circle>
+            <circle cx="94" cy="8" r="9" fill="none" stroke="#34E2C6" opacity=".35"></circle>
+          </g>
+        </svg>
+        <div class="dial-copy">
+          <h2 class="dial-title" id="cycleTitle">Assess</h2>
+          <p class="dial-body" id="cycleBody">Your goal, schedule, history, and starting point.</p>
+        </div>
+      </div>
+    </div>
+    <p class="dial-caption">The cycle repeats every training block</p>
   </div>
 </section>
 
-<div class="stats" id="statsBar">
-  <div class="stat" data-target="30" data-suffix="+">
-    <div class="stat-num">30+</div>
-    <div class="stat-label">CLIENTS TRAINED</div>
-    <div class="stat-progress"><div class="stat-progress-fill"></div></div>
+<section class="stats-section" aria-label="Coaching in numbers">
+  <div class="stats" id="statsBar">
+    <div class="fig" style="--tone:#8B6BFF">
+      <span class="fig-label">Clients trained</span>
+      <div class="fig-num"><span data-count="30">30</span><span class="unit">+</span></div>
+      <div class="bars" data-bars="12" aria-hidden="true"></div>
+      <p class="fig-note">One-to-one in person and online, worldwide.</p>
+    </div>
+    <div class="fig" style="--tone:#FF5C7A">
+      <span class="fig-label">Coaching since</span>
+      <div class="fig-num"><span data-count="2022" data-from="1962">2022</span></div>
+      <div class="bars" data-bars="12" aria-hidden="true"></div>
+      <p class="fig-note">Four years of blocks written, run, and rewritten.</p>
+    </div>
+    <div class="fig" style="--tone:#34E2C6">
+      <span class="fig-label">Commitment</span>
+      <div class="fig-num"><span data-count="100">100</span><span class="unit">%</span></div>
+      <div class="bars" data-bars="12" aria-hidden="true"></div>
+      <p class="fig-note">Every program written by me, reviewed every week.</p>
+    </div>
   </div>
-  <div class="stat" data-target="4" data-suffix="+">
-    <div class="stat-num">4+</div>
-    <div class="stat-label">YEARS EXPERIENCE</div>
-    <div class="stat-progress"><div class="stat-progress-fill"></div></div>
+  <div class="stats-foot">
+    <span class="live"><i aria-hidden="true"></i>Currently taking new clients</span>
   </div>
-  <div class="stat" data-target="100" data-suffix="%">
-    <div class="stat-num">100%</div>
-    <div class="stat-label">COMMITMENT</div>
-    <div class="stat-progress"><div class="stat-progress-fill"></div></div>
-  </div>
-</div>
+</section>
 
 <section id="services">
   <div class="section-inner">
-    <div class="section-tag">WHAT I OFFER</div>
-    <h2 class="section-title">Services</h2>
-    <p class="section-subtitle">All programs are continuously updated to reflect the newest findings in sports science, so you always train smarter, not just harder.</p>
+    <div class="services-heading">
+      <div>
+        <div class="section-tag">What I offer</div>
+        <h2 class="section-title">Four ways to train with me</h2>
+      </div>
+      <p class="section-subtitle">Every program is updated as sports science moves, so you train on what is current, not on what was popular five years ago.</p>
+    </div>
     <div class="services-grid">
-      <div class="service-card" role="button" tabindex="0" aria-label="Strength Training, click to flip">
+      <div class="service-card service-card--wide service-card--violet" role="button" tabindex="0" aria-label="One-to-one personal training research fact" aria-pressed="false">
         <div class="card-face card-front">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M2 8h4M18 8h4M2 16h4M18 16h4"/></svg>
+          <div class="service-meta">
+            <span class="service-signal" aria-hidden="true"></span>
+            <span class="service-mode">In person</span>
           </div>
-          <h3>Strength Training</h3>
-          <p>Build muscle and improve power with structured, periodized programs designed around your body and goals.</p>
-          <div class="card-flip-hint">SCIENCE BEHIND THIS</div>
+          <h3>One-to-one personal training</h3>
+          <p>We train together in the gym. I coach every rep, fix technique as it happens, and adjust the session to how you show up that day.</p>
+          <div class="service-benefits" aria-label="Included">
+            <span>Technique coaching</span>
+            <span>Weekly sessions</span>
+            <span>Live load adjustment</span>
+          </div>
+          <div class="card-flip-hint">Science behind</div>
         </div>
         <div class="card-face card-back">
-          <div class="card-back-label">RESEARCH FACT</div>
-          <p class="card-back-fact">Adults who do not strength train lose up to 5 lbs of muscle per decade. Progressive resistance training reverses this, increasing muscle protein synthesis by up to 50% and improving metabolic rate, bone density, and insulin sensitivity simultaneously.</p>
-          <div class="card-back-source">Source: Westcott, W.L., Current Sports Medicine Reports, 2012</div>
+          <div class="card-back-label">Research fact</div>
+          <p class="card-back-fact">Real-time coaching feedback reduces injury risk and accelerates motor learning. Supervised participants achieve greater strength gains with measurably better movement quality and exercise technique.</p>
+          <div class="card-back-source">Source: Coutts et al., Journal of Strength and Conditioning Research, 2004</div>
         </div>
       </div>
 
-      <div class="service-card" role="button" tabindex="0" aria-label="Weight Loss, click to flip">
+      <div class="service-card service-card--compact service-card--coral" role="button" tabindex="0" aria-label="Online coaching research fact" aria-pressed="false">
         <div class="card-face card-front">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <div class="service-meta">
+            <span class="service-signal" aria-hidden="true"></span>
+            <span class="service-mode">Remote</span>
           </div>
-          <h3>Weight Loss</h3>
-          <p>Sustainable fat loss through smart nutrition strategies and progressive cardio, with no crash diets and no shortcuts.</p>
-          <div class="card-flip-hint">SCIENCE BEHIND THIS</div>
+          <h3>Online coaching</h3>
+          <p>Your program in the app, video review of your lifts, and a check-in every week.</p>
+          <div class="service-benefits" aria-label="Included">
+            <span>Video review</span>
+            <span>Weekly check-in</span>
+          </div>
+          <div class="card-flip-hint">Science behind</div>
         </div>
         <div class="card-face card-back">
-          <div class="card-back-label">RESEARCH FACT</div>
-          <p class="card-back-fact">Combining resistance training with a moderate calorie deficit preserves lean mass during fat loss far better than cardio alone. Studies show muscle-preserving deficits of 300–500 kcal per day produce superior long-term body composition outcomes compared to aggressive cuts.</p>
-          <div class="card-back-source">Source: Barakat et al., Strength &amp; Conditioning Journal, 2020</div>
-        </div>
-      </div>
-
-      <div class="service-card" role="button" tabindex="0" aria-label="Online Coaching, click to flip">
-        <div class="card-face card-front">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          </div>
-          <h3>Online Coaching</h3>
-          <p>Remote programs and regular check-ins that fit your schedule, wherever you are in the world.</p>
-          <div class="card-flip-hint">SCIENCE BEHIND THIS</div>
-        </div>
-        <div class="card-face card-back">
-          <div class="card-back-label">RESEARCH FACT</div>
-          <p class="card-back-fact">Accountability and structured programming are the two strongest predictors of long-term exercise adherence. Research shows that coached individuals, including remotely, are 78% more likely to maintain consistent training habits over 6 months than those training without guidance.</p>
+          <div class="card-back-label">Research fact</div>
+          <p class="card-back-fact">Accountability and structured programming are strong predictors of long-term exercise adherence, including when coaching happens remotely.</p>
           <div class="card-back-source">Source: Olander et al., Journal of Behavioral Medicine, 2013</div>
         </div>
       </div>
 
-      <div class="service-card" role="button" tabindex="0" aria-label="In-Person Sessions, click to flip">
+      <div class="service-card service-card--compact service-card--teal" role="button" tabindex="0" aria-label="Nutrition guidance research fact" aria-pressed="false">
         <div class="card-face card-front">
-          <div class="service-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2"/></svg>
+          <div class="service-meta">
+            <span class="service-signal" aria-hidden="true"></span>
+            <span class="service-mode">Add-on</span>
           </div>
-          <h3>In-Person Sessions</h3>
-          <p>One-on-one training with hands-on coaching, real-time form correction, and immediate feedback.</p>
-          <div class="card-flip-hint">SCIENCE BEHIND THIS</div>
+          <h3>Nutrition guidance</h3>
+          <p>Targets that fit how you actually eat, reviewed against your training load.</p>
+          <div class="service-benefits" aria-label="Included">
+            <span>Calorie &amp; protein targets</span>
+            <span>Monthly review</span>
+          </div>
+          <div class="card-flip-hint">Science behind</div>
         </div>
         <div class="card-face card-back">
-          <div class="card-back-label">RESEARCH FACT</div>
-          <p class="card-back-fact">Real-time coaching feedback reduces injury risk and accelerates motor learning. Studies comparing supervised versus unsupervised training found that supervised participants achieved significantly greater strength gains in 12 weeks, with measurably better movement quality and exercise technique.</p>
-          <div class="card-back-source">Source: Coutts et al., Journal of Strength and Conditioning Research, 2004</div>
+          <div class="card-back-label">Research fact</div>
+          <p class="card-back-fact">Combining resistance training with a moderate calorie deficit preserves lean mass during fat loss more effectively than relying on cardio alone.</p>
+          <div class="card-back-source">Source: Barakat et al., Strength &amp; Conditioning Journal, 2020</div>
+        </div>
+      </div>
+
+      <div class="service-card service-card--wide service-card--silver" role="button" tabindex="0" aria-label="Program design research fact" aria-pressed="false">
+        <div class="card-face card-front">
+          <div class="service-meta">
+            <span class="service-signal" aria-hidden="true"></span>
+            <span class="service-mode">One-off</span>
+          </div>
+          <h3>Program design</h3>
+          <p>A single 12-week block built for your goal, schedule, and equipment. Yours to run alone, with a handover call so you know exactly how to progress it.</p>
+          <div class="service-benefits" aria-label="Included">
+            <span>12-week block</span>
+            <span>Handover call</span>
+            <span>Exercise library</span>
+          </div>
+          <div class="card-flip-hint">Science behind</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="card-back-label">Research fact</div>
+          <p class="card-back-fact">Progressive resistance training improves muscular strength and physical function when volume and load are adapted over time.</p>
+          <div class="card-back-source">Source: Westcott, W.L., Current Sports Medicine Reports, 2012</div>
         </div>
       </div>
     </div>
@@ -1655,11 +1583,11 @@
   <div class="section-inner">
     <div class="pricing-overview-header">
       <div>
-        <div class="section-tag">PRICING AT A GLANCE</div>
+        <div class="section-tag">Pricing at a glance</div>
         <h2 class="section-title">Compare Coaching Options</h2>
         <p class="section-subtitle">Start with the level of guidance that fits your training style and current goal.</p>
       </div>
-      <button type="button" class="btn-secondary" data-open-pricing>View Full Pricing</button>
+      <button type="button" class="btn-primary pricing-full-button" data-open-pricing>View Full Pricing</button>
     </div>
     <div class="pricing-preview-list">
       <article class="pricing-preview-item">
@@ -1697,16 +1625,16 @@
         <img src="assets/armin.jpeg" alt="Armin Nabizadeh training in the gym">
       </div>
       <div class="about-text">
-        <div class="section-tag">ABOUT ME</div>
-        <h2 class="section-title">Your Coach,<br>Your <span style="color:var(--red);">Partner</span></h2>
+        <div class="section-tag">About me</div>
+        <h2 class="section-title">Your Coach,<br>Your Partner</h2>
         <p>Hi, I'm <strong>Armin</strong>, a certified personal trainer with over 4 years of experience helping people transform their bodies and their relationship with fitness.</p>
         <p>I believe training should be <strong>smart, sustainable, and science-backed</strong>. Every plan I create is grounded in the latest research in exercise physiology and nutrition, then continuously updated as new findings emerge.</p>
         <p>Whether you're a complete beginner or a seasoned athlete, I'll build a program that challenges you, respects your limits, and delivers real results.</p>
         <div class="about-badges">
-          <span class="badge">CERTIFIED PT</span>
-          <span class="badge">STRENGTH & CONDITIONING</span>
-          <span class="badge">NUTRITION COACHING</span>
-          <span class="badge">ONLINE COACHING</span>
+          <span class="badge">Certified PT</span>
+          <span class="badge">Strength &amp; conditioning</span>
+          <span class="badge">Nutrition coaching</span>
+          <span class="badge">Online coaching</span>
         </div>
         <a class="about-social-link" href="https://www.instagram.com/fitsronomy?igsh=MTJnZTV3bm43c3R1cA==" target="_blank" rel="noopener" aria-label="Follow Fitstronomy on Instagram">
           <span class="about-social-icon" aria-hidden="true">
@@ -1728,7 +1656,7 @@
 
 <section id="nutrition">
   <div class="section-inner">
-    <div class="section-tag">NUTRITION TOOL</div>
+    <div class="section-tag">Nutrition tool</div>
     <h2 class="section-title">Estimate Your Daily Nutrition Needs</h2>
     <p class="section-subtitle">Get a practical estimate for calories, macros, and a simple meal split based on your body data, activity, and goal.</p>
     <div class="nutrition-launch">
@@ -1912,7 +1840,7 @@
       <button type="button" class="currency-btn" data-currency="sek" aria-pressed="false">🇸🇪 SEK</button>
     </div>
     <div class="pricing-header">
-      <div class="section-tag">PRICING</div>
+      <div class="section-tag">Pricing</div>
       <h2 class="section-title" id="pricingTitle">Choose The Support Level That Matches Your Goal</h2>
       <p>Choose the level of support that fits your goal right now. If you are not sure which option is best, start the application and we can decide together after reviewing your needs.</p>
     </div>
@@ -1990,17 +1918,7 @@
         Tell us which plan interests you in the application form.
       </p>
       <a href="apply.html" class="btn-primary">
-        <svg width="44" height="26" viewBox="0 0 300 110" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
-          <rect x="118" y="43" width="63" height="24" rx="2" fill="white"/>
-          <rect x="99" y="43" width="19" height="24" rx="2" fill="white"/>
-          <rect x="77" y="5" width="20" height="98" rx="2" fill="white"/>
-          <rect x="56" y="16" width="18" height="76" rx="2" fill="white"/>
-          <rect x="38" y="28" width="16" height="52" rx="2" fill="white"/>
-          <rect x="181" y="43" width="19" height="24" rx="2" fill="white"/>
-          <rect x="202" y="5" width="20" height="98" rx="2" fill="white"/>
-          <rect x="225" y="16" width="18" height="76" rx="2" fill="white"/>
-          <rect x="245" y="28" width="16" height="52" rx="2" fill="white"/>
-        </svg>
+        <svg class="button-dumbbell" viewBox="0 0 300 110" aria-hidden="true"><use href="#icon-dumbbell"></use></svg>
         Start Application
       </a>
       <a href="#contact" data-close-pricing class="pricing-ask-link">
@@ -2013,7 +1931,7 @@
 
 <section id="contact">
   <div class="section-inner">
-    <div class="section-tag">GET IN TOUCH</div>
+    <div class="section-tag">Get in touch</div>
     <h2 class="section-title">Ready to Start?</h2>
     <p class="section-subtitle">Book a free 30-minute consultation and let's talk about your goals.</p>
     <div class="contact-grid">
@@ -2027,7 +1945,7 @@
         method="POST"
       >
         <input type="hidden" name="access_key" value="226dc391-9b56-4c15-b127-9ad7a49bf174">
-        <input type="hidden" name="subject" value="New Contact Message — Fitstronomy">
+        <input type="hidden" name="subject" value="New Contact Message from Fitstronomy">
         <input type="hidden" name="_subject" value="New Fitstronomy contact form enquiry">
         <input type="hidden" name="_captcha" value="false">
         <div class="hidden-field" aria-hidden="true">
@@ -2051,7 +1969,7 @@
 
 <footer>
   <div class="footer-brand">
-    <div class="footer-logo">Armin Nabizadeh <span>·</span> PT</div>
+    <div class="footer-logo"><span class="brand-dot" aria-hidden="true"></span>Armin Nabizadeh</div>
     <div class="footer-copyright">&copy; 2026 Fitstronomy. All rights reserved.</div>
   </div>
   <nav class="footer-nav" aria-label="Footer navigation">

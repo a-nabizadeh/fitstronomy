@@ -1,46 +1,4 @@
 (function () {
-  var heroScienceText = document.getElementById('heroScienceText');
-
-  function renderScienceText(fullText, typedLength) {
-    if (!heroScienceText) return;
-
-    var visibleText = fullText.slice(0, typedLength);
-    var boldPrefix = 'Science-Backed Training.';
-    var cursor = document.createElement('span');
-    cursor.className = 'hero-science-cursor';
-    cursor.textContent = '|';
-
-    heroScienceText.replaceChildren();
-
-    if (visibleText.startsWith(boldPrefix)) {
-      var strong = document.createElement('strong');
-      strong.textContent = boldPrefix;
-      heroScienceText.append(strong, visibleText.slice(boldPrefix.length), cursor);
-      return;
-    }
-
-    heroScienceText.append(visibleText, cursor);
-  }
-
-  function startHeroScienceTyping() {
-    if (!heroScienceText) return;
-
-    var fullText = heroScienceText.dataset.fullText || '';
-    var index = 0;
-
-    renderScienceText(fullText, index);
-
-    var typingInterval = window.setInterval(function () {
-      index += 1;
-      renderScienceText(fullText, index);
-
-      if (index >= fullText.length) {
-        window.clearInterval(typingInterval);
-        renderScienceText(fullText, fullText.length);
-      }
-    }, 22);
-  }
-
   function setupNavigation() {
     var navLinks = document.getElementById('navLinks');
     var hamburger = document.querySelector('.hamburger');
@@ -65,31 +23,47 @@
     });
 
     navLinks.addEventListener('click', function (event) {
-      if (event.target.closest('a, button')) {
-        setOpen(false);
-      }
+      if (event.target.closest('a, button')) setOpen(false);
     });
   }
 
-  function setupIntro() {
-    var introSeen = sessionStorage.getItem('introSeen');
-    sessionStorage.removeItem('introSeen');
+  // The intro plays on arrival at the site and on every reload of the home page,
+  // but not when coming back to it from another page here (apply, privacy).
+  var INTRO_SEEN_KEY = 'fitstronomy:intro-seen';
 
-    if (introSeen) {
-      var introEl = document.getElementById('anatomyIntro');
-      if (introEl) {
-        introEl.style.display = 'none';
-        introEl.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('intro-lock');
-      }
-      setTimeout(startHeroScienceTyping, 800);
+  function readIntroSeen() {
+    try {
+      return window.sessionStorage.getItem(INTRO_SEEN_KEY) === '1';
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function markIntroSeen() {
+    try {
+      window.sessionStorage.setItem(INTRO_SEEN_KEY, '1');
+    } catch (error) {
+      /* Private browsing can block storage; the intro simply plays again. */
+    }
+  }
+
+  function shouldPlayIntro() {
+    var entries = performance.getEntriesByType ? performance.getEntriesByType('navigation') : null;
+    var navigationType = entries && entries.length ? entries[0].type : null;
+
+    if (navigationType === 'reload') return true;
+    return !readIntroSeen();
+  }
+
+  function setupIntro() {
+    var intro = document.getElementById('anatomyIntro');
+    if (!intro) {
+      document.body.classList.remove('intro-pending');
       return;
     }
 
-    var intro = document.getElementById('anatomyIntro');
-    var canvasWrap = intro && intro.querySelector('.intro-canvas-wrap');
-    var skipButton = intro && intro.querySelector('[data-intro-skip]');
-    var statusEl = intro && intro.querySelector('[data-intro-status]');
+    var canvasWrap = intro.querySelector('[data-intro-canvas]');
+    var skipButton = intro.querySelector('[data-intro-skip]');
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var chart = null;
     var timers = [];
@@ -101,37 +75,43 @@
       timers = [];
     }
 
-    function finishIntro(completed) {
-      if (!intro || finished) return;
+    function finishIntro() {
+      if (finished) return;
       finished = true;
+      clearTimers();
       intro.classList.add('is-hidden');
       intro.setAttribute('aria-hidden', 'true');
-      clearTimers();
-      if (chart) chart.destroy();
-      document.body.classList.remove('intro-lock');
-      if (completed) {
-        sessionStorage.setItem('introSeen', '1');
-      }
-      setTimeout(startHeroScienceTyping, 400);
+      document.body.classList.remove('intro-lock', 'intro-pending');
+      document.dispatchEvent(new CustomEvent('intro:finished'));
+
+      setTimeout(function () {
+        if (chart) chart.destroy();
+        chart = null;
+      }, 750);
     }
 
-    if (reducedMotion || !canvasWrap || !window.BodyMuscles) {
-      finishIntro(false);
+    var playIntro = shouldPlayIntro();
+    markIntroSeen();
+
+    if (reducedMotion || !playIntro) {
+      intro.style.display = 'none';
+      intro.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('intro-lock', 'intro-pending');
+      return;
+    }
+
+    if (!canvasWrap || !window.BodyMuscles) {
+      finishIntro();
       return;
     }
 
     intro.dataset.ready = 'true';
     document.body.classList.add('intro-lock');
 
-    function createChartContainer() {
-      var container = document.createElement('div');
-      container.className = 'body-muscles-container';
-      container.style.cssText = 'width:100%;height:100%;display:flex;align-items:center;justify-content:center;';
-      canvasWrap.appendChild(container);
-      return container;
-    }
+    var container = document.createElement('div');
+    container.className = 'body-muscles-container';
+    canvasWrap.appendChild(container);
 
-    var container = createChartContainer();
     var BodyChart = window.BodyMuscles.BodyChart;
     var ViewSide = window.BodyMuscles.ViewSide;
     var frontMuscles = window.BodyMuscles.FRONT_MUSCLES || [];
@@ -139,35 +119,40 @@
 
     if (window.BodyMuscles.INTENSITY_COLORS) {
       Object.assign(window.BodyMuscles.INTENSITY_COLORS, {
-        0: '#2a1a1a',
-        1: '#351f1f',
-        2: '#442323',
-        3: '#5b2929',
-        4: '#733030',
-        5: '#8c3535',
-        6: '#a73b3b',
-        7: '#bf4141',
-        8: '#d34848',
-        9: '#e24b4a',
-        10: '#ff6b68'
+        0: '#171321',
+        1: '#211936',
+        2: '#2d214b',
+        3: '#3d2c65',
+        4: '#50387f',
+        5: '#65469a',
+        6: '#7a58b7',
+        7: '#8b6bff',
+        8: '#b365cc',
+        9: '#da609f',
+        10: '#ff5c7a'
       });
     }
 
-    var style = document.createElement('style');
-    style.textContent = [
-      '.body-muscles-container .body-chart-background path { fill: #2a1a1a; stroke: #3a2020; stroke-width: 0.5; }',
-      '.body-muscles-container .body-chart-muscle { stroke: #3a2020; stroke-width: 0.18; transition: fill 0.3s, fill-opacity 0.3s, filter 0.3s; }',
-      '.body-muscles-container .body-chart-svg { background: transparent !important; filter: drop-shadow(0 18px 42px rgba(0,0,0,0.45)) drop-shadow(0 0 30px rgba(226,75,74,0.16)) !important; }'
+    var introStyle = document.createElement('style');
+    introStyle.textContent = [
+      '.body-muscles-container .body-chart-background path{fill:#171321;stroke:#32284a;stroke-width:.5}',
+      '.body-muscles-container .body-chart-muscle{stroke:#32284a;stroke-width:.18;transition:fill .3s,fill-opacity .3s,filter .3s}',
+      '.body-muscles-container .body-chart-svg{background:transparent!important;filter:drop-shadow(0 18px 42px rgba(0,0,0,.45)) drop-shadow(0 0 30px rgba(139,107,255,.24))!important}'
     ].join('');
-    document.head.appendChild(style);
+    document.head.appendChild(introStyle);
 
-    chart = new BodyChart(container, {
-      view: ViewSide.FRONT,
-      bodyState: {},
-      showViewLabel: false,
-      enableTransitions: true,
-      className: 'body-muscles-container'
-    });
+    try {
+      chart = new BodyChart(container, {
+        view: ViewSide.FRONT,
+        bodyState: {},
+        showViewLabel: false,
+        enableTransitions: true,
+        className: 'body-muscles-container'
+      });
+    } catch (error) {
+      finishIntro();
+      return;
+    }
 
     var sequence = [
       ['foot-left', 'foot-right'],
@@ -195,101 +180,186 @@
 
     function lightUp(ids, intensity) {
       ids.forEach(function (id) {
-        if (!availableIds.includes(id)) return;
-        bodyState[id] = { intensity: intensity, selected: false };
+        if (availableIds.includes(id)) bodyState[id] = { intensity: intensity, selected: false };
       });
       chart.update({ bodyState: Object.assign({}, bodyState) });
     }
 
-    function showStmt(id, inTime, outTime) {
-      var el = document.getElementById(id);
-      if (!el) return;
+    function showStatement(id, inTime, outTime) {
+      var element = document.getElementById(id);
+      if (!element) return;
 
-      var tIn = setTimeout(function () {
-        el.classList.add('is-visible');
-      }, inTime);
-      timers.push(tIn);
-
-      if (outTime) {
-        var tOut = setTimeout(function () {
-          el.classList.remove('is-visible');
-        }, outTime);
-        timers.push(tOut);
-      }
+      timers.push(setTimeout(function () {
+        element.classList.add('is-visible');
+      }, inTime));
+      timers.push(setTimeout(function () {
+        element.classList.remove('is-visible');
+      }, outTime));
     }
 
     function runSequence() {
       var delay = 300;
       sequence.forEach(function (group) {
-        var t1 = setTimeout(function () {
+        timers.push(setTimeout(function () {
           lightUp(group, 10);
-          var t2 = setTimeout(function () {
+          timers.push(setTimeout(function () {
             lightUp(group, 4);
-          }, 600);
-          timers.push(t2);
-        }, delay);
-        timers.push(t1);
+          }, 600));
+        }, delay));
         delay += 260;
       });
 
       var totalDuration = sequence.length * 260;
       var third = Math.round(totalDuration / 3);
-
-      showStmt('stmt-1', 0, third);
-      showStmt('stmt-2', third, third * 2);
-      showStmt('stmt-3', third * 2, totalDuration);
-
+      showStatement('stmt-1', 0, third);
+      showStatement('stmt-2', third, third * 2);
+      showStatement('stmt-3', third * 2, totalDuration);
       timers.push(setTimeout(function () {
-        finishIntro(true);
+        finishIntro();
       }, totalDuration + 600));
     }
 
     if (skipButton) {
       skipButton.addEventListener('click', function () {
-        clearTimers();
-        finishIntro(false);
+        finishIntro();
       });
     }
 
-    if (statusEl) statusEl.textContent = '';
     timers.push(setTimeout(runSequence, 400));
     timers.push(setTimeout(function () {
-      finishIntro(false);
+      finishIntro();
     }, 12000));
+  }
 
-    intro.addEventListener('replayIntro', function () {
-      finished = false;
-      bodyState = {};
-      clearTimers();
+  function setupCoachingCycle() {
+    var dial = document.getElementById('coachingDial');
+    if (!dial) return;
 
-      if (chart) {
-        try {
-          chart.destroy();
-        } catch (error) {
-          chart = null;
-        }
-        chart = null;
+    var steps = [
+      { title: 'Assess', body: 'Your goal, schedule, history, and starting point.' },
+      { title: 'Build', body: 'A program shaped around your time, equipment, and response.' },
+      { title: 'Progress', body: 'Sessions logged, numbers reviewed, plan adjusted.' }
+    ];
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var segments = Array.from(dial.querySelectorAll('[data-cycle-segment]'));
+    var visualizations = Array.from(dial.querySelectorAll('[data-cycle-viz]'));
+    var title = document.getElementById('cycleTitle');
+    var body = document.getElementById('cycleBody');
+    var copy = dial.querySelector('.dial-copy');
+    var ticks = document.getElementById('cycleTicks');
+    var current = 0;
+    var timer = null;
+    var userEngaged = false;
+
+    if (!segments.length || !title || !body || !copy || !ticks) return;
+
+    for (var index = 0; index < 12; index += 1) {
+      var angle = (-90 + index * 30) * Math.PI / 180;
+      var innerRadius = 176;
+      var outerRadius = index % 3 === 0 ? 188 : 183;
+      var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', 200 + innerRadius * Math.cos(angle));
+      line.setAttribute('y1', 200 + innerRadius * Math.sin(angle));
+      line.setAttribute('x2', 200 + outerRadius * Math.cos(angle));
+      line.setAttribute('y2', 200 + outerRadius * Math.sin(angle));
+      line.setAttribute('class', index % 3 === 0 ? 'cycle-tick is-major' : 'cycle-tick');
+      ticks.appendChild(line);
+    }
+
+    function stopAutoTour() {
+      userEngaged = true;
+      if (timer) clearInterval(timer);
+      timer = null;
+    }
+
+    function replayAnimations(element) {
+      if (!element || typeof element.getAnimations !== 'function') return;
+      element.getAnimations({ subtree: true }).forEach(function (animation) {
+        animation.cancel();
+        animation.play();
+      });
+    }
+
+    function selectStage(stageIndex, fromUser) {
+      if (fromUser) stopAutoTour();
+      if (stageIndex === current) return;
+
+      current = stageIndex;
+      segments.forEach(function (segment, segmentIndex) {
+        var isActive = segmentIndex === stageIndex;
+        segment.classList.toggle('is-active', isActive);
+        segment.setAttribute('aria-pressed', String(isActive));
+      });
+      visualizations.forEach(function (visualization, visualizationIndex) {
+        visualization.classList.toggle('is-visible', visualizationIndex === stageIndex);
+      });
+      title.textContent = steps[stageIndex].title;
+      body.textContent = steps[stageIndex].body;
+
+      if (!reducedMotion) {
+        copy.classList.remove('is-changing');
+        void copy.offsetWidth;
+        copy.classList.add('is-changing');
+        replayAnimations(visualizations[stageIndex]);
       }
+    }
 
-      if (canvasWrap) {
-        canvasWrap.replaceChildren();
-        var newContainer = createChartContainer();
-
-        if (window.BodyMuscles) {
-          chart = new window.BodyMuscles.BodyChart(newContainer, {
-            view: window.BodyMuscles.ViewSide.FRONT,
-            bodyState: {},
-            showViewLabel: false,
-            enableTransitions: true
-          });
+    segments.forEach(function (segment, segmentIndex) {
+      segment.setAttribute('aria-pressed', String(segmentIndex === current));
+      segment.addEventListener('mouseenter', function () {
+        selectStage(segmentIndex, true);
+      });
+      segment.addEventListener('click', function () {
+        selectStage(segmentIndex, true);
+      });
+      segment.addEventListener('focus', function () {
+        selectStage(segmentIndex, true);
+      });
+      segment.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          selectStage(segmentIndex, true);
         }
-      }
-
-      timers.push(setTimeout(runSequence, 500));
-      timers.push(setTimeout(function () {
-        finishIntro(true);
-      }, 12000));
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+          event.preventDefault();
+          var nextIndex = (segmentIndex + 1) % segments.length;
+          segments[nextIndex].focus();
+          selectStage(nextIndex, true);
+        }
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+          event.preventDefault();
+          var previousIndex = (segmentIndex + segments.length - 1) % segments.length;
+          segments[previousIndex].focus();
+          selectStage(previousIndex, true);
+        }
+      });
     });
+
+    function startAutoTour() {
+      if (reducedMotion || userEngaged || timer) return;
+      timer = setInterval(function () {
+        selectStage((current + 1) % segments.length, false);
+      }, 4200);
+    }
+
+    if (document.body.classList.contains('intro-pending')) {
+      document.addEventListener('intro:finished', startAutoTour, { once: true });
+    } else {
+      startAutoTour();
+    }
+
+    if (!reducedMotion && window.matchMedia('(hover: hover)').matches) {
+      var stage = dial.parentElement;
+      stage.addEventListener('pointermove', function (event) {
+        var bounds = dial.getBoundingClientRect();
+        var pointerX = (event.clientX - bounds.left) / bounds.width - 0.5;
+        var pointerY = (event.clientY - bounds.top) / bounds.height - 0.5;
+        dial.style.transform = 'rotateY(' + (pointerX * 11) + 'deg) rotateX(' + (-pointerY * 11) + 'deg)';
+      });
+      stage.addEventListener('pointerleave', function () {
+        dial.style.transform = '';
+      });
+    }
   }
 
   function setupPageReset() {
@@ -306,54 +376,67 @@
   }
 
   function setupStatsAnimation() {
-    function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+    var stats = document.getElementById('statsBar');
+    if (!stats) return;
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var hasRun = false;
 
-    function animateStat(statEl, delay) {
-      var num = statEl.querySelector('.stat-num');
-      var fill = statEl.querySelector('.stat-progress-fill');
-      var target = parseInt(statEl.dataset.target, 10);
-      var suffix = statEl.dataset.suffix;
-      var duration = 1800;
+    stats.querySelectorAll('.bars').forEach(function (row) {
+      var count = Number(row.dataset.bars) || 12;
+      for (var index = 0; index < count; index += 1) {
+        var bar = document.createElement('span');
+        bar.className = 'u';
+        bar.style.height = (12 + (index / (count - 1)) * 26) + 'px';
+        bar.style.transitionDelay = (0.25 + index * 0.055) + 's';
+        row.appendChild(bar);
+      }
+    });
 
-      if (!num || !fill || !Number.isFinite(target)) return;
+    function countUp(element) {
+      var target = Number(element.dataset.count);
+      var from = element.dataset.from ? Number(element.dataset.from) : 0;
+      var duration = 1500;
+      var start = performance.now();
 
-      setTimeout(function () {
-        fill.style.width = '100%';
-        var start = performance.now();
+      function tick(now) {
+        var progress = Math.min((now - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        element.textContent = String(Math.round(from + (target - from) * eased));
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          element.textContent = String(target);
+        }
+      }
 
-        (function tick(now) {
-          var progress = Math.min((now - start) / duration, 1);
-          num.textContent = Math.round(easeOut(progress) * target) + suffix;
-
-          if (progress < 1) {
-            requestAnimationFrame(tick);
-            return;
-          }
-
-          num.textContent = target + suffix;
-          num.classList.add('pulse');
-          num.addEventListener('animationend', function () {
-            num.classList.remove('pulse');
-          }, { once: true });
-        })(start);
-      }, delay);
+      requestAnimationFrame(tick);
     }
 
-    var observed = false;
-    var stats = document.querySelectorAll('#statsBar .stat');
-    var bar = document.getElementById('statsBar');
-    if (!bar || !stats.length) return;
-
     function runAnimation() {
-      if (observed) return;
-      observed = true;
-      stats.forEach(function (stat, index) {
-        var delay = index * 140;
-        setTimeout(function () {
-          stat.classList.add('visible');
-        }, delay);
-        animateStat(stat, delay + 100);
+      if (hasRun) return;
+      hasRun = true;
+      stats.classList.add('in');
+      stats.querySelectorAll('[data-count]').forEach(function (element) {
+        if (reducedMotion) {
+          element.textContent = element.dataset.count;
+        } else {
+          countUp(element);
+        }
       });
+    }
+
+    if (reducedMotion) {
+      runAnimation();
+      return;
+    }
+
+    stats.querySelectorAll('[data-count]').forEach(function (element) {
+      element.textContent = element.dataset.from || '0';
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      runAnimation();
+      return;
     }
 
     var observer = new IntersectionObserver(function (entries) {
@@ -363,9 +446,9 @@
           observer.disconnect();
         }
       });
-    }, { threshold: 0.3 });
+    }, { threshold: 0.35 });
 
-    observer.observe(bar);
+    observer.observe(stats);
   }
 
   function setupNutritionDisclosure() {
@@ -383,95 +466,59 @@
 
   function setupServiceCards() {
     document.querySelectorAll('.service-card').forEach(function (card) {
-      function toggle() {
-        card.classList.toggle('is-flipped');
+      var front = card.querySelector('.card-front');
+      var back = card.querySelector('.card-back');
+
+      function setFlipped(isFlipped) {
+        card.classList.toggle('is-flipped', isFlipped);
+        card.setAttribute('aria-pressed', String(isFlipped));
+        if (front) front.setAttribute('aria-hidden', String(isFlipped));
+        if (back) back.setAttribute('aria-hidden', String(!isFlipped));
       }
 
-      card.addEventListener('click', toggle);
+      function toggleCard() {
+        setFlipped(!card.classList.contains('is-flipped'));
+      }
+
+      setFlipped(false);
+      card.addEventListener('click', toggleCard);
       card.addEventListener('keydown', function (event) {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
-          toggle();
+          toggleCard();
         }
       });
     });
   }
 
-  function setupIntroReplay() {
-    function replayIntro() {
-      var intro = document.getElementById('anatomyIntro');
-      if (!intro) return;
-
-      sessionStorage.removeItem('introSeen');
-
-      var navLinks = document.getElementById('navLinks');
-      var hamburger = document.querySelector('.hamburger');
-      if (navLinks) navLinks.classList.remove('open');
-      if (hamburger) {
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-      }
-
-      ['stmt-1', 'stmt-2', 'stmt-3'].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.classList.remove('is-visible');
-      });
-
-      var scienceText = document.getElementById('heroScienceText');
-      if (scienceText) scienceText.replaceChildren();
-
-      intro.style.display = '';
-      intro.classList.remove('is-hidden');
-      intro.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('intro-lock');
-
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          intro.dispatchEvent(new CustomEvent('replayIntro'));
-        });
-      });
-    }
-
-    var btn1 = document.getElementById('replayIntroBtn');
-    var btn2 = document.getElementById('replayIntroBtnMobile');
-    if (btn1) btn1.addEventListener('click', replayIntro);
-    if (btn2) btn2.addEventListener('click', replayIntro);
-  }
-
   function setupCurrencySwitcher() {
     var currentCurrency = 'eur';
 
-    document.querySelectorAll('.currency-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var currency = btn.dataset.currency;
-        if (!['eur', 'sek'].includes(currency)) return;
-        if (currency === currentCurrency) return;
+    document.querySelectorAll('.currency-btn').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var currency = button.dataset.currency;
+        if (!['eur', 'sek'].includes(currency) || currency === currentCurrency) return;
 
         currentCurrency = currency;
-
         document.querySelectorAll('.currency-btn').forEach(function (otherButton) {
           var isActive = otherButton.dataset.currency === currency;
           otherButton.classList.toggle('is-active', isActive);
           otherButton.setAttribute('aria-pressed', String(isActive));
         });
 
-        document.querySelectorAll('.price-value').forEach(function (el) {
-          el.classList.add('is-switching');
-          setTimeout(function () {
-            el.textContent = el.dataset[currency] || '';
-            el.classList.remove('is-switching');
-          }, 200);
+        document.querySelectorAll('.price-value').forEach(function (element) {
+          element.textContent = element.dataset[currency] || '';
         });
       });
     });
   }
 
   setupNavigation();
-  setupPageReset();
   setupIntro();
+  setupCoachingCycle();
+  setupPageReset();
   setupStatsAnimation();
   setupNutritionDisclosure();
   setupServiceCards();
-  setupIntroReplay();
   setupCurrencySwitcher();
 })();

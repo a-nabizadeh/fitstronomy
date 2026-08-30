@@ -9,10 +9,12 @@
 <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
 <meta name="theme-color" content="#111111">
 <title>Privacy Policy · Fitstronomy</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <style>
   :root {
-    --red: #e24b4a;
+    --red: #8b6bff;
     --bg: #101010;
     --panel: #171717;
     --border: #303030;
@@ -39,7 +41,7 @@
   }
   .brand {
     color: var(--text);
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     letter-spacing: 2px;
     text-decoration: none;
   }
@@ -49,12 +51,12 @@
   header { border-bottom: 1px solid var(--border); padding-bottom: 32px; margin-bottom: 36px; }
   .eyebrow {
     color: var(--red);
-    font-family: 'Oswald', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 12px;
     letter-spacing: 2px;
     text-transform: uppercase;
   }
-  h1, h2 { font-family: 'Oswald', sans-serif; letter-spacing: 1px; }
+  h1, h2 { font-family: 'Space Grotesk', sans-serif; letter-spacing: 1px; }
   h1 { font-size: clamp(40px, 7vw, 64px); line-height: 1.05; margin: 14px 0; }
   h2 { font-size: 25px; margin: 38px 0 10px; }
   p, li { color: var(--muted); font-size: 15px; }
@@ -71,10 +73,11 @@
     main { width: min(100% - 32px, 900px); padding-top: 44px; }
   }
 </style>
+<link rel="stylesheet" href="design-system.css">
 </head>
-<body>
+<body class="privacy-page">
   <nav class="topbar" aria-label="Privacy navigation">
-    <a class="brand" href="index.html">Armin Nabizadeh <span>·</span> PT</a>
+    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span>Armin Nabizadeh</a>
     <a class="back-link" href="index.html">Back to main site</a>
   </nav>
   <main>
@@ -107,7 +110,7 @@
     <div class="notice">Do not submit medical records, diagnoses beyond what is needed for screening, identity documents, or other unnecessary sensitive information.</div>
 
     <h2>Other Service Providers</h2>
-    <p>The website loads fonts from Google Fonts and a version-pinned visual library from Unpkg. Those providers may receive ordinary request information such as an IP address and browser headers. The website does not use advertising pixels or analytics.</p>
+    <p>The website loads fonts from Google Fonts. Google may receive ordinary request information such as an IP address and browser headers. The website does not use advertising pixels or analytics.</p>
 
     <h2>Retention</h2>
     <ul>
@@ -123,7 +126,7 @@
     <p>You may also lodge a complaint with Finland's <a href="https://tietosuoja.fi/en/home" target="_blank" rel="noopener">Office of the Data Protection Ombudsman</a>.</p>
 
     <h2>Cookies And Browser Storage</h2>
-    <p>The website does not currently use analytics, advertising cookies, or marketing cookies. Temporary session storage is used only to manage the introductory animation and is normally cleared when the browsing session ends.</p>
+    <p>The website does not currently set analytics, advertising, or marketing cookies. Temporary session storage records whether the introductory animation has already played and is normally cleared when the browsing session ends.</p>
 
     <h2>Policy Changes</h2>
     <p>This policy may be updated when the website, coaching process, or service providers change. The latest revision date appears at the top of this page.</p>

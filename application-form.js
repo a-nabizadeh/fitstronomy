@@ -353,5 +353,9 @@
   setupPlanNotice();
   setupConditionalField('currently_exercising', 'previousTrainingField', 'previousTrainingType');
   updateWizardMode();
-  sessionStorage.setItem('introSeen', '1');
+  try {
+    sessionStorage.setItem('introSeen', '1');
+  } catch (error) {
+    // The form remains fully functional when browser storage is unavailable.
+  }
 })();
