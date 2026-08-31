@@ -1207,9 +1207,12 @@ footer { border-color: var(--glass-border); }
   mask-composite: exclude;
   pointer-events: none;
 }
-/* The badge carries the card's own tone, the same colour as its price. */
+/* The badge carries the card's own tone, the same colour as its price. It sits
+   astride the top edge, so it has to paint above the featured card's ::after
+   gradient ring — otherwise that hairline is drawn straight across the pill. */
 .pricing-preview-badge {
   position: absolute;
+  z-index: 2;
   top: -10px;
   left: 26px;
   padding: 4px 11px;

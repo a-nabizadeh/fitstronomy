@@ -430,7 +430,7 @@ class AnatomyIntro {
         originalPosition,
         originalRotation,
         originalScale,
-        delay: index * 190,
+        delay: index * 165,
         duration: 780
       };
     });
@@ -496,7 +496,7 @@ class AnatomyIntro {
 
     this.renderer.render(this.scene, this.camera);
 
-    if (elapsed > maxEnd + 1000) {
+    if (elapsed > maxEnd + 760) {
       this.finish();
       return;
     }
