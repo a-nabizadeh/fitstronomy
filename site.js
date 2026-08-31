@@ -47,7 +47,13 @@
     }
   }
 
+  function isReturningFromApply() {
+    return new URLSearchParams(window.location.search).get('from') === 'apply';
+  }
+
   function shouldPlayIntro() {
+    if (isReturningFromApply()) return false;
+
     var entries = performance.getEntriesByType ? performance.getEntriesByType('navigation') : null;
     var navigationType = entries && entries.length ? entries[0].type : null;
 
@@ -90,8 +96,12 @@
       }, 750);
     }
 
+    var returningFromApply = isReturningFromApply();
     var playIntro = shouldPlayIntro();
     markIntroSeen();
+    if (returningFromApply) {
+      window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+    }
 
     if (reducedMotion || !playIntro) {
       intro.style.display = 'none';

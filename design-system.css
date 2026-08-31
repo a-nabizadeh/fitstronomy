@@ -885,13 +885,15 @@ section { padding: 88px 48px; }
 .pricing-plan-cta,
 .pricing-ask-link { color: var(--text) !important; border-color: var(--glass-border) !important; border-radius: 999px !important; }
 .pricing-modal { background: transparent !important; }
+.pricing-backdrop {
+  background: rgba(24, 17, 37, 0.56) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
 .pricing-dialog {
   border: 1px solid var(--glass-border) !important;
   border-radius: 8px !important;
-  background:
-    radial-gradient(circle at 100% 0%, rgba(139, 107, 255, 0.18), transparent 42%),
-    radial-gradient(circle at 0% 100%, rgba(52, 226, 198, 0.12), transparent 42%),
-    rgba(18, 14, 28, 0.86) !important;
+  background: linear-gradient(135deg, rgba(37, 28, 57, 0.97), rgba(40, 25, 39, 0.97) 54%, rgba(20, 42, 44, 0.97)) !important;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55) !important;
 }
 .pricing-card.featured {
@@ -1128,8 +1130,9 @@ footer { border-color: var(--glass-border); }
   display: flex;
   flex-direction: column;
   padding: 30px 26px 28px !important;
-  border: 1px solid var(--glass-border) !important;
+  border: 0 !important;
   border-radius: 22px !important;
+  background: color-mix(in srgb, var(--tone) 10%, rgba(18, 18, 27, 0.92)) !important;
   transition: background 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .pricing-preview-item:hover {
@@ -1138,15 +1141,7 @@ footer { border-color: var(--glass-border); }
 }
 
 /* Colored hairline across the top edge, fading out at both ends. */
-.pricing-preview-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 24px;
-  right: 24px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--tone), transparent);
-}
+.pricing-preview-item::before { content: none; }
 
 .pricing-preview-item h3 { font-size: 19px; margin-bottom: 14px; }
 
@@ -1190,23 +1185,11 @@ footer { border-color: var(--glass-border); }
 
 /* ---------- featured card ---------- */
 .pricing-preview-item.is-featured {
-  background: var(--glass-bg-strong) !important;
+  background: color-mix(in srgb, var(--tone) 14%, rgba(18, 18, 27, 0.92)) !important;
   border-color: transparent !important;
 }
 .pricing-preview-item.is-featured::before { display: none; }
-.pricing-preview-item.is-featured::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: 22px;
-  background: linear-gradient(150deg, var(--grad-a), var(--grad-b) 60%, transparent);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
+.pricing-preview-item.is-featured::after { content: none; }
 /* The badge carries the card's own tone, the same colour as its price. It sits
    astride the top edge, so it has to paint above the featured card's ::after
    gradient ring — otherwise that hairline is drawn straight across the pill. */
@@ -1242,6 +1225,146 @@ footer { border-color: var(--glass-border); }
   .pricing-preview-item { padding: 26px 22px 24px !important; }
   .pricing-preview-price,
   .pricing-preview-price .price-value { font-size: 34px; }
+}
+
+/* About */
+.about {
+  display: grid;
+  grid-template-columns: 0.85fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.portrait-frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 40px 80px -45px rgba(0, 0, 0, 0.9);
+}
+.portrait-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 22px;
+  left: 22px;
+  z-index: 2;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--grad-a), transparent);
+}
+.portrait-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 48% center;
+  filter: grayscale(1) contrast(1.05);
+}
+.about-copy { min-width: 0; }
+.about h2 {
+  margin: 0 0 26px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.1rem, 3.8vw, 3.1rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.about p {
+  max-width: 56ch;
+  margin: 0 0 20px;
+  color: var(--text-soft);
+  font-size: 16px;
+  line-height: 1.7;
+}
+.about p strong { color: var(--text); font-weight: 600; }
+.about .method {
+  padding-left: 22px;
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+}
+.chips {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 9px 10px;
+  margin: 30px 0 34px;
+  padding: 0;
+  list-style: none;
+}
+.chips li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 15px;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  color: var(--text-soft);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.chips li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--dot, var(--grad-a));
+}
+.ig {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 26px 16px 20px;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background: var(--glass-bg);
+  box-shadow: none;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.ig::before,
+.ig::after { content: none; }
+.ig:hover {
+  border-color: rgba(192, 168, 255, 0.48);
+  background: var(--glass-bg-strong);
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+.ig svg { width: 26px; height: 26px; flex: none; }
+.ig b {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+}
+.ig i {
+  background: none;
+  color: var(--accent-light);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-style: normal;
+}
+.ig .go {
+  margin-left: 6px;
+  color: var(--text-soft);
+  font-size: 17px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.ig:hover .go { color: var(--text); transform: translateX(3px); }
+
+@media (max-width: 940px) {
+  .about { grid-template-columns: 1fr; gap: 40px; }
+  .portrait-frame { aspect-ratio: 3 / 2; }
+  .chips { grid-template-columns: 1fr; }
+  .chips li { width: max-content; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ig,
+  .ig .go { transition: none; }
+  .ig:hover,
+  .ig:hover .go { transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pricing-preview-item { transition: none; }
