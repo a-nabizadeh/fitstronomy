@@ -837,6 +837,17 @@ section { padding: 88px 48px; }
   font-size: 13px;
   line-height: 1.5;
 }
+/* Web: each figure sits centred in its column. Below 980px the stacked layout
+   above takes over and keeps its own alignment. */
+@media (min-width: 981px) {
+  .fig { padding-inline: 24px; text-align: center; }
+  .fig:first-child { padding-left: 24px; }
+  .fig:last-child { padding-right: 24px; }
+  .fig-num { justify-content: center; }
+  .bars { justify-content: center; }
+  .fig-note { margin-inline: auto; }
+}
+
 .stats-foot {
   display: flex;
   align-items: center;
@@ -889,6 +900,12 @@ section { padding: 88px 48px; }
 }
 .pricing-card::before { content: none !important; }
 .pricing-badge { background: var(--glass-bg-strong) !important; color: var(--text-soft) !important; letter-spacing: 0; text-transform: none; }
+/* Each plan's badge matches its price colour, so tier and figure read as a pair. */
+.pricing-card[style*="--tone"] .pricing-badge {
+  border: 1px solid var(--tone);
+  background: color-mix(in srgb, var(--tone) 16%, #0f0f16) !important;
+  color: var(--tone) !important;
+}
 .plan-duration { color: var(--text-soft) !important; }
 .pricing-list li::before { background: linear-gradient(135deg, var(--grad-a), var(--grad-b)) !important; }
 .currency-switcher { padding: 4px; border: 1px solid var(--glass-border); border-radius: 999px; background: var(--glass-bg); }
@@ -1091,4 +1108,184 @@ footer { border-color: var(--glass-border); }
   *,
   *::before,
   *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* ---------- Pricing at a glance ----------
+   Four summary cards. Colour lands in exactly three places per card: the top
+   hairline, the price number, and the CTA border on hover. Card backgrounds,
+   borders and body text stay neutral, so only the featured card reads as loud. */
+
+.pricing-preview-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+  border: 0 !important;
+}
+
+.pricing-preview-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 26px 28px !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 22px !important;
+  transition: background 0.25s ease, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pricing-preview-item:hover {
+  background: var(--glass-bg-strong) !important;
+  transform: translateY(-3px);
+}
+
+/* Colored hairline across the top edge, fading out at both ends. */
+.pricing-preview-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--tone), transparent);
+}
+
+.pricing-preview-item h3 { font-size: 19px; margin-bottom: 14px; }
+
+.pricing-preview-price {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 16px;
+  font-size: 40px;
+}
+.pricing-preview-price .price-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--tone);
+}
+.pricing-preview-price small { font-size: 13px; color: var(--text-faint) !important; }
+
+.pricing-preview-item p {
+  margin: 0 0 24px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-soft) !important;
+}
+
+/* CTA pinned bottom-left at every breakpoint. */
+.pricing-preview-cta {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 12px 24px !important;
+  font-size: 14.5px;
+  font-weight: 600;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+/* The outline buttons carry the card's tone at rest. The featured card is
+   excluded: its button is a solid gradient and needs no competing outline. */
+.pricing-preview-item:not(.is-featured) .pricing-preview-cta { border-color: var(--tone) !important; }
+.pricing-preview-cta:hover { background: rgba(255, 255, 255, 0.06) !important; }
+
+/* ---------- featured card ---------- */
+.pricing-preview-item.is-featured {
+  background: var(--glass-bg-strong) !important;
+  border-color: transparent !important;
+}
+.pricing-preview-item.is-featured::before { display: none; }
+.pricing-preview-item.is-featured::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: 22px;
+  background: linear-gradient(150deg, var(--grad-a), var(--grad-b) 60%, transparent);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+/* The badge carries the card's own tone, the same colour as its price. */
+.pricing-preview-badge {
+  position: absolute;
+  top: -10px;
+  left: 26px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--tone);
+  background: #16111c;
+  background: color-mix(in srgb, var(--tone) 18%, #0f0f16);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--tone);
+}
+/* The only solid gradient button in the group. */
+.pricing-preview-item.is-featured .pricing-preview-cta {
+  background: linear-gradient(120deg, var(--grad-a), var(--grad-b)) !important;
+  border-color: transparent !important;
+  color: #0a0a0f !important;
+  box-shadow: 0 12px 28px -12px rgba(139, 107, 255, 0.7);
+}
+
+/* Stays four across down to 900px, matching the original layout. */
+@media (max-width: 900px) {
+  .pricing-preview-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .pricing-preview-list { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .pricing-preview-item { padding: 26px 22px 24px !important; }
+  .pricing-preview-price,
+  .pricing-preview-price .price-value { font-size: 34px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pricing-preview-item { transition: none; }
+  .pricing-preview-item:hover { transform: none; }
+}
+
+/* ---------- Full pricing dialog ----------
+   Same tone system as the "Pricing at a glance" cards: the price number and the
+   CTA border carry the plan's colour, and only the featured plan gets a solid
+   gradient button. */
+
+/* Chrome 128+ wraps a <details> element's non-summary children in a
+   ::details-content pseudo-element, which becomes the real flex item. Without
+   this the card body never grows, so `margin-top: auto` on the CTA has no free
+   space to consume and the four buttons land wherever the copy ends. */
+.pricing-card[open]::details-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.pricing-price .price-value { color: var(--tone); }
+
+.pricing-plan-cta {
+  align-self: stretch;
+  margin-top: auto;
+  padding: 13px 16px !important;
+  /* Sized so the longest label, "Choose Online Coaching", still fits on one
+     line in a four-column dialog; a wrapped button breaks the shared baseline. */
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  border-color: var(--tone) !important;
+}
+@media (max-width: 900px) {
+  .pricing-plan-cta { padding: 13px 20px !important; font-size: 14px; }
+}
+.pricing-plan-cta:hover { background: rgba(255, 255, 255, 0.06) !important; }
+
+/* The featured plan carries the only solid gradient button in the dialog. */
+.pricing-card.featured .pricing-plan-cta {
+  background: linear-gradient(120deg, var(--grad-a), var(--grad-b)) !important;
+  border-color: transparent !important;
+  color: #0a0a0f !important;
+  box-shadow: 0 12px 28px -12px rgba(139, 107, 255, 0.7);
+}
+.pricing-card.featured .pricing-plan-cta:hover {
+  background: linear-gradient(120deg, var(--grad-a), var(--grad-b)) !important;
 }

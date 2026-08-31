@@ -1094,11 +1094,17 @@
     .nutrition-shell {
       grid-template-columns: 1fr;
     }
-    .pricing-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
     .pricing-card.featured {
       transform: none;
+    }
+  }
+
+  /* The four plan cards hold a single row down to 1060px. Below that a card is
+     too narrow for its "Choose ..." label, which is kept on one line so the four
+     buttons share a baseline, so they pair up instead. */
+  @media (max-width: 1060px) {
+    .pricing-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -1601,29 +1607,30 @@
       <button type="button" class="btn-primary pricing-full-button" data-open-pricing>View Full Pricing</button>
     </div>
     <div class="pricing-preview-list">
-      <article class="pricing-preview-item">
+      <article class="pricing-preview-item" style="--tone: #8B6BFF">
         <h3>Workout Plan</h3>
         <div class="pricing-preview-price"><span class="price-value" data-eur="€30" data-sek="330 kr">€30</span> <small>/ program</small></div>
         <p>For independent training with a custom 5–6 week structure.</p>
         <a class="pricing-preview-cta" href="apply.html?plan=workout-plan">Choose Plan</a>
       </article>
-      <article class="pricing-preview-item">
+      <article class="pricing-preview-item is-featured" style="--tone: #FF5C7A">
+        <span class="pricing-preview-badge">Most Popular</span>
         <h3>Plan + Intro</h3>
         <div class="pricing-preview-price"><span class="price-value" data-eur="€80" data-sek="850 kr">€80</span> <small>/ package</small></div>
         <p>For learning your custom plan with one guided session.</p>
         <a class="pricing-preview-cta" href="apply.html?plan=plan-intro">Choose Plan</a>
       </article>
-      <article class="pricing-preview-item">
-        <h3>In-Person Coaching</h3>
-        <div class="pricing-preview-price"><span class="price-value" data-eur="€70" data-sek="750 kr">€70</span> <small>/ session</small></div>
-        <p>For hands-on coaching, live feedback, and accountability.</p>
-        <a class="pricing-preview-cta" href="apply.html?plan=in-person">Choose Plan</a>
-      </article>
-      <article class="pricing-preview-item">
+      <article class="pricing-preview-item" style="--tone: #9D7CFF">
         <h3>Online Coaching</h3>
         <div class="pricing-preview-price"><span class="price-value" data-eur="€35" data-sek="350 kr">€35</span> <small>/ session</small></div>
         <p>For a scheduled remote check-in, programming guidance, and accountability.</p>
         <a class="pricing-preview-cta" href="apply.html?plan=online">Choose Plan</a>
+      </article>
+      <article class="pricing-preview-item" style="--tone: #B08CFF">
+        <h3>In-Person Coaching</h3>
+        <div class="pricing-preview-price"><span class="price-value" data-eur="€70" data-sek="750 kr">€70</span> <small>/ session</small></div>
+        <p>For hands-on coaching, live feedback, and accountability.</p>
+        <a class="pricing-preview-cta" href="apply.html?plan=in-person">Choose Plan</a>
       </article>
     </div>
   </div>
@@ -1856,7 +1863,7 @@
       <p>Choose the level of support that fits your goal right now. If you are not sure which option is best, start the application and we can decide together after reviewing your needs.</p>
     </div>
     <div class="pricing-grid">
-      <details class="pricing-card" open>
+      <details class="pricing-card" open style="--tone: #8B6BFF">
         <summary>
           <span class="pricing-badge">Starter</span>
           <span class="pricing-card-title">Workout Plan</span>
@@ -1873,7 +1880,7 @@
           <a class="pricing-plan-cta" href="apply.html?plan=workout-plan">Choose Workout Plan</a>
         </div>
       </details>
-      <details class="pricing-card featured" open>
+      <details class="pricing-card featured" open style="--tone: #FF5C7A">
         <summary>
           <span class="pricing-badge">Most Popular</span>
           <span class="pricing-card-title">Plan + Intro Session</span>
@@ -1889,7 +1896,7 @@
           <a class="pricing-plan-cta" href="apply.html?plan=plan-intro">Choose Plan + Intro</a>
         </div>
       </details>
-      <details class="pricing-card" open>
+      <details class="pricing-card" open style="--tone: #B08CFF">
         <summary>
           <span class="pricing-badge">Premium</span>
           <span class="pricing-card-title">In-Person Coaching</span>
@@ -1906,7 +1913,7 @@
           <a class="pricing-plan-cta" href="apply.html?plan=in-person">Choose In-Person</a>
         </div>
       </details>
-      <details class="pricing-card" open>
+      <details class="pricing-card" open style="--tone: #9D7CFF">
         <summary>
           <span class="pricing-badge">Remote</span>
           <span class="pricing-card-title">Online Coaching</span>
@@ -1981,7 +1988,7 @@
 <footer>
   <div class="footer-brand">
     <div class="footer-logo"><span class="brand-dot" aria-hidden="true"></span>Armin Nabizadeh</div>
-    <div class="footer-copyright">&copy; 2026 Fitstronomy. All rights reserved.</div>
+    <div class="footer-copyright">&copy; 2026 Armin Nabizadeh. All rights reserved.</div>
   </div>
   <nav class="footer-nav" aria-label="Footer navigation">
     <a href="#about">About</a>

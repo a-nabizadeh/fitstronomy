@@ -8,6 +8,35 @@ Options -Indexes
   Header always set Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
 </IfModule>
 
+# Caching. The host defaults every static file to max-age=604800, which serves
+# visitors a week-old stylesheet after each deploy. Markup, code and icons are
+# revalidated on every request instead: the browser still caches them, but asks
+# whether its copy is current and gets a cheap 304 when nothing changed.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 0 seconds"
+  ExpiresByType application/javascript "access plus 0 seconds"
+  ExpiresByType text/javascript "access plus 0 seconds"
+  ExpiresByType image/svg+xml "access plus 0 seconds"
+  ExpiresByType image/x-icon "access plus 0 seconds"
+  ExpiresByType application/manifest+json "access plus 0 seconds"
+  # PNG is revalidated too: the favicon set is PNG and gets recoloured with the
+  # palette. Photographs are the only long-lived files.
+  ExpiresByType image/png "access plus 0 seconds"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|css|js|svg|ico|png|webmanifest)$">
+    Header always set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "\.(jpe?g|webp|woff2?)$">
+    Header always set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
 <FilesMatch "(^\.|\.DS_Store$)">
   Require all denied
 </FilesMatch>
