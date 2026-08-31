@@ -352,7 +352,16 @@ footer { background: transparent !important; }
   transform-style: preserve-3d;
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.dial-rings { position: relative; z-index: 1; display: block; width: 100%; height: auto; overflow: visible; }
+.dial-rings {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  -webkit-user-select: none;
+  user-select: none;
+}
 .dial-aura {
   position: absolute;
   inset: 8%;
@@ -391,12 +400,40 @@ footer { background: transparent !important; }
   .cycle-segment:hover .cycle-arc { opacity: 0.6; }
   .cycle-segment.is-active:hover .cycle-arc { opacity: 1; }
 }
-.cycle-segment:focus-visible .cycle-arc { opacity: 1; }
-.cycle-segment:focus { outline: none; }
 .cycle-segment {
   -webkit-tap-highlight-color: transparent;
-  tap-highlight-color: transparent;
 }
+.dial-steps {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.dial-step {
+  position: absolute;
+  top: var(--step-y);
+  left: var(--step-x);
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+.dial-step span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.dial-step:focus { outline: none; }
 .cycle-flow { pointer-events: none; }
 .cycle-flow-arc {
   fill: none;

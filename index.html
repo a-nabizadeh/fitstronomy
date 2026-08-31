@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="favicon/favicon-180x180.png">
 <link rel="manifest" href="favicon/site.webmanifest">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0a0a0f">
 <title>Armin Nabizadeh · Personal Trainer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1372,7 +1372,7 @@
     <div class="dial" id="coachingDial">
       <div class="dial-aura" aria-hidden="true"></div>
 
-      <svg class="dial-rings" viewBox="0 0 400 400" role="group" aria-label="The coaching cycle: assess, build, progress, then repeat">
+      <svg class="dial-rings" viewBox="0 0 400 400" role="img" aria-label="The coaching cycle: assess, build, progress, then repeat">
         <defs>
           <linearGradient id="cycleAssessGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#8B6BFF"></stop><stop offset="100%" stop-color="#C0A8FF"></stop>
@@ -1401,7 +1401,7 @@
         <path class="arc-track" d="M324.4,283.9 A150,150 0 0,1 75.6,283.9"></path>
         <path class="arc-track" d="M65.2,265.8 A150,150 0 0,1 189.5,50.4"></path>
 
-        <g class="cycle-segment is-active" data-cycle-segment="0" tabindex="0" role="button" aria-label="Step one, assess">
+        <g class="cycle-segment is-active" data-cycle-segment="0">
           <path class="cycle-arc" pathLength="100" stroke="url(#cycleAssessGradient)" d="M65.2,265.8 A150,150 0 0,1 189.5,50.4"></path>
           <path class="cycle-comet" pathLength="100" d="M65.2,265.8 A150,150 0 0,1 189.5,50.4"></path>
           <path class="cycle-hit" d="M65.2,265.8 A150,150 0 0,1 189.5,50.4"></path>
@@ -1410,7 +1410,7 @@
           <text class="cycle-label" text-anchor="middle"><textPath href="#cycleLabelPathUL" startOffset="50%">01 Assess</textPath></text>
         </g>
 
-        <g class="cycle-segment" data-cycle-segment="1" tabindex="0" role="button" aria-label="Step two, build">
+        <g class="cycle-segment" data-cycle-segment="1">
           <path class="cycle-arc" pathLength="100" stroke="url(#cycleBuildGradient)" d="M210.5,50.4 A150,150 0 0,1 334.8,265.8"></path>
           <path class="cycle-comet" pathLength="100" d="M210.5,50.4 A150,150 0 0,1 334.8,265.8"></path>
           <path class="cycle-hit" d="M210.5,50.4 A150,150 0 0,1 334.8,265.8"></path>
@@ -1419,7 +1419,7 @@
           <text class="cycle-label" text-anchor="middle"><textPath href="#cycleLabelPathUR" startOffset="50%">02 Build</textPath></text>
         </g>
 
-        <g class="cycle-segment" data-cycle-segment="2" tabindex="0" role="button" aria-label="Step three, progress">
+        <g class="cycle-segment" data-cycle-segment="2">
           <path class="cycle-arc" pathLength="100" stroke="url(#cycleProgressGradient)" d="M324.4,283.9 A150,150 0 0,1 75.6,283.9"></path>
           <path class="cycle-comet" pathLength="100" d="M324.4,283.9 A150,150 0 0,1 75.6,283.9"></path>
           <path class="cycle-hit" d="M324.4,283.9 A150,150 0 0,1 75.6,283.9"></path>
@@ -1428,6 +1428,12 @@
           <text class="cycle-label" text-anchor="middle"><textPath href="#cycleLabelPathB" startOffset="50%">03 Progress</textPath></text>
         </g>
       </svg>
+
+      <div class="dial-steps">
+        <button type="button" class="dial-step" data-cycle-step="0" style="--step-x: 17.53%; --step-y: 31.25%" aria-pressed="true"><span>Assess</span></button>
+        <button type="button" class="dial-step" data-cycle-step="1" style="--step-x: 82.47%; --step-y: 31.25%" aria-pressed="false"><span>Build</span></button>
+        <button type="button" class="dial-step" data-cycle-step="2" style="--step-x: 50%; --step-y: 87.5%" aria-pressed="false"><span>Progress</span></button>
+      </div>
 
       <div class="dial-center" aria-live="polite" aria-atomic="true">
         <svg class="cycle-viz is-visible" data-cycle-viz="0" viewBox="0 0 112 56" aria-hidden="true">

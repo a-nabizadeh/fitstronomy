@@ -242,6 +242,7 @@
     ];
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var segments = Array.from(dial.querySelectorAll('[data-cycle-segment]'));
+    var stepButtons = Array.from(dial.querySelectorAll('[data-cycle-step]'));
     var visualizations = Array.from(dial.querySelectorAll('[data-cycle-viz]'));
     var title = document.getElementById('cycleTitle');
     var body = document.getElementById('cycleBody');
@@ -286,9 +287,10 @@
 
       current = stageIndex;
       segments.forEach(function (segment, segmentIndex) {
-        var isActive = segmentIndex === stageIndex;
-        segment.classList.toggle('is-active', isActive);
-        segment.setAttribute('aria-pressed', String(isActive));
+        segment.classList.toggle('is-active', segmentIndex === stageIndex);
+      });
+      stepButtons.forEach(function (button, buttonIndex) {
+        button.setAttribute('aria-pressed', String(buttonIndex === stageIndex));
       });
       visualizations.forEach(function (visualization, visualizationIndex) {
         visualization.classList.toggle('is-visible', visualizationIndex === stageIndex);
@@ -308,8 +310,10 @@
     // and makes the change of step read as two separate jumps.
     var hoverCapable = window.matchMedia('(hover: hover)').matches;
 
+    // The arcs are pointer targets only. Nothing inside the SVG is focusable: a
+    // focused SVG element gets a rectangular indicator the size of its whole
+    // bounding box, which on a phone covers most of the dial.
     segments.forEach(function (segment, segmentIndex) {
-      segment.setAttribute('aria-pressed', String(segmentIndex === current));
       if (hoverCapable) {
         segment.addEventListener('mouseenter', function () {
           selectStage(segmentIndex, true);
@@ -318,26 +322,27 @@
       segment.addEventListener('click', function () {
         selectStage(segmentIndex, true);
       });
-      segment.addEventListener('focus', function () {
-        selectStage(segmentIndex, true);
+    });
+
+    // Focus, keyboard and assistive tech go through real buttons pinned over the
+    // three node dots, so the focus ring is a circle around the dot.
+    stepButtons.forEach(function (button, buttonIndex) {
+      button.setAttribute('aria-pressed', String(buttonIndex === current));
+      button.addEventListener('click', function () {
+        selectStage(buttonIndex, true);
       });
-      segment.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          selectStage(segmentIndex, true);
-        }
-        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-          event.preventDefault();
-          var nextIndex = (segmentIndex + 1) % segments.length;
-          segments[nextIndex].focus();
-          selectStage(nextIndex, true);
-        }
-        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-          event.preventDefault();
-          var previousIndex = (segmentIndex + segments.length - 1) % segments.length;
-          segments[previousIndex].focus();
-          selectStage(previousIndex, true);
-        }
+      button.addEventListener('focus', function () {
+        selectStage(buttonIndex, true);
+      });
+      button.addEventListener('keydown', function (event) {
+        var step = 0;
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') step = 1;
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') step = -1;
+        if (!step) return;
+        event.preventDefault();
+        var nextIndex = (buttonIndex + step + stepButtons.length) % stepButtons.length;
+        stepButtons[nextIndex].focus();
+        selectStage(nextIndex, true);
       });
     });
 
