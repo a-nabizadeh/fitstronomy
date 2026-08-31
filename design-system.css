@@ -234,7 +234,7 @@ footer { background: transparent !important; }
 .nav-logo .brand-role {
   color: var(--text-faint) !important;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1.1;
   letter-spacing: 0;
@@ -387,10 +387,29 @@ footer { background: transparent !important; }
 .cycle-segment[data-cycle-segment="2"] .cycle-arc { animation-delay: 0.72s; }
 @keyframes cycle-draw { to { stroke-dashoffset: 0; } }
 .cycle-segment.is-active .cycle-arc { opacity: 1; stroke-width: 20; }
-.cycle-segment:hover .cycle-arc { opacity: 0.6; }
-.cycle-segment.is-active:hover .cycle-arc,
+@media (hover: hover) {
+  .cycle-segment:hover .cycle-arc { opacity: 0.6; }
+  .cycle-segment.is-active:hover .cycle-arc { opacity: 1; }
+}
 .cycle-segment:focus-visible .cycle-arc { opacity: 1; }
 .cycle-segment:focus { outline: none; }
+.cycle-segment {
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+.cycle-flow { pointer-events: none; }
+.cycle-flow-arc {
+  fill: none;
+  stroke: var(--text-faint);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-dasharray: 2 9;
+  opacity: 0.55;
+}
+.cycle-flow-head {
+  fill: var(--text-faint);
+  opacity: 0.75;
+}
 .cycle-comet {
   fill: none;
   stroke: var(--text);
@@ -405,9 +424,9 @@ footer { background: transparent !important; }
 .cycle-segment.is-active .cycle-comet { opacity: 0.85; animation: cycle-comet 2.6s linear infinite; }
 @keyframes cycle-comet { to { stroke-dashoffset: 0; } }
 .cycle-hit { fill: none; stroke: transparent; stroke-width: 56; cursor: pointer; }
-.cycle-node { fill: var(--bg-1); stroke-width: 2.5; transition: r 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.cycle-node { fill: var(--bg-1); stroke-width: 2.5; transition: r 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .cycle-segment.is-active .cycle-node { r: 10; }
-.cycle-node-halo { fill: none; stroke-width: 2; opacity: 0; }
+.cycle-node-halo { fill: none; stroke-width: 2; opacity: 0; transition: opacity 0.4s ease; }
 .cycle-segment.is-active .cycle-node-halo { opacity: 1; animation: cycle-ping 2.4s ease-out infinite; }
 @keyframes cycle-ping {
   0% { r: 10; opacity: 0.7; }
@@ -416,8 +435,8 @@ footer { background: transparent !important; }
 .cycle-label {
   fill: var(--text-faint);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 12.5px;
-  transition: fill 0.3s ease;
+  font-size: 13px;
+  transition: fill 0.4s ease;
   pointer-events: none;
 }
 .cycle-segment.is-active .cycle-label { fill: var(--text); }
@@ -472,7 +491,7 @@ footer { background: transparent !important; }
 }
 .progress-tip { opacity: 0; animation: cycle-fade-in 0.4s ease 1s forwards; }
 @keyframes cycle-fade-in { to { opacity: 1; } }
-.dial-caption { margin: 24px 0 0; color: var(--text-faint); font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-align: center; }
+.dial-caption { margin: 24px 0 0; color: var(--text-faint); font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: center; }
 .intro-pending .dial-aura,
 .intro-pending .sat-orbit,
 .intro-pending .cycle-arc,
@@ -628,7 +647,7 @@ section { padding: 88px 48px; }
   border-radius: 999px;
   color: var(--text-faint);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
+  font-size: 13px;
   white-space: nowrap;
 }
 .service-card h3 {
@@ -655,7 +674,7 @@ section { padding: 88px 48px; }
   background: rgba(255, 255, 255, 0.055);
   color: var(--text-faint);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.35;
 }
 .card-flip-hint {
@@ -666,7 +685,7 @@ section { padding: 88px 48px; }
   padding-top: 12px;
   color: var(--service-accent);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
 }
 .card-flip-hint::before {
@@ -738,7 +757,7 @@ section { padding: 88px 48px; }
   margin-bottom: 14px;
   color: var(--text-faint);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
+  font-size: 13px;
 }
 .fig-num {
   display: flex;
@@ -773,7 +792,7 @@ section { padding: 88px 48px; }
   transform-origin: bottom;
   transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.15);
 }
-.stats.in .bars .u { transform: none; }
+.fig.in .bars .u { transform: none; }
 .fig-note {
   max-width: 26ch;
   margin: 0;
@@ -791,7 +810,7 @@ section { padding: 88px 48px; }
   border-top: 1px solid rgba(255, 255, 255, 0.07);
   color: var(--text-faint);
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
+  font-size: 13px;
 }
 .stats-foot .live {
   display: inline-flex;
@@ -907,7 +926,11 @@ footer { border-color: var(--glass-border); }
     grid-template-columns: 1fr;
     gap: 38px;
   }
-  .fig { padding: 0; }
+  .fig {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 0;
+  }
   .fig + .fig { padding-top: 34px; }
   .fig + .fig::before {
     top: 0;
@@ -917,6 +940,29 @@ footer { border-color: var(--glass-border); }
     width: auto;
     height: 1px;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.14), transparent 60%);
+  }
+  .fig-label {
+    grid-row: 1;
+    grid-column: 1 / -1;
+  }
+  .fig-num {
+    grid-row: 2;
+    grid-column: 1;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .bars {
+    grid-row: 3;
+    grid-column: 1;
+    justify-content: center;
+    margin-bottom: 2px;
+  }
+  .fig-note {
+    grid-row: 4;
+    grid-column: 1;
+    margin-top: 18px;
+    margin-inline: auto;
+    text-align: center;
   }
   .stats-foot {
     flex-direction: column;
@@ -969,11 +1015,13 @@ footer { border-color: var(--glass-border); }
   .home-page .hero-cta .btn-primary,
   .home-page .hero-cta .btn-secondary { width: 100%; }
   .dial-title { font-size: 22px; }
-  .dial-body { font-size: 12px; }
+  .dial-body { font-size: 13px; }
   .cycle-viz { width: 92px; height: 44px; margin-bottom: 9px; }
   section { padding-left: 20px; padding-right: 20px; }
   .stats-section { padding-right: 20px; padding-left: 20px; }
   .stats { width: 100%; grid-template-columns: 1fr; }
+  .bars { gap: 4px; }
+  .bars .u { width: 6px; }
   .stat { border-right: 0; }
   .stat:last-child { grid-column: auto; text-align: left; }
   .services-heading .section-title { font-size: 38px; }

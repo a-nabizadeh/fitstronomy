@@ -304,11 +304,17 @@
       }
     }
 
+    // Touch devices synthesise mouseenter on tap, which fires alongside click
+    // and makes the change of step read as two separate jumps.
+    var hoverCapable = window.matchMedia('(hover: hover)').matches;
+
     segments.forEach(function (segment, segmentIndex) {
       segment.setAttribute('aria-pressed', String(segmentIndex === current));
-      segment.addEventListener('mouseenter', function () {
-        selectStage(segmentIndex, true);
-      });
+      if (hoverCapable) {
+        segment.addEventListener('mouseenter', function () {
+          selectStage(segmentIndex, true);
+        });
+      }
       segment.addEventListener('click', function () {
         selectStage(segmentIndex, true);
       });
@@ -379,7 +385,7 @@
     var stats = document.getElementById('statsBar');
     if (!stats) return;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var hasRun = false;
+    var figures = Array.prototype.slice.call(stats.querySelectorAll('.fig'));
 
     stats.querySelectorAll('.bars').forEach(function (row) {
       var count = Number(row.dataset.bars) || 12;
@@ -412,11 +418,11 @@
       requestAnimationFrame(tick);
     }
 
-    function runAnimation() {
-      if (hasRun) return;
-      hasRun = true;
+    function revealFigure(fig) {
+      if (fig.classList.contains('in')) return;
+      fig.classList.add('in');
       stats.classList.add('in');
-      stats.querySelectorAll('[data-count]').forEach(function (element) {
+      fig.querySelectorAll('[data-count]').forEach(function (element) {
         if (reducedMotion) {
           element.textContent = element.dataset.count;
         } else {
@@ -425,8 +431,12 @@
       });
     }
 
+    function revealAll() {
+      figures.forEach(revealFigure);
+    }
+
     if (reducedMotion) {
-      runAnimation();
+      revealAll();
       return;
     }
 
@@ -435,20 +445,23 @@
     });
 
     if (!('IntersectionObserver' in window)) {
-      runAnimation();
+      revealAll();
       return;
     }
 
+    // Observed per figure so the stacked mobile layout reveals each one as it
+    // scrolls in; on desktop all three enter together and stay in step.
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          runAnimation();
-          observer.disconnect();
-        }
+        if (!entry.isIntersecting) return;
+        revealFigure(entry.target);
+        observer.unobserve(entry.target);
       });
     }, { threshold: 0.35 });
 
-    observer.observe(stats);
+    figures.forEach(function (fig) {
+      observer.observe(fig);
+    });
   }
 
   function setupNutritionDisclosure() {
