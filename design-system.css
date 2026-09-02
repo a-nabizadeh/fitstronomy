@@ -58,10 +58,11 @@ body.intro-lock { overflow: hidden; }
     linear-gradient(225deg, rgba(255, 92, 122, 0.14), transparent 42%),
     linear-gradient(180deg, var(--bg-1), var(--bg-2));
   color: var(--text);
-  opacity: 1;
-  visibility: visible;
+  opacity: 0;
+  visibility: hidden;
   transition: opacity 0.7s ease, visibility 0.7s ease;
 }
+.intro-overlay[data-ready="true"] { opacity: 1; visibility: visible; }
 .intro-overlay.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .intro-canvas-wrap { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; }
 .body-muscles-container { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; }
@@ -1355,7 +1356,7 @@ footer { border-color: var(--glass-border); }
 
 @media (max-width: 940px) {
   .about { grid-template-columns: 1fr; gap: 40px; }
-  .portrait-frame { aspect-ratio: 3 / 2; }
+  .portrait-frame { aspect-ratio: 4 / 5; }
   .chips { grid-template-columns: 1fr; }
   .chips li { width: max-content; }
 }
