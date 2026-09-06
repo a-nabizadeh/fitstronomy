@@ -1367,6 +1367,84 @@ footer { border-color: var(--glass-border); }
   .ig:hover,
   .ig:hover .go { transform: none; }
 }
+
+/* Analytics consent */
+.cookie-consent {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+  z-index: 450;
+  display: flex;
+  width: min(680px, calc(100% - 40px));
+  margin-left: auto;
+  padding: 20px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  background: rgba(18, 14, 28, 0.97);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.48);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+.cookie-consent-copy { max-width: 42ch; }
+.cookie-consent strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+}
+.cookie-consent p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.cookie-consent a,
+.privacy-settings-button { color: var(--accent-light); }
+.cookie-consent-actions {
+  display: flex;
+  flex: none;
+  gap: 8px;
+}
+.cookie-choice,
+.privacy-settings-button {
+  min-height: 40px;
+  padding: 10px 15px;
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+.cookie-choice:hover,
+.privacy-settings-button:hover { background: var(--glass-bg-strong); }
+.cookie-choice-primary { border-color: rgba(192, 168, 255, 0.55); }
+.footer-settings {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 12px;
+}
+.footer-settings:hover { color: var(--text); }
+.privacy-settings-button { margin-top: 4px; }
+
+@media (max-width: 680px) {
+  .cookie-consent {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .cookie-consent-actions { width: 100%; }
+  .cookie-choice { flex: 1; }
+}
 @media (prefers-reduced-motion: reduce) {
   .pricing-preview-item { transition: none; }
   .pricing-preview-item:hover { transform: none; }

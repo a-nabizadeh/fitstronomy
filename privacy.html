@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; img-src 'self' data:; font-src https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'none'; connect-src 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; img-src 'self' data: https://*.google-analytics.com https://www.googletagmanager.com; font-src https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; form-action 'none'; frame-src 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="icon" href="favicon/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
@@ -85,7 +85,7 @@
       <div class="eyebrow">Fitstronomy</div>
       <h1>Privacy Policy</h1>
       <p>This policy explains how Fitstronomy handles information submitted through this website.</p>
-      <div class="updated">Last updated: 30 August 2026</div>
+      <div class="updated">Last updated: 6 September 2026</div>
     </header>
 
     <h2>Who Controls Your Information</h2>
@@ -110,7 +110,7 @@
     <div class="notice">Do not submit medical records, diagnoses beyond what is needed for screening, identity documents, or other unnecessary sensitive information.</div>
 
     <h2>Other Service Providers</h2>
-    <p>The website loads fonts from Google Fonts. Google may receive ordinary request information such as an IP address and browser headers. The website does not use advertising pixels or analytics.</p>
+    <p>The website loads fonts from Google Fonts. Google may receive ordinary request information such as an IP address and browser headers. If a visitor allows analytics cookies, the website also loads Google Analytics to measure page visits, device and browser information, approximate location, and interactions with the website. Advertising storage and personalization signals are disabled.</p>
 
     <h2>Retention</h2>
     <ul>
@@ -125,11 +125,15 @@
     <p>Depending on the circumstances, you may request access, correction, deletion, restriction, or portability of your information, and may object to certain processing by contacting Fitstronomy through the website.</p>
     <p>You may also lodge a complaint with Finland's <a href="https://tietosuoja.fi/en/home" target="_blank" rel="noopener">Office of the Data Protection Ombudsman</a>.</p>
 
-    <h2>Cookies And Browser Storage</h2>
-    <p>The website does not currently set analytics, advertising, or marketing cookies. Temporary session storage records whether the introductory animation has already played and is normally cleared when the browsing session ends.</p>
+    <h2 id="analytics-cookies">Cookies And Browser Storage</h2>
+    <p>Google Analytics is disabled by default and loads only after a visitor selects “Allow analytics.” When allowed, Google Analytics may set first-party cookies such as <code>_ga</code> and <code>_ga_&lt;container-id&gt;</code> to distinguish visitors and sessions. Choosing “Reject” prevents the Google Analytics script from loading.</p>
+    <p>The analytics choice is stored in local browser storage so the website can remember it. Temporary session storage also records whether the introductory animation has already played and is normally cleared when the browsing session ends.</p>
+    <p>You can withdraw or change analytics consent at any time. Withdrawing consent stops future analytics collection and removes accessible Google Analytics cookies from this website.</p>
+    <button type="button" class="privacy-settings-button" data-cookie-settings>Manage analytics consent</button>
 
     <h2>Policy Changes</h2>
     <p>This policy may be updated when the website, coaching process, or service providers change. The latest revision date appears at the top of this page.</p>
   </main>
+  <script src="analytics.js"></script>
 </body>
 </html>
