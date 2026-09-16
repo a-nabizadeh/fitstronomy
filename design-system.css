@@ -557,8 +557,6 @@ section { padding: 88px 48px; }
 .nutrition-intro { color: var(--text-soft) !important; }
 
 /* Static glass surfaces */
-.service-card,
-.pricing-card,
 .pricing-preview-item,
 .nutrition-panel,
 .nutrition-results,
@@ -574,6 +572,17 @@ section { padding: 88px 48px; }
 .quick-card,
 .success-card {
   border: 1px solid var(--glass-border) !important;
+  border-radius: 8px !important;
+  background: var(--glass-bg) !important;
+  box-shadow: 0 30px 60px -35px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* Service and plan cards read by their surface alone, with no outline. */
+.service-card,
+.pricing-card {
+  border: 0 !important;
   border-radius: 8px !important;
   background: var(--glass-bg) !important;
   box-shadow: 0 30px 60px -35px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
@@ -644,7 +653,7 @@ section { padding: 88px 48px; }
   position: relative;
   grid-area: 1 / 1;
   padding: 22px;
-  border: 1px solid var(--glass-border) !important;
+  border: 0 !important;
   border-radius: 8px;
   background: var(--service-surface) !important;
   box-shadow: 0 30px 60px -35px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
@@ -662,7 +671,6 @@ section { padding: 88px 48px; }
   justify-content: space-between;
   transform: rotateY(180deg);
 }
-.service-card:hover .card-face { border-color: var(--service-accent) !important; }
 .service-meta {
   display: flex;
   align-items: center;
@@ -892,14 +900,20 @@ section { padding: 88px 48px; }
   -webkit-backdrop-filter: blur(12px);
 }
 .pricing-dialog {
-  border: 1px solid var(--glass-border) !important;
+  border: 0 !important;
   border-radius: 8px !important;
   background: linear-gradient(135deg, rgba(37, 28, 57, 0.97), rgba(40, 25, 39, 0.97) 54%, rgba(20, 42, 44, 0.97)) !important;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55) !important;
 }
+/* Only the most popular plan keeps an outline: its tone, lit from behind, so it
+   still reads as the pick now that the other cards are borderless. */
 .pricing-card.featured {
-  border: 1px solid var(--accent-light) !important;
+  border: 1px solid var(--tone, var(--accent-light)) !important;
   background: rgba(18, 18, 27, 0.96) !important;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--tone, var(--accent-light)) 30%, transparent),
+    0 0 24px -4px color-mix(in srgb, var(--tone, var(--accent-light)) 55%, transparent),
+    0 30px 60px -35px rgba(0, 0, 0, 0.7) !important;
 }
 .pricing-card::before { content: none !important; }
 .pricing-badge { background: var(--glass-bg-strong) !important; color: var(--text-soft) !important; letter-spacing: 0; text-transform: none; }
@@ -935,6 +949,10 @@ textarea:focus,
   outline: none;
   box-shadow: 0 0 0 3px rgba(52, 226, 198, 0.14) !important;
 }
+.contact-form input,
+.contact-form textarea,
+.contact-form input:focus,
+.contact-form textarea:focus { border: 0 !important; }
 .choice { border-color: var(--glass-border) !important; border-radius: 12px !important; background: var(--glass-bg) !important; color: var(--text-soft) !important; }
 .choice input { accent-color: var(--grad-c); }
 .choice:has(input:checked) { border-color: rgba(52, 226, 198, 0.58) !important; background: rgba(52, 226, 198, 0.08) !important; }
