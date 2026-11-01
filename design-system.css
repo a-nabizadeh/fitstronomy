@@ -955,6 +955,42 @@ textarea:focus,
 .contact-form textarea:focus { border: 0 !important; }
 .nutrition-form input,
 .nutrition-form select { border: 0 !important; }
+
+/* Nutrition uses spacing and surface colour to separate its sections. */
+#nutrition .nutrition-launch,
+#nutrition .nutrition-panel,
+#nutrition .nutrition-results,
+#nutrition .coach-guide,
+#nutrition .guide-highlight,
+#nutrition .guide-mini-card,
+#nutrition .summary-card,
+#nutrition .macro-card,
+#nutrition .meal-plan,
+#nutrition .meal-row,
+#nutrition .nutrition-actions button { border: 0 !important; }
+
+#nutrition .nutrition-panel,
+#nutrition .nutrition-results,
+#nutrition .coach-guide,
+#nutrition .guide-highlight,
+#nutrition .guide-mini-card,
+#nutrition .summary-card,
+#nutrition .macro-card,
+#nutrition .meal-plan {
+  box-shadow: 0 30px 60px -35px rgba(0, 0, 0, 0.7) !important;
+}
+
+#resultsContent:not([hidden]) {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+
+#nutrition .summary-card,
+#nutrition .macro-card {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 .choice { border-color: var(--glass-border) !important; border-radius: 12px !important; background: var(--glass-bg) !important; color: var(--text-soft) !important; }
 .choice input { accent-color: var(--grad-c); }
 .choice:has(input:checked) { border-color: rgba(52, 226, 198, 0.58) !important; background: rgba(52, 226, 198, 0.08) !important; }
