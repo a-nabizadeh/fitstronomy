@@ -11,7 +11,7 @@ const guideContent = {
   start: {
     kicker: 'Start here',
     title: 'Use the form like a guided consultation',
-    body: 'Tap the helper pills below or focus a field to reveal specific guidance on calorie deficits, activity levels, and macro choices. It keeps the calculator clean while still teaching people how to use it well.',
+    body: 'Select a topic or focus a field to reveal specific guidance on calorie deficits, activity levels, and macro choices. It keeps the calculator clean while still teaching people how to use it well.',
   },
   activity: {
     kicker: 'Activity index',
@@ -421,7 +421,6 @@ function buildPdfDocument(result) {
 }
 
 function renderResults(result) {
-  document.getElementById('resultsEmpty').hidden = true;
   document.getElementById('resultsContent').hidden = false;
   document.getElementById('dailyCaloriesValue').textContent = `${formatNumber(result.dailyCalories)} kcal`;
   document.getElementById('tdeeValue').textContent = `${formatNumber(result.tdee)} kcal`;
@@ -471,6 +470,7 @@ function setStatus(message, type = '') {
 function setActiveGuidePill(key) {
   document.querySelectorAll('.guide-pill').forEach((pill) => {
     pill.classList.toggle('is-active', pill.dataset.guide === key);
+    pill.setAttribute('aria-pressed', String(pill.dataset.guide === key));
   });
 }
 
@@ -498,6 +498,14 @@ function updateGuide(key) {
 
 let latestResult = null;
 
+function showNutritionStep(showResults) {
+  document.getElementById('nutritionEntry').hidden = showResults;
+  document.getElementById('nutritionResults').hidden = !showResults;
+  const heading = document.getElementById(showResults ? 'nutritionResultsTitle' : 'nutritionEntryTitle');
+  heading.focus({ preventScroll: true });
+  heading.scrollIntoView({ behavior: 'instant', block: 'start' });
+}
+
 function handleNutritionSubmit(event) {
   event.preventDefault();
 
@@ -505,6 +513,7 @@ function handleNutritionSubmit(event) {
     const result = calculateNutrition(parseFormValues(event.currentTarget));
     latestResult = result;
     renderResults(result);
+    showNutritionStep(true);
     setStatus('Nutrition estimate updated. You can now review it or export a PDF.', 'success');
   } catch (error) {
     latestResult = null;
@@ -544,6 +553,10 @@ const pdfPlanButton = document.getElementById('pdfPlanButton');
 if (nutritionForm && pdfPlanButton) {
   nutritionForm.addEventListener('submit', handleNutritionSubmit);
   pdfPlanButton.addEventListener('click', handlePdfExport);
+  document.getElementById('editNutritionButton').addEventListener('click', () => {
+    setStatus('');
+    showNutritionStep(false);
+  });
 
   const guideFieldMap = {
     calcActivity: 'activity',

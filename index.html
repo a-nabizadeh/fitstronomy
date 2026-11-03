@@ -1305,7 +1305,7 @@
     }
   }
 </style>
-<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="design-system.css?v=nutrition-flow-3">
 </head>
 <body class="home-page intro-pending">
 
@@ -1690,16 +1690,16 @@
           </div>
           <div class="guide-layout">
             <div class="guide-pills">
-              <button class="guide-pill is-active" type="button" data-guide="start">Overview</button>
-              <button class="guide-pill" type="button" data-guide="activity">Activity index</button>
-              <button class="guide-pill" type="button" data-guide="deficit">Calorie pace</button>
-              <button class="guide-pill" type="button" data-guide="macros">Macro split</button>
-              <button class="guide-pill" type="button" data-guide="goal">Goal setting</button>
+              <button class="guide-pill is-active" type="button" data-guide="start" aria-pressed="true">Overview</button>
+              <button class="guide-pill" type="button" data-guide="activity" aria-pressed="false">Activity index</button>
+              <button class="guide-pill" type="button" data-guide="deficit" aria-pressed="false">Calorie pace</button>
+              <button class="guide-pill" type="button" data-guide="macros" aria-pressed="false">Macro split</button>
+              <button class="guide-pill" type="button" data-guide="goal" aria-pressed="false">Goal setting</button>
             </div>
             <div class="guide-highlight" id="guideHighlight">
               <span class="guide-kicker" id="guideKicker">Start here</span>
               <h4 id="guideTitle">Use the form like a guided consultation</h4>
-              <p id="guideBody">Tap the helper pills below or focus a field to reveal specific guidance on calorie deficits, activity levels, and macro choices. It keeps the calculator clean while still teaching people how to use it well.</p>
+              <p id="guideBody">Select a topic or focus a field to reveal specific guidance on calorie deficits, activity levels, and macro choices. It keeps the calculator clean while still teaching people how to use it well.</p>
             </div>
           </div>
           <div class="guide-mini-grid">
@@ -1717,6 +1717,12 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="nutrition-workspace">
+        <div class="nutrition-panel" id="nutritionEntry">
+          <div class="results-heading nutrition-entry-heading">
+            <h3 id="nutritionEntryTitle" tabindex="-1">Your information</h3>
+          </div>
         <form class="nutrition-form" id="nutritionForm">
           <div class="field-group full">
             <label for="calcName">Name</label>
@@ -1785,17 +1791,18 @@
           </div>
           <div class="nutrition-actions">
             <button type="submit" class="btn-primary">Calculate Nutrition</button>
-            <button type="button" class="btn-ghost" id="pdfPlanButton">Export PDF</button>
           </div>
-          <div class="nutrition-status" id="nutritionStatus" aria-live="polite"></div>
         </form>
       </div>
-      <aside class="nutrition-results" id="nutritionResults">
+      <aside class="nutrition-results" id="nutritionResults" hidden aria-labelledby="nutritionResultsTitle">
         <div class="results-heading">
-          <h3>Your Nutrition Snapshot</h3>
-          <p>Fill in the form and calculate to see calories, macros, and a simple six-meal split.</p>
+          <h3 id="nutritionResultsTitle" tabindex="-1">Your Nutrition Snapshot</h3>
+          <p>Your daily targets and a simple six-meal split.</p>
         </div>
-        <div class="results-empty" id="resultsEmpty">No calculation yet. Once you submit your details, your calorie target and macro breakdown will appear here.</div>
+        <div class="nutrition-actions">
+          <button type="button" class="btn-primary" id="pdfPlanButton">Export PDF</button>
+          <button type="button" class="btn-secondary" id="editNutritionButton">Edit information</button>
+        </div>
         <div id="resultsContent" hidden>
           <div class="result-summary">
             <div class="summary-card">
@@ -1844,6 +1851,8 @@
           <p class="nutrition-note" id="resultsNote">These results are estimates and should be refined based on training response, hunger, recovery, and adherence.</p>
         </div>
       </aside>
+        <div class="nutrition-status" id="nutritionStatus" aria-live="polite"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -2013,7 +2022,7 @@
   </div>
 </footer>
 
-<script src="nutrition-calculator.js"></script>
+<script src="nutrition-calculator.js?v=nutrition-flow-3"></script>
 <script src="contact-form.js"></script>
 <script src="pricing-modal.js"></script>
 <script src="https://unpkg.com/body-muscles@1.0.0/dist/umd/body-muscles.umd.min.js" integrity="sha384-TiJRzXzqcxvNgiBKWWkxSCFrWUGxw0O83AYli/tNrFXIl2xxMX4P3PyqtIjUQDgj" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

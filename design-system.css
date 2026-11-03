@@ -591,7 +591,12 @@ section { padding: 88px 48px; }
 }
 
 .guide-orbit { background: var(--grad-c) !important; box-shadow: 0 0 10px rgba(52, 226, 198, 0.55) !important; }
-.guide-pill.is-active { color: var(--text) !important; background: rgba(52, 226, 198, 0.09) !important; }
+.guide-pill { border: 1px solid transparent; }
+.guide-pill.is-active {
+  border-color: var(--grad-c);
+  color: var(--text) !important;
+  background: rgba(52, 226, 198, 0.09) !important;
+}
 .summary-value.accent {
   background: linear-gradient(120deg, var(--grad-a), var(--grad-c));
   background-clip: text;
@@ -990,6 +995,22 @@ textarea:focus,
 #nutrition .macro-card {
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.nutrition-workspace { min-width: 0; }
+#nutritionEntry[hidden],
+#nutritionResults[hidden] { display: none; }
+.nutrition-entry-heading { margin-bottom: 24px; }
+#nutritionResults { min-height: 0; }
+#nutritionEntryTitle,
+#nutritionResultsTitle {
+  scroll-margin-top: 110px;
+  outline: none;
+}
+.nutrition-status:empty { display: none; }
+
+@media (max-width: 1180px) {
+  .nutrition-workspace { grid-row: 1; }
 }
 .choice { border-color: var(--glass-border) !important; border-radius: 12px !important; background: var(--glass-bg) !important; color: var(--text-soft) !important; }
 .choice input { accent-color: var(--grad-c); }
